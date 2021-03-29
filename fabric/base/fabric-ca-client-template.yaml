@@ -1,0 +1,34 @@
+url: https://ca.example.com:7054
+
+csr:
+  cn:
+  serialnumber:
+  names:
+    - C: BR
+      ST: Distrito Federal
+      L: Brasilia
+      O:
+  hosts:
+    -
+
+id:
+  name:
+  type:
+  affiliation: org1
+  maxenrollments: -1
+  attributes:
+    # - name:
+    #   value:
+
+enrollment:
+  profile:
+  label:
+
+bccsp:
+  default: SW
+  sw:
+    hash: SHA2
+    security: 256
+    filekeystore:
+      # The directory used for the software file-based keystore
+      keystore: msp/keystore

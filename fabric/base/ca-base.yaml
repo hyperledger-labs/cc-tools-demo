@@ -1,0 +1,12 @@
+version: "2"
+
+services:
+  ca-base:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_TLS_ENABLED=TRUE
+    working_dir: /etc/hyperledger/fabric-ca-server
+    volumes:
+      - ../scripts/:/etc/hyperledger/fabric-ca-server/scripts
+    command: bash scripts/initca.sh
