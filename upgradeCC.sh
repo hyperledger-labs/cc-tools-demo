@@ -5,7 +5,7 @@ if [ $# -ne 1 ] ; then
     exit
 fi
 
-cd ./chaincode; go mod vendor; go fmt ./...; cd ..
+cd ./chaincode; go fmt ./...; cd ..
 
 version=$1
 

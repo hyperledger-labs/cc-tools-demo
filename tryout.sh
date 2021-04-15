@@ -107,7 +107,7 @@ curl -k -X PUT \
 }'
 
 printf '\n\nRead person to check if it was updated\n';
-curl -k \
+curl -k -X POST \
   "http://${HOST}:80/api/query/readAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
@@ -119,8 +119,8 @@ curl -k \
       }'
 
 printf '\n\nQuery all books using couchdb queries\n';
-curl -k \
-  "http://${HOST}/api/query/search?@request=eyJxdWVyeSI6eyJzZWxlY3RvciI6eyJuYW1lIjoiTWFyaWEifX19" \
+curl -k -X POST \
+  "http://${HOST}/api/query/search" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
