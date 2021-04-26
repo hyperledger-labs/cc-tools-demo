@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/goledgerdev/cc-tools-demo/chaincode/assettypes"
 	"github.com/goledgerdev/cc-tools-demo/chaincode/datatypes"
 	"github.com/goledgerdev/cc-tools-demo/chaincode/header"
 	"github.com/goledgerdev/cc-tools/assets"
@@ -19,7 +20,7 @@ func main() {
 	log.Printf("Starting chaincode %s version %s\n", header.Name, header.Version)
 	tx.InitTxList(txList)
 	assets.CustomDataTypes(datatypes.CustomDataTypes)
-	assets.InitAssetList(assetTypeList)
+	assets.InitAssetList(append(assetTypeList, assettypes.CustomAssets...))
 	if err := shim.Start(new(CCDemo)); err != nil {
 		fmt.Printf("Error starting chaincode: %s", err)
 	}
