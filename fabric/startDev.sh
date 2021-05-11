@@ -71,7 +71,7 @@ start_network() {
   # docker-compose -f docker-compose-ca.yaml up -d
   docker-compose pull
   docker-compose up -d
-  sleep 10
+  sleep 20
 
   printf '\n\nCreate channel - mainchannel\n'
   curl -k --request POST \
@@ -246,7 +246,7 @@ start_network() {
                   }
               ],
               \"policy\": {
-                  \"2-of\": [
+                  \"1-of\": [
                       {
                           \"signed-by\": 0
                       },
