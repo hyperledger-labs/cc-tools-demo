@@ -19,7 +19,11 @@ import (
 func main() {
 	log.Printf("Starting chaincode %s version %s\n", header.Name, header.Version)
 	tx.InitTxList(txList)
-	assets.CustomDataTypes(datatypes.CustomDataTypes)
+	err := assets.CustomDataTypes(datatypes.CustomDataTypes)
+	if err != nil {
+		fmt.Printf("Error injecting custom data types: %s", err)
+		return
+	}
 	assets.InitAssetList(append(assetTypeList, assettypes.CustomAssets...))
 	if err := shim.Start(new(CCDemo)); err != nil {
 		fmt.Printf("Error starting chaincode: %s", err)
