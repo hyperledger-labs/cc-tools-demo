@@ -71,7 +71,7 @@ start_network() {
   # docker-compose -f docker-compose-ca.yaml up -d
   docker-compose pull
   docker-compose up -d
-  sleep 20
+  sleep 30
 
   printf '\n\nCreate channel - mainchannel\n'
   curl -k --request POST \
