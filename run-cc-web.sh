@@ -6,4 +6,4 @@ else
   PORT=$1
 fi
 
-docker run -p 127.0.0.1:${PORT}:80/tcp --name cc-web${PORT} goledger/cc-webclient:latest
+docker run -p 0.0.0.0:${PORT}:80/tcp --name cc-web${PORT} goledger/cc-webclient:latest
