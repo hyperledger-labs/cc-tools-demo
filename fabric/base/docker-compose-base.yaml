@@ -127,7 +127,7 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
       - CORE_PEER_LOCALMSPID=org1MSP
     volumes:
-      - /var/run/:/host/var/run/
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp:/etc/hyperledger/fabric/msp
       - ../crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls:/etc/hyperledger/fabric/tls
       - peer1.org1.example.com:/var/hyperledger/production
@@ -148,7 +148,7 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
       - CORE_PEER_LOCALMSPID=org2MSP
     volumes:
-      - /var/run/:/host/var/run/
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
       - ../crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/fabric/tls
       - peer0.org2.example.com:/var/hyperledger/production
@@ -168,7 +168,7 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
       - CORE_PEER_LOCALMSPID=org2MSP
     volumes:
-      - /var/run/:/host/var/run/
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/etc/hyperledger/fabric/msp
       - ../crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/fabric/tls
       - peer1.org2.example.com:/var/hyperledger/production
@@ -188,7 +188,7 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org3.example.com:7051
       - CORE_PEER_LOCALMSPID=org3MSP
     volumes:
-      - /var/run/:/host/var/run/
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp:/etc/hyperledger/fabric/msp
       - ../crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls:/etc/hyperledger/fabric/tls
       - peer0.org3.example.com:/var/hyperledger/production
@@ -208,7 +208,7 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org3.example.com:7051
       - CORE_PEER_LOCALMSPID=org3MSP
     volumes:
-      - /var/run/:/host/var/run/
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../crypto-config/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/msp:/etc/hyperledger/fabric/msp
       - ../crypto-config/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/tls:/etc/hyperledger/fabric/tls
       - peer1.org3.example.com:/var/hyperledger/production
