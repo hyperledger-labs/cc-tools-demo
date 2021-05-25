@@ -6,7 +6,7 @@ import "github.com/goledgerdev/cc-tools/assets"
 var Book = assets.AssetType{
 	Tag:         "book",
 	Label:       "Book",
-	Description: "",
+	Description: "Book",
 
 	Props: []assets.AssetProp{
 		{

@@ -15,8 +15,8 @@ var UpdateBookTenant = tx.Transaction{
 	Tag:         "updateBookTenant",
 	Label:       "Update Book Tenant",
 	Description: "Change the tenant of a book",
-	Method:      "POST",
-	Callers:     []string{`org\dMSP`}, // Any orgs can call this transaction
+	Method:      "PUT",
+	Callers:     []string{`$org\dMSP`}, // Any orgs can call this transaction
 
 	Args: []tx.Argument{
 		{
@@ -63,8 +63,12 @@ var UpdateBookTenant = tx.Transaction{
 			return nil, errors.WrapError(err, "failed to get solicitacao from the ledger")
 		}
 
+		updatedTenantKey := make(map[string]interface{})
+		updatedTenantKey["@assetType"] = "person"
+		updatedTenantKey["@key"] = tenantMap["@key"]
+
 		// Update data
-		bookMap["tenant"] = tenantMap
+		bookMap["currentTenant"] = updatedTenantKey
 
 		bookMap, nerr := bookAsset.Update(stub, bookMap)
 		if nerr != nil {
