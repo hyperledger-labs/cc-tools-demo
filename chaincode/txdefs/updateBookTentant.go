@@ -72,7 +72,7 @@ var UpdateBookTenant = tx.Transaction{
 
 		bookMap, nerr := bookAsset.Update(stub, bookMap)
 		if nerr != nil {
-			return nil, errors.WrapError(err, "failed to update asset")
+			return nil, errors.WrapError(nerr, "failed to update asset")
 		}
 
 		// Marshal asset back to JSON format

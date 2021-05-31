@@ -25,7 +25,7 @@ var Person = assets.AssetType{
 			// Mandatory property
 			Required: true,
 			Tag:      "name",
-			Label:    "Asset Name",
+			Label:    "Name of the person",
 			DataType: "string",
 			// Validate funcion
 			Validate: func(name interface{}) error {
@@ -44,8 +44,8 @@ var Person = assets.AssetType{
 		},
 		{
 			// Property with default value
-			Tag:          "heigth",
-			Label:        "Person's heigth",
+			Tag:          "height",
+			Label:        "Person's height",
 			DefaultValue: 0,
 			DataType:     "number",
 		},
