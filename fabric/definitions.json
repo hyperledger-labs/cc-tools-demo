@@ -15,12 +15,6 @@
                 {
                   "role": {
                     "name": "member",
-                    "mspId": "org1MSP"
-                  }
-                },
-                {
-                  "role": {
-                    "name": "member",
                     "mspId": "org2MSP"
                   }
                 },
@@ -38,9 +32,6 @@
                   },
                   {
                     "signed-by": 1
-                  },
-                  {
-                    "signed-by": 2
                   }
                 ]
               }

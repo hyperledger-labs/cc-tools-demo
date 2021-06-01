@@ -49,7 +49,7 @@ var GetNumberOfBooksFromLibrary = tx.Transaction{
 			numberOfBooks = len(books)
 		}
 
-		var returnMap map[string]interface{}
+		returnMap := make(map[string]interface{})
 		returnMap["numberOfBooks"] = numberOfBooks
 
 		// Marshal asset back to JSON format
