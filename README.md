@@ -34,3 +34,7 @@ To apply chaincode changes, run `$ ./upgradeCC.sh <version>` with a version high
 To apply CC API changes, run `$ ./reloadCCAPI.sh`.
 
 To test transactions after starting all components, run `$ ./tryout.sh`.
+
+More documentation and details can be found at [https://goledger-cc-tools.readthedocs.io/en/latest/](https://goledger-cc-tools.readthedocs.io/en/latest/)
+
+For production deployment please consider using GoFabric - [https://gofabric.io](https://gofabric.io)

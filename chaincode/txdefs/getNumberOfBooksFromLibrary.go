@@ -34,13 +34,9 @@ var GetNumberOfBooksFromLibrary = tx.Transaction{
 		}
 
 		// Returns Library from channel
-		libraryAsset, err := libraryKey.Get(stub)
+		libraryMap, err := libraryKey.GetMap(stub)
 		if err != nil {
 			return nil, errors.WrapError(err, "failed to get asset from the ledger")
-		}
-		libraryMap := (map[string]interface{})(*libraryAsset)
-		if libraryMap["@assetType"].(string) != "library" {
-			return nil, errors.WrapError(err, "failed to get library from the ledger")
 		}
 
 		numberOfBooks := 0
