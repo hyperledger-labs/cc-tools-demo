@@ -53,15 +53,14 @@ curl -k -X POST \
     {
       "@assetType": "person",
       "name": "Maria",
-      "cpf": "318.207.920-48",
-      "readerScore": 70
+      "id": "318.207.920-48"
     }
   ]
 }'
 
 printf '\n\nCreate book\n'
 curl -k -X POST \
-  "http://${HOST}:80/api/invoke/createAsset" \
+  "http://${HOST}:980/api/invoke/createAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -71,7 +70,7 @@ curl -k -X POST \
       "title": "Meu Nome é Maria",
       "author": "Maria Viana",
       "currentTenant": {
-        "name": "Maria"
+        "id": "318.207.920-48"
       },
       "genres": ["biography", "non-fiction"],
       "published": "2019-05-06T22:12:41Z"
@@ -101,6 +100,7 @@ curl -k -X PUT \
   -d '{
     "update": {
       "@assetType": "person",
+      "id": "318.207.920-48",
       "name": "Maria",
       "readerScore": 75
     }
@@ -114,7 +114,7 @@ curl -k -X POST \
   -d '{
         "key": {
           "@assetType": "person",
-          "name": "Maria"
+          "id": "318.207.920-48"
         }
       }'
 
@@ -134,7 +134,7 @@ curl -k -X POST \
 
 printf '\n\nDelete book\n'
 curl -k -X DELETE \
-  "http://${HOST}/api/invoke/deleteAsset" \
+  "http://${HOST}:980/api/invoke/deleteAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -151,9 +151,9 @@ curl -k -X DELETE \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
-    "key": {
+  "key": {
     "@assetType": "person",
-    "name": "Maria"
+    "id": "318.207.920-48"
   }
 }'
 
@@ -165,7 +165,7 @@ curl -k \
   -d '{
         "key": {
           "@assetType": "person",
-          "name": "Maria"
+          "id": "318.207.920-48"
         }
       }'
 
