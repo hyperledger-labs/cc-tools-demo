@@ -130,6 +130,8 @@ github.com/goledgerdev/cc-tools v0.6.9 h1:ZTFD+SXFZVQespEWzsfIXQSB5z++Mhvvqq7OOb
 github.com/goledgerdev/cc-tools v0.6.9/go.mod h1:6PHNaqETTcB8YAhxMIzZgCQUKgo3knE7CVi8M1bnO5Q=
 github.com/goledgerdev/cc-tools v0.6.10 h1:8yYEwWBvVg35FSKeP9A+FoYqLi98HnYEvkMS6ksD7oY=
 github.com/goledgerdev/cc-tools v0.6.10/go.mod h1:6PHNaqETTcB8YAhxMIzZgCQUKgo3knE7CVi8M1bnO5Q=
+github.com/goledgerdev/cc-tools v0.7.0-rc.2 h1:bdL5U7TiAh3baTtjGUzDTcUv41N78Q44rMRXySV8Zqk=
+github.com/goledgerdev/cc-tools v0.7.0-rc.2/go.mod h1:6PHNaqETTcB8YAhxMIzZgCQUKgo3knE7CVi8M1bnO5Q=
 github.com/google/btree v0.0.0-20180813153112-4030bb1f1f0c/go.mod h1:lNA+9X1NB3Zf8V7Ke586lFgjr2dZNuvo3lPJSGZ5JPQ=
 github.com/google/btree v1.0.0/go.mod h1:lNA+9X1NB3Zf8V7Ke586lFgjr2dZNuvo3lPJSGZ5JPQ=
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
