@@ -248,9 +248,6 @@ start_network() {
               \"policy\": {
                   \"1-of\": [
                       {
-                          \"signed-by\": 0
-                      },
-                      {
                           \"signed-by\": 1
                       },
                       {

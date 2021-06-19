@@ -7,6 +7,11 @@ function trap_ctrlc ()
         printf "%s\n" "$CUSTOMASSETSFILE" > chaincode/assettypes/customAssets.go
     fi
 
+    if [[ ! -z "$COLLECTIONSFILE" ]]
+    then
+        printf "%s\n" "$COLLECTIONSFILE" > chaincode/collections.json
+    fi
+
     if [[ ! -z "$HEADERFILE" ]]
     then
         printf "%s\n" "$HEADERFILE" > chaincode/header/header.go
@@ -20,6 +25,7 @@ cd chaincode && go mod vendor && cd ..
 
 # Copy customAssets.go content
 CUSTOMASSETSFILE=$(cat chaincode/assettypes/customAssets.go)
+COLLECTIONSFILE=$(cat chaincode/collections.json)
 HEADERFILE=$(cat chaincode/header/header.go)
 
 # Prevent loss of the customAssets.go file
@@ -27,6 +33,7 @@ trap "trap_ctrlc" 2
 
 # Delete customAssets.go from tree before compressing
 rm chaincode/assettypes/customAssets.go
+rm chaincode/collections.json
 rm chaincode/header/header.go
 
 # Compress file
@@ -34,6 +41,7 @@ tar -czf cc-tools-demo.tar.gz chaincode
 
 # Restore customAssets.go file
 printf "%s\n" "$CUSTOMASSETSFILE" > chaincode/assettypes/customAssets.go
+printf "%s\n" "$COLLECTIONSFILE" > chaincode/collections.json
 printf "%s\n" "$HEADERFILE" > chaincode/header/header.go
 
 # Clear trap
