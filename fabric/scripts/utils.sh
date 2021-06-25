@@ -51,7 +51,7 @@ setGlobals() {
     fi
 
   elif [ $ORG -eq 3 ]; then
-    CORE_PEER_LOCALMSPID="Org3MSP"
+    CORE_PEER_LOCALMSPID="org3MSP"
     CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
     CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
     if [ $PEER -eq 0 ]; then
@@ -160,7 +160,7 @@ upgradeChaincode() {
   setGlobals $PEER $ORG
 
   set -x
-  peer chaincode upgrade -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 2.0 -c '{"Args":["init","a","90","b","210"]}' -P "AND ('org1MSP.peer','org2MSP.peer','Org3MSP.peer')"
+  peer chaincode upgrade -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 2.0 -c '{"Args":["init","a","90","b","210"]}' -P "AND ('org1MSP.peer','org2MSP.peer','org3MSP.peer')"
   res=$?
   set +x
   cat log.txt
