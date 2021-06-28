@@ -28,7 +28,7 @@ else
   sed "s/PORT/80/g" template/docker-compose-org3-template.yaml > docker-compose-org3.yaml
 fi
 
-docker-compose -f docker-compose-org1.yaml -f docker-compose-org2.yaml -f docker-compose-org3.yaml down --volumes
+docker-compose -f docker-compose-org1.yaml -f docker-compose-org2.yaml -f docker-compose-org3.yaml -f docker-compose-temp.yaml down --volumes
 
 cd scripts
 if [ "$HTTPS" == true ]; then
@@ -47,6 +47,7 @@ cd ..
 
 # Start API
 if [ "$GENERATE_CERT" != true ]; then
+  docker-compose -f docker-compose-temp.yaml -p intermediate-container up >> /dev/null
   docker-compose -f docker-compose-org1.yaml -p ccapi.org1.example.com up -d
   docker-compose -f docker-compose-org2.yaml -p ccapi.org2.example.com up -d
   docker-compose -f docker-compose-org3.yaml -p ccapi.org3.example.com up -d
