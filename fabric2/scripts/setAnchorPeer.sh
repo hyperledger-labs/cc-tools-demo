@@ -27,7 +27,7 @@ createAnchorPeerUpdate() {
     HOST="peer0.org3.example.com"
     PORT=11051
   else
-    errorln "Org${ORG} unknown"
+    errorln "org${ORG} unknown"
   fi
 
   set -x

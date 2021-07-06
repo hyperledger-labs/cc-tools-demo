@@ -97,6 +97,33 @@ Organizations:
             Endorsement:
                 Type: Signature
                 Rule: "OR('org2MSP.peer')"
+    
+    - &org3
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: org3MSP
+
+        # ID to load the MSP definition as
+        ID: org3MSP
+
+        MSPDir: ../organizations/peerOrganizations/org3.example.com/msp
+
+        # Policies defines the set of policies at this level of the config tree
+        # For organization policies, their canonical path is usually
+        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('org3MSP.admin', 'org3MSP.peer', 'org3MSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('org3MSP.admin', 'org3MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('org3MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('org3MSP.peer')"
 
 ################################################################################
 #
@@ -314,6 +341,7 @@ Profiles:
                 Organizations:
                     - *org1
                     - *org2
+                    - *org3
     TwoOrgsChannel:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
@@ -322,5 +350,6 @@ Profiles:
             Organizations:
                 - *org1
                 - *org2
+                - *org3
             Capabilities:
                 <<: *ApplicationCapabilities
