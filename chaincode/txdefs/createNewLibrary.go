@@ -28,10 +28,7 @@ var CreateNewLibrary = tx.Transaction{
 		},
 	},
 	Routine: func(stub *sw.StubWrapper, req map[string]interface{}) ([]byte, errors.ICCError) {
-		name, ok := req["name"].(string)
-		if !ok {
-			return nil, errors.WrapError(nil, "Parameter name must be string")
-		}
+		name, _ := req["name"].(string)
 
 		libraryMap := make(map[string]interface{})
 		libraryMap["@assetType"] = "library"

@@ -1,0 +1,6 @@
+{
+    "go.testFlags": [
+        "-v",
+        "-coverpkg=github.com/goledgerdev/cc-tools-demo/chaincode/..."
+    ]
+}
