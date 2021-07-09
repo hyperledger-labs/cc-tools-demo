@@ -159,7 +159,7 @@ curl -k -X DELETE \
 
 printf '\n\nRead person History\n';
 curl -k \
-  "http://${HOST}/api/query/readAssetHistory?@request=eyJrZXkiOnsiQGFzc2V0VHlwZSI6InNhbXBsZVBlcnNvbiIsIm5hbWUiOiJNYXJpYSJ9fQ==" \
+  "http://${HOST}/api/query/readAssetHistory" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{

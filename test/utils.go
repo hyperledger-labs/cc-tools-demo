@@ -40,12 +40,12 @@ func PostAndVerify(url string, body interface{}, expectedStatus int, expectedRes
 	if err != nil {
 		return err
 	}
-	if resp.StatusCode != expectedStatus {
-		return fmt.Errorf("wrong status. expected: %d received: %d", expectedStatus, resp.StatusCode)
-	}
 	resBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
+	}
+	if resp.StatusCode != expectedStatus {
+		return fmt.Errorf("wrong status. expected: %d received: %d\n%s", expectedStatus, resp.StatusCode, string(resBody))
 	}
 	var receivedResponse interface{}
 	err = json.Unmarshal(resBody, &receivedResponse)
@@ -56,4 +56,12 @@ func PostAndVerify(url string, body interface{}, expectedStatus int, expectedRes
 		return fmt.Errorf("unexpected response\n\nexpected: %#v\n\nreceived: %#v", expectedResponse, receivedResponse)
 	}
 	return nil
+}
+
+func fail() {
+	fmt.Println("FAIL")
+}
+
+func pass() {
+	fmt.Println("PASS")
 }
