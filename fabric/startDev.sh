@@ -145,39 +145,6 @@ start_network() {
     -H 'magicnumber: dfff482c-1df5-42ad-95d4-d8d72b2398be' \
     --form anchorstx=@./channel-artifacts/org3MSPanchors.tx
 
-  printf '\n\nInstall network chaincode on org1\n'
-  curl -k -X GET \
-    https://localhost:3000/api/v1/network/channel/installNetChaincode?channelName=mainchannel \
-    -H 'Content-Type: application/json' \
-    --header 'gofabricversion: 0.9.0' \
-    -H 'magicnumber: dfff482c-1df5-42ad-95d4-d8d72b2398be' \
-
-  printf '\n\nInstall network chaincode on org2\n'
-  curl -k -X GET \
-    https://localhost:3001/api/v1/network/channel/installNetChaincode?channelName=mainchannel \
-    -H 'Content-Type: application/json' \
-    --header 'gofabricversion: 0.9.0' \
-    -H 'magicnumber: dfff482c-1df5-42ad-95d4-d8d72b2398be' \
-
-  printf '\n\nInstall network chaincode on org3\n'
-  curl -k -X GET \
-    https://localhost:3002/api/v1/network/channel/installNetChaincode?channelName=mainchannel \
-    -H 'Content-Type: application/json' \
-    --header 'gofabricversion: 0.9.0' \
-    -H 'magicnumber: dfff482c-1df5-42ad-95d4-d8d72b2398be' \
-
-  # Body from definitions.json
-  printf '\n\nInstantiate network chaincode\n'
-  DEFINITIONS=$(cat definitions.json)
-  curl -k -X POST \
-    https://localhost:3000/api/v1/network/channel/instantiateNetChaincode?channelName=mainchannel \
-    -H 'Content-Type: application/json' \
-    --header 'gofabricversion: 0.9.0' \
-    -H 'magicnumber: dfff482c-1df5-42ad-95d4-d8d72b2398be' \
-    -d "${DEFINITIONS}"
-
-  sleep 30
-
   printf '\n\nInstall chaincode on org1'
   curl -sS -k -X POST \
     https://localhost:3000/api/v1/network/channel/chaincode/install \
@@ -185,10 +152,10 @@ start_network() {
     --header 'gofabricversion: 0.9.0' \
     -H 'magicnumber: dfff482c-1df5-42ad-95d4-d8d72b2398be' \
     -d '{
-		"chaincode":        "cc-tools-demo",
-		"channelName":      "mainchannel",
-		"chaincodeVersion": "0.1"
-	}' > /dev/null
+          "chaincode":        "cc-tools-demo",
+          "channelName":      "mainchannel",
+          "chaincodeVersion": "0.1"
+        }' > /dev/null
 
   printf '\n\nInstall chaincode on org2'
   curl -sS -k -X POST \
@@ -197,10 +164,10 @@ start_network() {
     --header 'gofabricversion: 0.9.0' \
     -H 'magicnumber: dfff482c-1df5-42ad-95d4-d8d72b2398be' \
     -d '{
-		"chaincode":        "cc-tools-demo",
-		"channelName":      "mainchannel",
-		"chaincodeVersion": "0.1"
-	}' > /dev/null
+          "chaincode":        "cc-tools-demo",
+          "channelName":      "mainchannel",
+          "chaincodeVersion": "0.1"
+        }' > /dev/null
 
     printf '\n\nInstall chaincode on org3'
   curl -sS -k -X POST \
