@@ -18,7 +18,16 @@ import (
 // main function starts up the chaincode in the container during instantiate
 func main() {
 	log.Printf("Starting chaincode %s version %s\n", header.Name, header.Version)
+
+	tx.InitHeader(tx.Header{
+		Name:    header.Name,
+		Version: header.Version,
+		Colors:  header.Colors,
+		Title:   header.Title,
+	})
+
 	tx.InitTxList(txList)
+
 	err := assets.CustomDataTypes(datatypes.CustomDataTypes)
 	if err != nil {
 		fmt.Printf("Error injecting custom data types: %s", err)

@@ -5,8 +5,8 @@ import (
 
 	"github.com/goledgerdev/cc-tools/assets"
 	"github.com/goledgerdev/cc-tools/errors"
+	sw "github.com/goledgerdev/cc-tools/stubwrapper"
 	tx "github.com/goledgerdev/cc-tools/transactions"
-	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
 // Updates the tenant of a Book
@@ -23,17 +23,17 @@ var UpdateBookTenant = tx.Transaction{
 			Tag:         "book",
 			Label:       "Book",
 			Description: "Book",
-			DataType:    "book",
+			DataType:    "->book",
 			Required:    true,
 		},
 		{
 			Tag:         "tenant",
 			Label:       "tenant",
 			Description: "New tenant of the book",
-			DataType:    "person",
+			DataType:    "->person",
 		},
 	},
-	Routine: func(stub shim.ChaincodeStubInterface, req map[string]interface{}) ([]byte, errors.ICCError) {
+	Routine: func(stub *sw.StubWrapper, req map[string]interface{}) ([]byte, errors.ICCError) {
 		bookKey, ok := req["book"].(assets.Key)
 		if !ok {
 			return nil, errors.WrapError(nil, "Parameter book must be an asset")
@@ -70,9 +70,9 @@ var UpdateBookTenant = tx.Transaction{
 		// Update data
 		bookMap["currentTenant"] = updatedTenantKey
 
-		bookMap, nerr := bookAsset.Update(stub, bookMap)
-		if nerr != nil {
-			return nil, errors.WrapError(nerr, "failed to update asset")
+		bookMap, err = bookAsset.Update(stub, bookMap)
+		if err != nil {
+			return nil, errors.WrapError(err, "failed to update asset")
 		}
 
 		// Marshal asset back to JSON format

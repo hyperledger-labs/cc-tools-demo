@@ -5,8 +5,8 @@ import (
 
 	"github.com/goledgerdev/cc-tools/assets"
 	"github.com/goledgerdev/cc-tools/errors"
+	sw "github.com/goledgerdev/cc-tools/stubwrapper"
 	tx "github.com/goledgerdev/cc-tools/transactions"
-	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
 // Return the number of books of a library
@@ -23,11 +23,11 @@ var GetNumberOfBooksFromLibrary = tx.Transaction{
 			Tag:         "library",
 			Label:       "Library",
 			Description: "Library",
-			DataType:    "library",
+			DataType:    "->library",
 			Required:    true,
 		},
 	},
-	Routine: func(stub shim.ChaincodeStubInterface, req map[string]interface{}) ([]byte, errors.ICCError) {
+	Routine: func(stub *sw.StubWrapper, req map[string]interface{}) ([]byte, errors.ICCError) {
 		libraryKey, ok := req["library"].(assets.Key)
 		if !ok {
 			return nil, errors.WrapError(nil, "Parameter library must be an asset")
