@@ -49,9 +49,6 @@ var UpdateBookTenant = tx.Transaction{
 			return nil, errors.WrapError(err, "failed to get asset from the ledger")
 		}
 		bookMap := (map[string]interface{})(*bookAsset)
-		if bookMap["@assetType"].(string) != "book" {
-			return nil, errors.WrapError(err, "failed to get solicitacao from the ledger")
-		}
 
 		// Returns person from channel
 		tenantAsset, err := tenantKey.Get(stub)
@@ -59,9 +56,6 @@ var UpdateBookTenant = tx.Transaction{
 			return nil, errors.WrapError(err, "failed to get asset from the ledger")
 		}
 		tenantMap := (map[string]interface{})(*tenantAsset)
-		if tenantMap["@assetType"].(string) != "person" {
-			return nil, errors.WrapError(err, "failed to get solicitacao from the ledger")
-		}
 
 		updatedTenantKey := make(map[string]interface{})
 		updatedTenantKey["@assetType"] = "person"
@@ -76,7 +70,7 @@ var UpdateBookTenant = tx.Transaction{
 		}
 
 		// Marshal asset back to JSON format
-		bookJSON, nerr := json.Marshal(bookAsset)
+		bookJSON, nerr := json.Marshal(bookMap)
 		if nerr != nil {
 			return nil, errors.WrapError(err, "failed to marshal response")
 		}

@@ -15,10 +15,7 @@ import (
 	pb "github.com/hyperledger/fabric/protos/peer"
 )
 
-// main function starts up the chaincode in the container during instantiate
-func main() {
-	log.Printf("Starting chaincode %s version %s\n", header.Name, header.Version)
-
+func SetupCC() error {
 	tx.InitHeader(tx.Header{
 		Name:    header.Name,
 		Version: header.Version,
@@ -31,10 +28,21 @@ func main() {
 	err := assets.CustomDataTypes(datatypes.CustomDataTypes)
 	if err != nil {
 		fmt.Printf("Error injecting custom data types: %s", err)
-		return
+		return err
 	}
 	assets.InitAssetList(append(assetTypeList, assettypes.CustomAssets...))
-	if err := shim.Start(new(CCDemo)); err != nil {
+	return nil
+}
+
+// main function starts up the chaincode in the container during instantiate
+func main() {
+	log.Printf("Starting chaincode %s version %s\n", header.Name, header.Version)
+
+	err := SetupCC()
+	if err != nil {
+		return
+	}
+	if err = shim.Start(new(CCDemo)); err != nil {
 		fmt.Printf("Error starting chaincode: %s", err)
 	}
 }

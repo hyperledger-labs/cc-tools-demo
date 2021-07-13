@@ -28,10 +28,7 @@ var GetNumberOfBooksFromLibrary = tx.Transaction{
 		},
 	},
 	Routine: func(stub *sw.StubWrapper, req map[string]interface{}) ([]byte, errors.ICCError) {
-		libraryKey, ok := req["library"].(assets.Key)
-		if !ok {
-			return nil, errors.WrapError(nil, "Parameter library must be an asset")
-		}
+		libraryKey, _ := req["library"].(assets.Key)
 
 		// Returns Library from channel
 		libraryMap, err := libraryKey.GetMap(stub)
