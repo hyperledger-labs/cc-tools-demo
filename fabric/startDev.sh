@@ -256,8 +256,11 @@ case "$1" in
     exit 1
     ;;
   *)
-    generate
-    create_artifacts
+    if [ ! -f "channel-artifacts/channel.tx" ]; then
+      echo "certs not found. generating certs"
+      generate
+      create_artifacts
+    fi
     start_network
     ;;
 esac
