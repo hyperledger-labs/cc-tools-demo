@@ -48,13 +48,7 @@ rm -f go1.15.12.linux-amd64.tar.gz nodesource_setup.sh get-docker.sh
 
 cd $HOME
 
-printf "\n\nInstalling Hyperledger Fabric binaries and images\n"
-
-curl -sSL http://bit.ly/2ysbOFE | bash -s -- 1.4.12 1.4.9 0.4.22
-
 printf "\n\nCustomizing enviroment variables\n"
-
-echo "export PATH=$PATH:/opt/go/bin:$HOME/fabric-samples/bin" >> ~/.bashrc
 
 echo "export GOPATH=$HOME/go" >> ~/.bashrc
 

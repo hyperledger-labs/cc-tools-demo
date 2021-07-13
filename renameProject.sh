@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # CAUTION: this script will replace every occurrence of the word
-# `cc-tools-test` in the project folder with whatever argument
+# `cc-tools-demo` in the project folder with whatever argument
 # you pass. Be very careful.
 
 if [ $# -lt 1 ] ; then
@@ -9,4 +9,4 @@ if [ $# -lt 1 ] ; then
   exit
 fi
 
-grep -rl cc-tools-test . --exclude-dir={.git,node_modules} | xargs sed -i s/cc-tools-test/$1/g
+grep -rl cc-tools-demo . --exclude-dir={.git,node_modules} | xargs sed -i s/cc-tools-demo/$1/g

@@ -241,6 +241,7 @@ create_artifacts() {
 
 export IMAGE_TAG=1.4
 export COMPOSE_PROJECT_NAME=fabric
+export PATH=$PWD/bin:$PATH
 
 ###############################################
 ######### Script starts here ##################
@@ -257,7 +258,7 @@ case "$1" in
     ;;
   *)
     if [ ! -f "channel-artifacts/channel.tx" ]; then
-      echo "certs not found. generating certs"
+      echo "Certs not found. Generating certs."
       generate
       create_artifacts
     fi
