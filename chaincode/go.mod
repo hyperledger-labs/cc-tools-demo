@@ -5,6 +5,7 @@ go 1.14
 // replace github.com/goledgerdev/cc-tools => ../../cc-tools
 
 require (
-	github.com/goledgerdev/cc-tools v0.7.1-0.20210713181304-a6182486dcba
-	github.com/hyperledger/fabric v1.4.8
+	github.com/goledgerdev/cc-tools v0.7.1-0.20210714205451-240541ab9436
+	github.com/hyperledger/fabric-chaincode-go v0.0.0-20210603161043-af0e3898842a
+	github.com/hyperledger/fabric-protos-go v0.0.0-20210528200356-82833ecdac31
 )

@@ -11,8 +11,8 @@ import (
 	"github.com/goledgerdev/cc-tools/assets"
 	tx "github.com/goledgerdev/cc-tools/transactions"
 
-	"github.com/hyperledger/fabric/core/chaincode/shim"
-	pb "github.com/hyperledger/fabric/protos/peer"
+	"github.com/hyperledger/fabric-chaincode-go/shim"
+	pb "github.com/hyperledger/fabric-protos-go/peer"
 )
 
 func SetupCC() error {

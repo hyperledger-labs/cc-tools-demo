@@ -6,11 +6,11 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/hyperledger/fabric-chaincode-go/shimtest"
 )
 
 func TestGetNumberOfBooksFromLibrary(t *testing.T) {
-	stub := shim.NewMockStub("org2MSP", new(CCDemo))
+	stub := shimtest.NewMockStub("org2MSP", new(CCDemo))
 
 	// Setup state
 	setupBook := map[string]interface{}{

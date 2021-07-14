@@ -7,11 +7,11 @@ import (
 	"testing"
 
 	cc "github.com/goledgerdev/cc-tools-demo/chaincode"
-	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/hyperledger/fabric-chaincode-go/shimtest"
 )
 
 func TestCreateNewLibrary(t *testing.T) {
-	stub := shim.NewMockStub("org3MSP", new(cc.CCDemo))
+	stub := shimtest.NewMockStub("org3MSP", new(cc.CCDemo))
 
 	expectedResponse := map[string]interface{}{
 		"@key":         "library:3cab201f-9e2b-579d-b7b2-72297ed17f49",

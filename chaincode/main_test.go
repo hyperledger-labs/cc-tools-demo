@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/hyperledger/fabric-chaincode-go/shimtest"
 )
 
 func TestMain(m *testing.M) {
@@ -17,7 +17,7 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	stub := shim.NewMockStub("org1MSP", new(CCDemo))
+	stub := shimtest.NewMockStub("org1MSP", new(CCDemo))
 	res := stub.MockInit("testInit", [][]byte{[]byte("init")})
 	if res.GetStatus() != 200 {
 		log.Println(res.GetMessage())

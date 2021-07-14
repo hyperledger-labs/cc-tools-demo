@@ -6,11 +6,11 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/hyperledger/fabric-chaincode-go/shimtest"
 )
 
 func TestUpdateBookTenant(t *testing.T) {
-	stub := shim.NewMockStub("org1MSP", new(CCDemo))
+	stub := shimtest.NewMockStub("org1MSP", new(CCDemo))
 
 	// State setup
 	setupPerson := map[string]interface{}{
