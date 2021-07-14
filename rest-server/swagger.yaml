@@ -166,7 +166,7 @@ paths:
                   asset:
                     - '@assetType': person
                       name: 'Maria'
-                      cpf: '318.207.920-48'
+                      id: '318.207.920-48'
       responses:
         '200':
           description: OK
@@ -196,7 +196,35 @@ paths:
                 value:
                   key:
                     '@assetType': person
-                    name: 'Maria'
+                    id: '318.207.920-48'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: O ativo não foi encontrado.
+        5XX:
+          description: Internal error
+
+  /query/readAssetHistory:
+    post:
+      tags:
+        - Operações Básicas
+      summary: 'Obtém o histórico de um ativo da blockchain a partir de sua chave primária.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: object
+            examples:
+              person:
+                summary: person
+                value:
+                  key:
+                    '@assetType': person
+                    id: '318.207.920-48'
       responses:
         '200':
           description: OK
@@ -270,13 +298,13 @@ paths:
                 '@assetType':
                   type: string
             examples:
-              updateReaderScore:
-                summary: 'Change person readerScore'
+              updateHeight:
+                summary: 'Change person height'
                 value:
                   update:
                     '@assetType': 'person'
                     name: 'Maria'
-                    readerScore: 70
+                    height: 1.66
         description: Precisa ter a chave primária do ativo e os campos a serem atualizados.
         required: true
       responses:
@@ -307,8 +335,8 @@ paths:
                 summary: 'Delete person with name "Maria"'
                 value:
                   key:
-                    '@assetType': 'person'
-                    name: 'Maria'
+                    '@assetType': person
+                    id: '318.207.920-48'
         description: Deve conter o campo que é chave do ativo definido pelo @assetType
         required: true
       responses:
