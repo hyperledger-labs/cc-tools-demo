@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/hyperledger/fabric-chaincode-go/shimtest"
+	"github.com/goledgerdev/cc-tools/mock"
 )
 
 func TestMain(m *testing.M) {
@@ -17,7 +17,7 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	stub := shimtest.NewMockStub("org1MSP", new(CCDemo))
+	stub := mock.NewMockStub("org1MSP", new(CCDemo))
 	res := stub.MockInit("testInit", [][]byte{[]byte("init")})
 	if res.GetStatus() != 200 {
 		log.Println(res.GetMessage())

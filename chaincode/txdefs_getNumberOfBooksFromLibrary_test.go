@@ -6,11 +6,11 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/hyperledger/fabric-chaincode-go/shimtest"
+	"github.com/goledgerdev/cc-tools/mock"
 )
 
 func TestGetNumberOfBooksFromLibrary(t *testing.T) {
-	stub := shimtest.NewMockStub("org2MSP", new(CCDemo))
+	stub := mock.NewMockStub("org2MSP", new(CCDemo))
 
 	// Setup state
 	setupBook := map[string]interface{}{

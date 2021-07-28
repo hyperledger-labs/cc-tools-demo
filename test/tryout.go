@@ -14,7 +14,7 @@ func tryout() []error {
 		"http://localhost:80/api/query/getHeader",
 		200,
 		map[string]interface{}{
-			"ccToolsVersion": "v0.7.0",
+			"ccToolsVersion": "v0.7.1",
 			"colors": []interface{}{
 				"#4267B2",
 				"#34495E",
