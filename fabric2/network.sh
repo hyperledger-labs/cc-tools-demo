@@ -411,7 +411,7 @@ COMPOSE_FILE_ORG3=addOrg3/docker/docker-compose-org3.yaml
 # chaincode language defaults to "NA"
 CC_SRC_LANGUAGE="NA"
 # Chaincode version
-CC_VERSION="1.0"
+CC_VERSION="0.1"
 # Chaincode definition sequence
 CC_SEQUENCE=1
 # default image tag
