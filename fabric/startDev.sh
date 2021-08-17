@@ -145,7 +145,7 @@ start_network() {
     -H 'magicnumber: dfff482c-1df5-42ad-95d4-d8d72b2398be' \
     --form anchorstx=@./channel-artifacts/org3MSPanchors.tx
 
-  printf '\n\nInstall chaincode on org1'
+  printf '\n\nInstall chaincode on org1\n'
   curl -sS -k -X POST \
     https://localhost:3000/api/v1/network/channel/chaincode/install \
     -H 'Content-Type: application/json' \
@@ -155,9 +155,9 @@ start_network() {
           "chaincode":        "cc-tools-demo",
           "channelName":      "mainchannel",
           "chaincodeVersion": "0.1"
-        }' > /dev/null
+        }'
 
-  printf '\n\nInstall chaincode on org2'
+  printf '\n\nInstall chaincode on org2\n'
   curl -sS -k -X POST \
     https://localhost:3001/api/v1/network/channel/chaincode/install \
     -H 'Content-Type: application/json' \
@@ -167,9 +167,9 @@ start_network() {
           "chaincode":        "cc-tools-demo",
           "channelName":      "mainchannel",
           "chaincodeVersion": "0.1"
-        }' > /dev/null
+        }'
 
-    printf '\n\nInstall chaincode on org3'
+    printf '\n\nInstall chaincode on org3\n'
   curl -sS -k -X POST \
     https://localhost:3002/api/v1/network/channel/chaincode/install \
     -H 'Content-Type: application/json' \
@@ -179,7 +179,7 @@ start_network() {
 		"chaincode":        "cc-tools-demo",
 		"channelName":      "mainchannel",
 		"chaincodeVersion": "0.1"
-	}' > /dev/null
+	}'
 
   printf '\n\nInstantiate chaincode\n'
   curl -k -X POST \
