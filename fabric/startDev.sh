@@ -241,7 +241,9 @@ create_artifacts() {
 
 export IMAGE_TAG=1.4
 export COMPOSE_PROJECT_NAME=fabric
-export PATH=$PWD/bin:$PATH
+if [ "$OSTYPE" == "linux-gnu" ] ; then 
+  export PATH=$PWD/bin:$PATH
+fi 
 
 ###############################################
 ######### Script starts here ##################
