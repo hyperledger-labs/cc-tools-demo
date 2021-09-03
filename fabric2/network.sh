@@ -12,7 +12,9 @@
 #
 # prepending $PWD/../bin to PATH to ensure we are picking up the correct binaries
 # this may be commented out to resolve installed version of tools if desired
-export PATH=${PWD}/bin:$PATH
+if [ "$OSTYPE" == "linux-gnu" ] ; then 
+  export PATH=$PWD/bin:$PATH
+fi
 export FABRIC_CFG_PATH=${PWD}/configtx
 export VERBOSE=false
 # export COMPOSE_PROJECT_NAME=net

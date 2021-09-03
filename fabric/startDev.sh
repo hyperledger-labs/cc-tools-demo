@@ -243,7 +243,7 @@ export IMAGE_TAG=1.4
 export COMPOSE_PROJECT_NAME=fabric
 if [ "$OSTYPE" == "linux-gnu" ] ; then 
   export PATH=$PWD/bin:$PATH
-fi 
+fi
 
 ###############################################
 ######### Script starts here ##################
