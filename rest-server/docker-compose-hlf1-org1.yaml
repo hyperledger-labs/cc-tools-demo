@@ -8,16 +8,16 @@ services:
   ccapi.org1.example.com:
     image: node:carbon
     ports:
-      - 8PORT:PORT
-      - PORT:PORT
+      - 880:80
+      - 80:80
     command: bash -c 'npm start; sleep infinity'
     volumes:
       - ./:/rest-server
-      - ../fabric2/organizations/rest-certs/org1.example.com:/certs
+      - ../fabric/crypto-config/rest-certs/org1.example.com:/certs
     env_file:
       - .env
     environment:
-      - CONFIG_SDK_FILE=configsdk2-org1.yaml
+      - CONFIG_SDK_FILE=configsdk-hlf1-org1.yaml
       - DOCKER=1
       - CHANNEL=mainchannel
       - CCNAME=cc-tools-demo

@@ -6,6 +6,5 @@ fabric/ca
 chaincode/vendor/*
 rest-server/data/*
 rest-server/dist/*
-rest-server/docker-compose-org*
 cc-tools-demo.tar.gz
 package-lock.json
