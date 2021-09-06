@@ -11,13 +11,27 @@ debug('ts-express:server');
 let server;
 let port;
 
-if (process.env.HTTPS === 'true') {
-  const key = process.env.KEYFILE || `/rest-server/data/certbot/conf/live/${process.env.DOMAIN}/privkey.pem`;
-  const cert = process.env.CERTFILE || `/rest-server/data/certbot/conf/live/${process.env.DOMAIN}/fullchain.pem`;
+const privKeyPath = `/rest-server/https/privkey.pem`
+const pubKeyPath = `/rest-server/https/fullchain.pem`
 
+const privKey = fs.existsSync(privKeyPath);
+const pubKey = fs.existsSync(pubKeyPath);
+const useHTTPS = privKey && pubKey;
+
+if (!useHTTPS) {
+  console.log("HTTPS disabled")
+  if (!privKey) {
+    console.log("Missing privkey.pem")
+  }
+  if (!pubKey) {
+    console.log("Missing fullchain.pem")
+  }
+}
+
+if (useHTTPS) {
   const serverOptions = {
-    key: fs.readFileSync(key),
-    cert: fs.readFileSync(cert),
+    key: fs.readFileSync(privKeyPath),
+    cert: fs.readFileSync(pubKeyPath),
   };
 
   port = normalizePort(process.env.PORT || 443);

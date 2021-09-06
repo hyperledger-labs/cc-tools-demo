@@ -14,8 +14,6 @@ services:
     volumes:
       - ./:/rest-server
       - ../fabric/crypto-config/rest-certs/org1.example.com:/certs
-    env_file:
-      - .env
     environment:
       - CONFIG_SDK_FILE=configsdk-hlf1-org1.yaml
       - DOCKER=1

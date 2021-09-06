@@ -13,8 +13,6 @@ services:
     volumes:
       - ./:/rest-server
       - ../fabric2/organizations/rest-certs/org2.example.com:/certs
-    env_file:
-      - .env
     environment:
       - CONFIG_SDK_FILE=configsdk-hlf2-org2.yaml
       - DOCKER=1

@@ -7,13 +7,9 @@ networks:
 services:
   intermediate-container:
     image: node:carbon
-    ports:
-      - 1180:80
     command: bash -c 'npm install'
     volumes:
       - ./:/rest-server
-    env_file:
-      - .env
     environment:
       - DOCKER=1
       - CHANNEL=mainchannel
