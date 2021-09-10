@@ -11,7 +11,7 @@ func tryout() []error {
 	// Get Header
 	fmt.Print("Get Header... ")
 	err = GetAndVerify(
-		"http://localhost:80/api/query/getHeader",
+		"https://localhost/mainchannel/org1/api/query/getHeader",
 		200,
 		map[string]interface{}{
 			"ccToolsVersion": "v0.7.1",
@@ -35,7 +35,7 @@ func tryout() []error {
 	// Get Transactions
 	fmt.Print("Get Transactions... ")
 	err = GetAndVerify(
-		"http://localhost:80/api/query/getTx",
+		"https://localhost/mainchannel/org1/api/query/getTx",
 		200,
 		[]interface{}{
 			map[string]interface{}{
@@ -117,7 +117,7 @@ func tryout() []error {
 	// Get CreateAsset definition
 	fmt.Print("Get CreateAsset definition... ")
 	err = PostAndVerify(
-		"http://localhost:80/api/query/getTx",
+		"https://localhost/mainchannel/org1/api/query/getTx",
 		map[string]interface{}{
 			"txName": "createAsset",
 		},
@@ -150,7 +150,7 @@ func tryout() []error {
 	// Get Asset Types
 	fmt.Print("Get Asset Types... ")
 	err = GetAndVerify(
-		"http://localhost:80/api/query/getSchema",
+		"https://localhost/mainchannel/org1/api/query/getSchema",
 		200,
 		[]interface{}{
 			map[string]interface{}{
@@ -192,7 +192,7 @@ func tryout() []error {
 	// Get Person asset type definition
 	fmt.Print("Get Person asset type definition... ")
 	err = PostAndVerify(
-		"http://localhost:80/api/query/getSchema",
+		"https://localhost/mainchannel/org1/api/query/getSchema",
 		map[string]interface{}{
 			"assetType": "person",
 		},
@@ -257,7 +257,7 @@ func tryout() []error {
 	// Create Person
 	fmt.Print("Create Person... ")
 	err = PostAndVerify(
-		"http://localhost:80/api/invoke/createAsset",
+		"https://localhost/mainchannel/org1/api/invoke/createAsset",
 		map[string]interface{}{
 			"asset": []map[string]interface{}{
 				{
@@ -289,7 +289,7 @@ func tryout() []error {
 	// Create Book
 	fmt.Print("Create Book... ")
 	err = PostAndVerify(
-		"http://localhost:980/api/invoke/createAsset",
+		"https://localhost/mainchannel/org2/api/invoke/createAsset",
 		map[string]interface{}{
 			"asset": []map[string]interface{}{
 				{
@@ -337,7 +337,7 @@ func tryout() []error {
 	// Read Book
 	fmt.Print("Read Book... ")
 	err = PostAndVerify(
-		"http://localhost:80/api/query/readAsset",
+		"https://localhost/mainchannel/org1/api/query/readAsset",
 		map[string]interface{}{
 			"key": map[string]interface{}{
 				"@assetType": "book",
@@ -379,7 +379,7 @@ func tryout() []error {
 	// Update Person
 	fmt.Print("Update Person... ")
 	err = PostAndVerify(
-		"http://localhost:80/api/invoke/updateAsset",
+		"https://localhost/mainchannel/org1/api/invoke/updateAsset",
 		map[string]interface{}{
 			"update": map[string]interface{}{
 				"@assetType": "person",
@@ -408,7 +408,7 @@ func tryout() []error {
 	// Check if person was updated
 	fmt.Print("Check if person was updated... ")
 	err = PostAndVerify(
-		"http://localhost:80/api/query/readAsset",
+		"https://localhost/mainchannel/org1/api/query/readAsset",
 		map[string]interface{}{
 			"key": map[string]interface{}{
 				"@assetType": "person",
@@ -435,7 +435,7 @@ func tryout() []error {
 	// Query all books using CouchDB
 	fmt.Print("Query all books using CouchDB... ")
 	err = PostAndVerify(
-		"http://localhost:80/api/query/search",
+		"https://localhost/mainchannel/org1/api/query/search",
 		map[string]interface{}{
 			"query": map[string]interface{}{
 				"selector": map[string]interface{}{
@@ -481,7 +481,7 @@ func tryout() []error {
 	// Delete book
 	fmt.Print("Delete book... ")
 	err = PostAndVerify(
-		"http://localhost:980/api/invoke/deleteAsset",
+		"https://localhost/mainchannel/org2/api/invoke/deleteAsset",
 		map[string]interface{}{
 			"key": map[string]interface{}{
 				"@assetType": "book",
@@ -516,7 +516,7 @@ func tryout() []error {
 	// Delete person
 	fmt.Print("Delete person... ")
 	err = PostAndVerify(
-		"http://localhost:80/api/invoke/deleteAsset",
+		"https://localhost/mainchannel/org1/api/invoke/deleteAsset",
 		map[string]interface{}{
 			"key": map[string]interface{}{
 				"@assetType": "person",

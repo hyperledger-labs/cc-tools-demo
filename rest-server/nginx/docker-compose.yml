@@ -1,0 +1,34 @@
+version: '3'
+
+networks:
+  cc-tools-demo-net:
+    external: true
+
+services:
+  nginx:
+    container_name: nginx
+    image: jonasal/nginx-certbot:latest
+    restart: unless-stopped
+    environment:
+     - CERTBOT_EMAIL=your@email.org
+
+     - STAGING=1
+     - DHPARAM_SIZE=2048
+     - RSA_KEY_SIZE=2048
+     - ELLIPTIC_CURVE=secp256r1
+     - USE_ECDSA=0
+     - RENEWAL_INTERVAL=8d
+
+     - DEBUG=1
+     - USE_LOCAL_CA=1
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      # - nginx_secrets:/etc/letsencrypt
+      - ./user_conf.d:/etc/nginx/user_conf.d
+    networks:
+        - cc-tools-demo-net
+
+# volumes:
+#   nginx_secrets:

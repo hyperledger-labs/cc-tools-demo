@@ -45,7 +45,7 @@
         "orgName": "org1",
         "orgDomainName": "example.com",
         "restHost": "api.org1.example.com",
-        "ccRestHost": ["ccapi.org1.example.com"],
+        "ccRestHost": ["mainchannel.org1.example.com"],
         "peers": {
           "peer0.org1.example.com": {
             "host": "peer0.org1.example.com",
@@ -68,7 +68,7 @@
         "orgName": "org2",
         "orgDomainName": "example.com",
         "restHost": "api.org2.example.com",
-        "ccRestHost": ["ccapi.org2.example.com"],
+        "ccRestHost": ["mainchannel.org2.example.com"],
         "peers": {
           "peer0.org2.example.com": {
             "host": "peer0.org2.example.com",
@@ -91,7 +91,7 @@
         "orgName": "org3",
         "orgDomainName": "example.com",
         "restHost": "api.org3.example.com",
-        "ccRestHost": ["ccapi.org3.example.com"],
+        "ccRestHost": ["mainchannel.org3.example.com"],
         "peers": {
           "peer0.org3.example.com": {
             "host": "peer0.org3.example.com",

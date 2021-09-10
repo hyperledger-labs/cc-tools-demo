@@ -10,18 +10,18 @@ printf "Sending requests to ${HOST}"
 
 printf '\n\nGet Header\n';
 curl -k \
-  "http://${HOST}:80/api/query/getHeader" \
+  "http://${HOST}/mainchannel/org1/api/query/getHeader" \
   -H 'cache-control: no-cache'
 
-
+exit
 printf '\n\nGet Transactions\n';
 curl -k \
-  "http://${HOST}:80/api/query/getTx" \
+  "https://${HOST}/mainchannel/org1/api/query/getTx" \
   -H 'cache-control: no-cache'
 
 printf '\n\nGet CreateAsset definition\n';
 curl -k -X POST \
-  "http://${HOST}:80/api/query/getTx" \
+  "https://${HOST}/mainchannel/org1/api/query/getTx" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -31,12 +31,12 @@ curl -k -X POST \
 
 printf '\n\nGet Asset Types\n';
 curl -k \
-  "http://${HOST}:80/api/query/getSchema/" \
+  "https://${HOST}/mainchannel/org1/api/query/getSchema/" \
   -H 'cache-control: no-cache'
 
 printf '\n\nGet person schema\n';
 curl -k -X POST \
-  "http://${HOST}:80/api/query/getSchema" \
+  "https://${HOST}/mainchannel/org1/api/query/getSchema" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -45,7 +45,7 @@ curl -k -X POST \
 
 printf '\n\nCreate person\n'
 curl -k -X POST \
-  "http://${HOST}/api/invoke/createAsset" \
+  "https://${HOST}/mainchannel/org1/api/invoke/createAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -60,7 +60,7 @@ curl -k -X POST \
 
 printf '\n\nCreate book\n'
 curl -k -X POST \
-  "http://${HOST}:980/api/invoke/createAsset" \
+  "https://${HOST}/mainchannel/org2/api/invoke/createAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -80,7 +80,7 @@ curl -k -X POST \
 
 printf '\n\nRead book\n';
 curl -k -X POST \
-  "http://${HOST}:80/api/query/readAsset" \
+  "https://${HOST}/mainchannel/org1/api/query/readAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -94,7 +94,7 @@ curl -k -X POST \
 
 printf '\n\nUpdate person\n'
 curl -k -X PUT \
-  "http://${HOST}/api/invoke/updateAsset" \
+  "https://${HOST}/mainchannel/org1/api/invoke/updateAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -108,7 +108,7 @@ curl -k -X PUT \
 
 printf '\n\nRead person to check if it was updated\n';
 curl -k -X POST \
-  "http://${HOST}:80/api/query/readAsset" \
+  "https://${HOST}/mainchannel/org1/api/query/readAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -120,7 +120,7 @@ curl -k -X POST \
 
 printf '\n\nQuery all books using couchdb queries\n';
 curl -k -X POST \
-  "http://${HOST}/api/query/search" \
+  "https://${HOST}/mainchannel/org1/api/query/search" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -134,7 +134,7 @@ curl -k -X POST \
 
 printf '\n\nDelete book\n'
 curl -k -X DELETE \
-  "http://${HOST}:980/api/invoke/deleteAsset" \
+  "https://${HOST}/mainchannel/org2/api/invoke/deleteAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -147,7 +147,7 @@ curl -k -X DELETE \
 
 printf '\n\nDelete person\n'
 curl -k -X DELETE \
-  "http://${HOST}:80/api/invoke/deleteAsset" \
+  "https://${HOST}/mainchannel/org1/api/invoke/deleteAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -159,7 +159,7 @@ curl -k -X DELETE \
 
 printf '\n\nRead person History\n';
 curl -k \
-  "http://${HOST}/api/query/readAssetHistory" \
+  "https://${HOST}/mainchannel/org1/api/query/readAssetHistory" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{

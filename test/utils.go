@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -10,7 +11,12 @@ import (
 )
 
 func GetAndVerify(url string, expectedStatus int, expectedResponse interface{}) error {
-	resp, err := http.Get(url)
+	// Disable TLS cert verification
+	customTransport := http.DefaultTransport.(*http.Transport).Clone()
+	customTransport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	client := &http.Client{Transport: customTransport}
+
+	resp, err := client.Get(url)
 	if err != nil {
 		return err
 	}
@@ -36,7 +42,12 @@ func PostAndVerify(url string, body interface{}, expectedStatus int, expectedRes
 	postBody, _ := json.Marshal(body)
 	postBodyBuf := bytes.NewBuffer(postBody)
 
-	resp, err := http.Post(url, "application/json", postBodyBuf)
+	// Disable TLS cert verification
+	customTransport := http.DefaultTransport.(*http.Transport).Clone()
+	customTransport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	client := &http.Client{Transport: customTransport}
+
+	resp, err := client.Post(url, "application/json", postBodyBuf)
 	if err != nil {
 		return err
 	}

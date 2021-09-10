@@ -4,7 +4,7 @@ fabric/crypto-config
 fabric/channel-artifacts
 fabric/ca
 chaincode/vendor/*
-rest-server/data/*
+rest-server/https/*.pem
 rest-server/dist/*
 cc-tools-demo.tar.gz
 package-lock.json
