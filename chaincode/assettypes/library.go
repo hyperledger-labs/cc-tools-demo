@@ -30,5 +30,10 @@ var Library = assets.AssetType{
 			Label:    "Entrance Code for the Library",
 			DataType: "->secret",
 		},
+		{
+			Tag:      "address",
+			Label:    "Address",
+			DataType: "string",
+		},
 	},
 }
