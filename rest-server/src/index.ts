@@ -24,7 +24,7 @@ if (process.env.HTTPS === 'true') {
   App.set('port', port);
   server = https.createServer(serverOptions, App);
 } else {
-  const defaultPort = 80; //process.env.DOCKER ? 80 : 8000;
+  const defaultPort = process.env.DOCKER ? 80 : 8000;
   port = normalizePort(process.env.PORT || defaultPort);
 
   App.set('port', port);

@@ -3,13 +3,12 @@ import { getAllPeersSDK } from '.';
 import { Channel } from 'fabric-client';
 
 
-export interface LastPeers {
+type LastPeers = {
   [channel: string]: Client.ChannelPeer;
 }
 
 
-var lastPeers: LastPeers = [];
-
+let lastPeers: LastPeers = {};
 
 /**
  * Initialize channel with discovery, if it fails, try with another peer
@@ -24,10 +23,11 @@ const initializeChannel = async (client: Client, channel: Channel) => {
       return Promise.resolve(channel);
     } 
   } catch (err) {
+    console.warn("Last peer not responding, trying others")
+    console.warn(err)
   }
 
   const peers = channel.getPeers() as Client.ChannelPeer[];
-  let initErr: Error;
 
   for (const peer of peers) {
     try {
@@ -35,10 +35,9 @@ const initializeChannel = async (client: Client, channel: Channel) => {
       lastPeers[channel.getName()] = peer;
       return Promise.resolve(channel);
     } catch (err) {
-      initErr = err;
+      return Promise.reject(err);
     }
   }
-  return Promise.reject(initErr);
 };
 
 export default initializeChannel;

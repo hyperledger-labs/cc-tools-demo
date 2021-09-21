@@ -36,11 +36,8 @@ rm chaincode/assettypes/customAssets.go
 rm chaincode/collections.json
 rm chaincode/header/header.go
 
-cd rest-server && sudo rm -rf node_modules 
-cd ..
-
 # Compress file
-tar -czf cc-tools-demo.tar.gz chaincode rest-server
+tar -czf cc-tools-demo.tar.gz chaincode
 
 # Restore customAssets.go file
 printf "%s\n" "$CUSTOMASSETSFILE" > chaincode/assettypes/customAssets.go
@@ -49,7 +46,3 @@ printf "%s\n" "$HEADERFILE" > chaincode/header/header.go
 
 # Clear trap
 trap - 2
-
-# Upload to S3 bucket
-aws s3 cp cc-tools-demo.tar.gz s3://gofabric-templates/trial/
-aws s3 cp cc-tools-demo.json s3://gofabric-templates/trial/
