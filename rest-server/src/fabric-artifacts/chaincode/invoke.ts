@@ -13,6 +13,7 @@ const invoke = (
   const channel = client.getChannel(process.env.CHANNEL);
 
   return new Promise<string | Error>(async (resolve, reject) => {
+
     initializeChannel(client, channel)
       .then(async (res: any) => {
         const txId = client.newTransactionID(true);

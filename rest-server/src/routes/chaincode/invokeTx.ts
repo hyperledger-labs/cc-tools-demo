@@ -40,6 +40,7 @@ const invokeTx = (req: Request, res: Response, next: NextFunction) => {
     } else {
       txRequest[key] = req.body[key];
     }
+    
   }
 
   const txArgs = [JSON.stringify(txRequest)];
