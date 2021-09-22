@@ -1,5 +1,5 @@
 import fabricClient = require('fabric-client');
-import { initializeChannel } from '../sdkCommon';
+import { initializeChannelPeer } from '../sdkCommon';
 import propose from './propose';
 import submit from './submit';
 
@@ -14,7 +14,7 @@ const invoke = (
 
   return new Promise<string | Error>(async (resolve, reject) => {
 
-    initializeChannel(client, channel)
+    initializeChannelPeer(client, channel)
       .then(async (res: any) => {
         const txId = client.newTransactionID(true);
 

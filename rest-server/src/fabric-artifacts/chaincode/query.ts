@@ -1,5 +1,6 @@
 import fabricClient = require('fabric-client');
-import { initializeChannel } from '../sdkCommon';
+import { initializeChannelPeer } from '../sdkCommon';
+
 
 const query = (
   client: fabricClient,
@@ -10,8 +11,8 @@ const query = (
   const channel = client.getChannel(process.env.CHANNEL);
 
   return new Promise<string | Error>(async (resolve, reject) => {
-    initializeChannel(client, channel)
-      .then(async (res: any) => {
+    initializeChannelPeer(client, channel)
+      .then(async (peer: fabricClient.Peer) => {
         const txId = client.newTransactionID(true);
         const mspOrg = client.getMspid();
         const queryReq: fabricClient.ChaincodeQueryRequest = {
@@ -20,7 +21,7 @@ const query = (
           chaincodeId: process.env.CCNAME,
           fcn: txName,
           // TODO: select peers at random
-          targets: [ channel.getPeersForOrg(mspOrg).map((chanPeer => chanPeer.getPeer()))[0] ],
+          targets: [ peer ], //channel.getPeersForOrg(mspOrg).map((chanPeer => chanPeer.getPeer()))[0] ],
         };
 
         if (transientRequest) {
