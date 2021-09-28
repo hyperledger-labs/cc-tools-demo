@@ -14,13 +14,14 @@ const query = (
       .then(async (res: any) => {
         const txId = client.newTransactionID(true);
         const mspOrg = client.getMspid();
+        const peers = channel.getPeersForOrg(mspOrg).map((chanPeer => chanPeer.getPeer()));
+        const peerIdx = Math.floor(Math.random() * peers.length)
         const queryReq: fabricClient.ChaincodeQueryRequest = {
           args,
           txId,
           chaincodeId: process.env.CCNAME,
           fcn: txName,
-          // TODO: select peers at random
-          targets: [ channel.getPeersForOrg(mspOrg).map((chanPeer => chanPeer.getPeer()))[0] ],
+          targets: [ peers[peerIdx] ],
         };
 
         if (transientRequest) {

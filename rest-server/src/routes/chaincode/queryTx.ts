@@ -25,7 +25,7 @@ const queryTx = (req: Request, res: Response, next: NextFunction) => {
     }
     if (queryRequest) {
       try {
-        const requestJSON = Buffer.from(req.query['@request'], 'base64').toString('utf-8');
+        const requestJSON = Buffer.from(req.query['@request'] as string, 'base64').toString('utf-8');
         request = JSON.parse(requestJSON);
       } catch (err) {
         console.error(err);
