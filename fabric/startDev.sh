@@ -8,6 +8,7 @@ generate() {
   sudo rm -rf ca/org1/fabric-ca-server.db
   sudo rm -rf ca/org2/fabric-ca-server.db
   sudo rm -rf ca/org3/fabric-ca-server.db
+  mkdir -p ca/org1 ca/org2 ca/org3
   source scripts/generateCerts.sh
   generateCerts
   if [[ $? -ne 0 ]]; then
