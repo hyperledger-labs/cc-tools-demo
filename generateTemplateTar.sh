@@ -1,48 +1,21 @@
 #!/usr/bin/env bash
 
-function trap_ctrlc ()
-{
-    if [[ ! -z "$CUSTOMASSETSFILE" ]]
-    then
-        printf "%s\n" "$CUSTOMASSETSFILE" > chaincode/assettypes/customAssets.go
-    fi
-
-    if [[ ! -z "$COLLECTIONSFILE" ]]
-    then
-        printf "%s\n" "$COLLECTIONSFILE" > chaincode/collections.json
-    fi
-
-    if [[ ! -z "$HEADERFILE" ]]
-    then
-        printf "%s\n" "$HEADERFILE" > chaincode/header/header.go
-    fi
-
-    exit 2
-}
-
 # Make sure go mod is up to date
 cd chaincode && go mod vendor && cd ..
 
-# Copy customAssets.go content
-CUSTOMASSETSFILE=$(cat chaincode/assettypes/customAssets.go)
-COLLECTIONSFILE=$(cat chaincode/collections.json)
-HEADERFILE=$(cat chaincode/header/header.go)
+# Compress file without rest-server
+# GoFabric will use the standard CC API from Docker Hub
+tar \
+--exclude=chaincode/assettypes/customAssets.go \
+--exclude=chaincode/collections.json \
+--exclude=chaincode/header/header.go \
+-czf cc-tools-demo.tar.gz chaincode
 
-# Prevent loss of the customAssets.go file
-trap "trap_ctrlc" 2
-
-# Delete customAssets.go from tree before compressing
-rm chaincode/assettypes/customAssets.go
-rm chaincode/collections.json
-rm chaincode/header/header.go
-
-# Compress file
-tar --exclude=node_modules -czf cc-tools-demo.tar.gz chaincode rest-server
-
-# Restore customAssets.go file
-printf "%s\n" "$CUSTOMASSETSFILE" > chaincode/assettypes/customAssets.go
-printf "%s\n" "$COLLECTIONSFILE" > chaincode/collections.json
-printf "%s\n" "$HEADERFILE" > chaincode/header/header.go
-
-# Clear trap
-trap - 2
+# Compress file with rest-server
+# GoFabric will use the one provided
+# tar \
+# --exclude=node_modules \
+# --exclude=chaincode/assettypes/customAssets.go \
+# --exclude=chaincode/collections.json \
+# --exclude=chaincode/header/header.go \
+# -czf cc-tools-demo.tar.gz chaincode rest-server

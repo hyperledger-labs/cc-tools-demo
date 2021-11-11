@@ -1,6 +1,6 @@
 module github.com/goledgerdev/cc-tools-demo/chaincode
 
-go 1.14
+go 1.13
 
 // replace github.com/goledgerdev/cc-tools => ../../cc-tools
 
