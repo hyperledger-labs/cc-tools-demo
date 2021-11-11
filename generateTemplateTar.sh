@@ -37,7 +37,7 @@ rm chaincode/collections.json
 rm chaincode/header/header.go
 
 # Compress file
-tar -czf cc-tools-demo.tar.gz chaincode
+tar --exclude=node_modules -czf cc-tools-demo.tar.gz chaincode rest-server
 
 # Restore customAssets.go file
 printf "%s\n" "$CUSTOMASSETSFILE" > chaincode/assettypes/customAssets.go
