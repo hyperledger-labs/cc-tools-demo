@@ -13,6 +13,9 @@ services:
     volumes:
       - ./:/rest-server
       - ../fabric2/organizations/rest-certs/org2.example.com:/certs
+    logging:
+      options:
+        max-size: 50m
     env_file:
       - .env
     environment:
