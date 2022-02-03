@@ -36,6 +36,9 @@ services:
     extends:
       file: base/docker-compose-base.yaml
       service: peer0.org1.example.com
+    logging:
+      options:
+        max-size: 50m  
     networks:
       - cc-tools-demo-net
 
@@ -58,6 +61,9 @@ services:
       file: base/docker-compose-base.yaml
       service: orderer0.org2.example.com
     container_name: orderer0.org2.example.com
+    logging:
+      options:
+        max-size: 50m    
     networks:
       - cc-tools-demo-net
 
@@ -71,6 +77,9 @@ services:
     extends:
       file: base/docker-compose-base.yaml
       service: peer0.org2.example.com
+    logging:
+      options:
+        max-size: 50m      
     networks:
       - cc-tools-demo-net
 
@@ -91,6 +100,9 @@ services:
       file: base/docker-compose-base.yaml
       service: orderer0.org3.example.com
     container_name: orderer0.org3.example.com
+    logging:
+      options:
+        max-size: 50m    
     networks:
       - cc-tools-demo-net
 
@@ -104,6 +116,9 @@ services:
     extends:
       file: base/docker-compose-base.yaml
       service: peer0.org3.example.com
+    logging:
+      options:
+        max-size: 50m      
     networks:
       - cc-tools-demo-net
 
@@ -129,6 +144,9 @@ services:
       - CERTFILE=/rest-server/certs/admin.cert
       - MAGIC_NUMBER=dfff482c-1df5-42ad-95d4-d8d72b2398be
     working_dir: /rest-server
+    logging:
+      options:
+        max-size: 50m    
     command: bash -c "node dist/index.js; sleep infinity"
     volumes:
       - ./crypto-config/rest-certs/org1.example.com:/rest-server/certs
@@ -151,6 +169,9 @@ services:
       - CERTFILE=/rest-server/certs/admin.cert
       - MAGIC_NUMBER=dfff482c-1df5-42ad-95d4-d8d72b2398be
     working_dir: /rest-server
+    logging:
+      options:
+        max-size: 50m    
     command: bash -c "node dist/index.js; sleep infinity"
     volumes:
       - ./crypto-config/rest-certs/org2.example.com:/rest-server/certs
@@ -173,6 +194,9 @@ services:
       - CERTFILE=/rest-server/certs/admin.cert
       - MAGIC_NUMBER=dfff482c-1df5-42ad-95d4-d8d72b2398be
     working_dir: /rest-server
+    logging:
+      options:
+        max-size: 50m    
     command: bash -c "node dist/index.js; sleep infinity"
     volumes:
       - ./crypto-config/rest-certs/org3.example.com:/rest-server/certs
@@ -203,6 +227,9 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
       - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin.org1.example.com/msp
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    logging:
+      options:
+        max-size: 50m    
     command: /bin/bash
     volumes:
       - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
