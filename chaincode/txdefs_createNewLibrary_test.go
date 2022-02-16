@@ -5,6 +5,7 @@ import (
 	"log"
 	"reflect"
 	"testing"
+	"time"
 
 	cc "github.com/goledgerdev/cc-tools-demo/chaincode"
 	"github.com/goledgerdev/cc-tools/mock"
@@ -32,6 +33,8 @@ func TestCreateNewLibrary(t *testing.T) {
 		[]byte("createNewLibrary"),
 		reqBytes,
 	})
+
+	expectedResponse["@lastUpdated"] = stub.TxTimestamp.AsTime().Format(time.RFC3339)
 
 	if res.GetStatus() != 200 {
 		log.Println(res)
