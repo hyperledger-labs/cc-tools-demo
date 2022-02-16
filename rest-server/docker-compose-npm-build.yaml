@@ -1,0 +1,25 @@
+version: "2"
+
+networks:
+  cc-tools-demo-net:
+    external: true
+
+services:
+  build-node:
+    image: node:carbon
+    ports:
+      - 1180:80
+    command: bash -c 'npm install && npm run build'
+    volumes:
+      - ./:/rest-server
+    env_file:
+      - .env
+    environment:
+      - DOCKER=1
+      - CHANNEL=mainchannel
+      - CCNAME=cc-tools-demo
+    working_dir: /rest-server
+    container_name: build-node
+    networks:
+      - cc-tools-demo-net
+      
