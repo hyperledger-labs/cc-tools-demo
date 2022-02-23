@@ -5,6 +5,7 @@ import (
 	"log"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/goledgerdev/cc-tools/mock"
 )
@@ -85,6 +86,8 @@ func TestUpdateBookTenant(t *testing.T) {
 		"genres":    []interface{}{"biography", "non-fiction"},
 		"published": "2019-05-06T22:12:41Z",
 	}
+
+	expectedResponse["@lastUpdated"] = stub.TxTimestamp.AsTime().Format(time.RFC3339)
 
 	if !reflect.DeepEqual(resPayload, expectedResponse) {
 		log.Println("these should be equal")

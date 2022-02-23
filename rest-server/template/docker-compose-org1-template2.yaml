@@ -21,7 +21,7 @@ services:
       - .env
     environment:
       - CONFIG_SDK_FILE=configsdk2-org1.yaml
-      - DOCKER=1
+      - DEPLOY=1
       - CHANNEL=mainchannel
       - CCNAME=cc-tools-demo
     working_dir: /rest-server
