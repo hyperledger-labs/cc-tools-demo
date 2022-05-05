@@ -16,7 +16,7 @@ generateCerts() {
     for ORG in ${orgs[@]}; do
         ca="ca.$ORG"
 
-        docker exec -it $ca bash "${SCRIPTS_FOLDER}/generateOrgCerts.sh"
+        docker exec -i $ca bash "${SCRIPTS_FOLDER}/generateOrgCerts.sh"
         retVal=$?
         if [[ $? -ne 0 ]]; then
             return $?
