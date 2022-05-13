@@ -2,7 +2,6 @@ package txdefs
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/goledgerdev/cc-tools/assets"
 	"github.com/goledgerdev/cc-tools/errors"
@@ -42,24 +41,19 @@ var GetBooksByAuthor = tx.Transaction{
 			return nil, errors.NewCCError("limit must be greater than 0", 400)
 		}
 
-		//prepare couchdb query
-		queryString := fmt.Sprintf(`{
-			"selector": {
+		// Prepare couchdb query
+		query := map[string]interface{}{
+			"selector": map[string]interface{}{
 				"@assetType": "book",
-				"author": "%s"
-			}
-		}`, authorName)
-
-		query := make(map[string]interface{})
-		err := json.Unmarshal(([]byte)(queryString), &query)
-		if err != nil {
-			return nil, errors.WrapErrorWithStatus(err, "error unmarshaling query string", 500)
+				"author":     authorName,
+			},
 		}
 
 		if hasLimit {
 			query["limit"] = limit
 		}
 
+		var err error
 		response, err := assets.Search(stub, query, "", true)
 		if err != nil {
 			return nil, errors.WrapErrorWithStatus(err, "error searching for book's author", 500)
