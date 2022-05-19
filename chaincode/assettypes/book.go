@@ -45,5 +45,11 @@ var Book = assets.AssetType{
 			Label:    "Publishment Date",
 			DataType: "datetime",
 		},
+		{
+			// Custom data type
+			Tag:      "bookType",
+			Label:    "Book Type",
+			DataType: "bookType",
+		},
 	},
 }
