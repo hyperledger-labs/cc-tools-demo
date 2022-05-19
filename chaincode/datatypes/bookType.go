@@ -48,7 +48,6 @@ var bookType = assets.DataType{
 
 	Parse: func(data interface{}) (string, interface{}, errors.ICCError) {
 		var dataVal float64
-		fmt.Printf("1- %t\n", data)
 		switch v := data.(type) {
 		case float64:
 			dataVal = v
