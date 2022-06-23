@@ -10,7 +10,7 @@ Feature: Create New Library
         When I make a "POST" request to "/api/invoke/createNewLibrary" with:
             """
             {
-                "name": "Maria's Library",
+                "name": "Maria's Library"
             }
             """
         Then the response code should be 200
@@ -21,6 +21,6 @@ Feature: Create New Library
                 "@lastTouchBy": "org3MSP",
                 "@lastTx":      "createNewLibrary",
                 "@assetType":   "library",
-                "name":         "Maria's Library",
+                "name":         "Maria's Library"
             }
             """
