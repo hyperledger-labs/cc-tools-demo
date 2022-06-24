@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"os/exec"
 	"reflect"
+	"strconv"
+	"time"
 
 	"github.com/cucumber/godog"
 )
@@ -18,7 +20,7 @@ import (
 type bodyCtxKey struct{}
 type statusCtxKey struct{}
 
-func iMakeARequestToWith(ctx context.Context, method, endpoint string, reqBody *godog.DocString) (context.Context, error) {
+func iMakeARequestToOnPortWith(ctx context.Context, method, endpoint string, port int, reqBody *godog.DocString) (context.Context, error) {
 	var res *http.Response
 	var err error
 
@@ -28,7 +30,7 @@ func iMakeARequestToWith(ctx context.Context, method, endpoint string, reqBody *
 	dataAsBytes := bytes.NewBuffer([]byte(reqBody.Content))
 
 	// Create request
-	req, err := http.NewRequest(method, "http://localhost:1080"+endpoint, dataAsBytes)
+	req, err := http.NewRequest(method, "http://localhost:"+strconv.Itoa(port)+endpoint, dataAsBytes)
 	if err != nil {
 		return ctx, err
 	}
@@ -121,12 +123,49 @@ func thereIsARunningTestNetwork(arg1 string) error {
 		return err
 	}
 
+	// Wait for ccapi of all orgs
+	for i := 1; i <= 3; i++ {
+		err = waitForNetwork("org" + strconv.Itoa(i))
+		if err != nil {
+			fmt.Println(err.Error())
+			return err
+		}
+	}
+
 	return nil
 }
 
 func InitializeScenario(ctx *godog.ScenarioContext) {
-	ctx.Step(`^I make a "([^"]*)" request to "([^"]*)" with:$`, iMakeARequestToWith)
+	ctx.Step(`^I make a "([^"]*)" request to "([^"]*)" on port (\d+) with:$`, iMakeARequestToOnPortWith)
 	ctx.Step(`^the response code should be (\d+)$`, theResponseCodeShouldBe)
 	ctx.Step(`^the response should match json:$`, theResponseShouldMatchJson)
 	ctx.Step(`^there is a running "([^"]*)" test network$`, thereIsARunningTestNetwork)
+}
+
+func waitForNetwork(org string) error {
+	// Read last line of ccapi log
+	strCmd := "docker logs ccapi." + org + ".example.com | tail -n 1"
+
+	wait := true
+
+	for wait {
+		// Execute log command
+		cmd := exec.Command("bash", "-c", strCmd)
+		var outb bytes.Buffer
+		cmd.Stdout = &outb
+
+		err := cmd.Run()
+		if err != nil {
+			return err
+		}
+
+		// If ccapi is listening, finalize execution
+		if outb.String() == "Listening on port 80\n" {
+			wait = false
+		} else {
+			time.Sleep(time.Second)
+		}
+	}
+
+	return nil
 }

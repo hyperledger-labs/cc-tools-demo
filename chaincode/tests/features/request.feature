@@ -7,7 +7,7 @@ Feature: Create New Library
         Given there is a running "" test network
 
     Scenario: Invoke Create New Library transaction
-        When I make a "POST" request to "/api/invoke/createNewLibrary" with:
+        When I make a "POST" request to "/api/invoke/createNewLibrary" on port 1080 with:
             """
             {
                 "name": "Maria's Library"
