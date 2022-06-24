@@ -3,6 +3,7 @@ package tests
 import (
 	"bytes"
 	"context"
+	b64 "encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -22,17 +23,27 @@ type statusCtxKey struct{}
 
 func iMakeARequestToOnPortWith(ctx context.Context, method, endpoint string, port int, reqBody *godog.DocString) (context.Context, error) {
 	var res *http.Response
+	var req *http.Request
 	var err error
 
 	// Initialize http client
 	client := &http.Client{}
 
-	dataAsBytes := bytes.NewBuffer([]byte(reqBody.Content))
-
 	// Create request
-	req, err := http.NewRequest(method, "http://localhost:"+strconv.Itoa(port)+endpoint, dataAsBytes)
-	if err != nil {
-		return ctx, err
+	if method == "GET" {
+		b64str := b64.StdEncoding.EncodeToString([]byte(reqBody.Content))
+		reqParam := "?@request=" + b64str
+		req, err = http.NewRequest("GET", "http://localhost:"+strconv.Itoa(port)+endpoint+reqParam, nil)
+		if err != nil {
+			return ctx, err
+		}
+	} else {
+		dataAsBytes := bytes.NewBuffer([]byte(reqBody.Content))
+
+		req, err = http.NewRequest(method, "http://localhost:"+strconv.Itoa(port)+endpoint, dataAsBytes)
+		if err != nil {
+			return ctx, err
+		}
 	}
 
 	// Set header and make request
@@ -112,6 +123,38 @@ func theResponseShouldMatchJson(ctx context.Context, body *godog.DocString) erro
 	return nil
 }
 
+func thereAreBooksWithPrefixByAuthor(ctx context.Context, nBooks int, prefix string, author string) (context.Context, error) {
+	var res *http.Response
+	var err error
+
+	for i := 1; i <= nBooks; i++ {
+		requestJSON := map[string]interface{}{
+			"asset": []interface{}{
+				map[string]interface{}{
+					"author":     author,
+					"title":      prefix + strconv.Itoa(i),
+					"@assetType": "book",
+				},
+			},
+		}
+		jsonStr, e := json.Marshal(requestJSON)
+		if e != nil {
+			return ctx, err
+		}
+		dataAsBytes := bytes.NewBuffer([]byte(jsonStr))
+
+		if res, err = http.Post("http://localhost:980/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+			return ctx, err
+		}
+
+		if res.StatusCode != 200 {
+			return ctx, errors.New("Failed to create book asset")
+		}
+	}
+
+	return ctx, nil
+}
+
 func thereIsARunningTestNetwork(arg1 string) error {
 	// Start test network
 	cmd := exec.Command("../../startDev.sh")
@@ -140,6 +183,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the response code should be (\d+)$`, theResponseCodeShouldBe)
 	ctx.Step(`^the response should match json:$`, theResponseShouldMatchJson)
 	ctx.Step(`^there is a running "([^"]*)" test network$`, thereIsARunningTestNetwork)
+	ctx.Step(`^there are (\d+) books with prefix "([^"]*)" by author "([^"]*)"$`, thereAreBooksWithPrefixByAuthor)
 }
 
 func waitForNetwork(org string) error {
