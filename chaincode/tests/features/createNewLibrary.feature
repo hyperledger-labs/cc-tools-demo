@@ -6,7 +6,7 @@ Feature: Create New Library
     Background:
         Given there is a running "" test network
 
-    Scenario: Invoke Create New Library transaction
+    Scenario: Create a new library
         When I make a "POST" request to "/api/invoke/createNewLibrary" on port 1080 with:
             """
             {
@@ -24,3 +24,13 @@ Feature: Create New Library
                 "name":         "Maria's Library"
             }
             """
+
+    Scenario: Try to create a new library with a name that already exists
+        Given there is a library with name "John's Library"
+        When I make a "POST" request to "/api/invoke/createNewLibrary" on port 1080 with:
+            """
+            {
+                "name": "John's Library"
+            }
+            """
+        Then the response code should be 409

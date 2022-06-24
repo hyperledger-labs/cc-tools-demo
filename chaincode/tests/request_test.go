@@ -184,6 +184,35 @@ func thereAreBooksWithPrefixByAuthor(ctx context.Context, nBooks int, prefix str
 	return ctx, nil
 }
 
+func thereIsALibraryWithName(ctx context.Context, name string) (context.Context, error) {
+	var res *http.Response
+	var err error
+
+	requestJSON := map[string]interface{}{
+		"asset": []interface{}{
+			map[string]interface{}{
+				"name":       name,
+				"@assetType": "library",
+			},
+		},
+	}
+	jsonStr, e := json.Marshal(requestJSON)
+	if e != nil {
+		return ctx, err
+	}
+	dataAsBytes := bytes.NewBuffer([]byte(jsonStr))
+
+	if res, err = http.Post("http://localhost:1080/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+		return ctx, err
+	}
+
+	if res.StatusCode != 200 {
+		return ctx, errors.New("Failed to create library asset")
+	}
+
+	return ctx, nil
+}
+
 func thereIsARunningTestNetwork(arg1 string) error {
 	// Start test network
 	cmd := exec.Command("../../startDev.sh")
@@ -214,6 +243,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^there is a running "([^"]*)" test network$`, thereIsARunningTestNetwork)
 	ctx.Step(`^there are (\d+) books with prefix "([^"]*)" by author "([^"]*)"$`, thereAreBooksWithPrefixByAuthor)
 	ctx.Step(`^the "([^"]*)" field should have size (\d+)$`, theFieldShouldHaveSize)
+	ctx.Step(`^there is a library with name "([^"]*)"$`, thereIsALibraryWithName)
 }
 
 func waitForNetwork(org string) error {
