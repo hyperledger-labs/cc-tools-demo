@@ -1,7 +1,7 @@
 Feature: Create New Library
     In order to create a new library
     As an API client
-    I want to make a request
+    I want to make a request with the name of the desired library
 
     Background:
         Given there is a running "" test network

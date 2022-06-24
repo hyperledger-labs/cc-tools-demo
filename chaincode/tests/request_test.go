@@ -125,6 +125,33 @@ func theResponseShouldHave(ctx context.Context, body *godog.DocString) error {
 	return nil
 }
 
+func theFieldShouldHaveSize(ctx context.Context, field string, expectedSize int) (context.Context, error) {
+	// Get 'ResponseBody' from context
+	respBody, ok := ctx.Value(bodyCtxKey{}).([]byte)
+	if !ok {
+		return ctx, errors.New("unavailable context")
+	}
+
+	var bodyMap map[string]interface{}
+
+	if err := json.Unmarshal(respBody, &bodyMap); err != nil {
+		return ctx, err
+	}
+
+	resultField, ok := bodyMap[field]
+	if !ok {
+		return ctx, errors.New("unavailable filed on body response")
+	}
+
+	fieldLen := len(resultField.([]interface{}))
+	if fieldLen != expectedSize {
+		// Test Failed
+		return ctx, fmt.Errorf("received wrong filed size on response body. Got %d Expected: %d\nResponse body: %s", fieldLen, expectedSize, string(respBody))
+	}
+
+	return ctx, nil
+}
+
 func thereAreBooksWithPrefixByAuthor(ctx context.Context, nBooks int, prefix string, author string) (context.Context, error) {
 	var res *http.Response
 	var err error
@@ -186,6 +213,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the response should have:$`, theResponseShouldHave)
 	ctx.Step(`^there is a running "([^"]*)" test network$`, thereIsARunningTestNetwork)
 	ctx.Step(`^there are (\d+) books with prefix "([^"]*)" by author "([^"]*)"$`, thereAreBooksWithPrefixByAuthor)
+	ctx.Step(`^the "([^"]*)" field should have size (\d+)$`, theFieldShouldHaveSize)
 }
 
 func waitForNetwork(org string) error {

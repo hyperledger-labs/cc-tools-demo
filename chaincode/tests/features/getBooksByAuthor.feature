@@ -8,44 +8,35 @@ Feature: Get Books By Author
         Given there is a running "" test network
 
     Scenario: Request an author with multiple books
-        Given there are 3 books with prefix "book" by author "Maria da Silva"
+        Given there are 3 books with prefix "book" by author "Jack"
         When I make a "GET" request to "/api/query/getBooksByAuthor" on port 980 with:
             """
             {
-                "authorName": "Maria da Silva"
+                "authorName": "Jack"
             }
             """
         Then the response code should be 200
-        # And the response should have size 3
-        And the response should match json:
+        And the "result" field should have size 3
+
+    Scenario: Request an author with no books
+        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 980 with:
             """
             {
-                "metadata": null,
-                "result": [
-                    {
-                        "@assetType":   "book",
-                        "@key":         "library:3cab201f-9e2b-579d-b7b2-72297ed17f49",
-                        "@lastTouchBy": "org2MSP",
-                        "@lastTx":      "createAsset",
-                        "author":       "Maria da Silva",
-                        "title":        "book1"
-                    },
-                    {
-                        "@assetType":   "book",
-                        "@key":         "library:3cab201f-9e2b-579d-b7b2-72297ed17f49",
-                        "@lastTouchBy": "org2MSP",
-                        "@lastTx":      "createAsset",
-                        "author":       "Maria da Silva",
-                        "title":        "book2"
-                    },
-                    {
-                        "@assetType":   "book",
-                        "@key":         "library:3cab201f-9e2b-579d-b7b2-72297ed17f49",
-                        "@lastTouchBy": "org2MSP",
-                        "@lastTx":      "createAsset",
-                        "author":       "Maria da Silva",
-                        "title":        "book3"
-                    }
-                ]
+                "authorName": "Mary"
             }
             """
+        Then the response code should be 200
+        And the "result" field should have size 0
+
+    Scenario: Request an author with 2 books while there are other authors with more books
+        Given there are 2 books with prefix "book" by author "Jack"
+        Given there are 1 books with prefix "fantasy" by author "Mary"
+        Given there are 3 books with prefix "cook" by author "John"
+        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 980 with:
+            """
+            {
+                "authorName": "Jack"
+            }
+            """
+        Then the response code should be 200
+        And the "result" field should have size 2
