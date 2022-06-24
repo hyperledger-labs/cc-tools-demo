@@ -14,7 +14,7 @@ Feature: Create New Library
             }
             """
         Then the response code should be 200
-        And the response should match json:
+        And the response should have:
             """
             {
                 "@key":         "library:3cab201f-9e2b-579d-b7b2-72297ed17f49",

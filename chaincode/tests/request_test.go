@@ -89,15 +89,15 @@ func theResponseCodeShouldBe(ctx context.Context, expectedCode int) (context.Con
 	return ctx, nil
 }
 
-func theResponseShouldMatchJson(ctx context.Context, body *godog.DocString) error {
+func theResponseShouldHave(ctx context.Context, body *godog.DocString) error {
 	// Get 'ResponseBody' from context
 	respBody, ok := ctx.Value(bodyCtxKey{}).([]byte)
 	if !ok {
 		return errors.New("unavailable context")
 	}
 
-	var expected interface{}
-	var received interface{}
+	var expected map[string]interface{}
+	var received map[string]interface{}
 
 	if err := json.Unmarshal([]byte(body.Content), &expected); err != nil {
 		return err
@@ -106,18 +106,20 @@ func theResponseShouldMatchJson(ctx context.Context, body *godog.DocString) erro
 		return err
 	}
 
-	if !reflect.DeepEqual(expected, received) {
-		var expectedBytes []byte
-		var receivedBytes []byte
-		var err error
-		if expectedBytes, err = json.MarshalIndent(expected, "", "  "); err != nil {
-			return err
-		}
-		if receivedBytes, err = json.MarshalIndent(received, "", "  "); err != nil {
-			return err
-		}
+	for key, value := range expected {
+		if !reflect.DeepEqual(value, received[key]) {
+			var expectedBytes []byte
+			var receivedBytes []byte
+			var err error
+			if expectedBytes, err = json.MarshalIndent(value, "", "  "); err != nil {
+				return err
+			}
+			if receivedBytes, err = json.MarshalIndent(received[key], "", "  "); err != nil {
+				return err
+			}
 
-		return fmt.Errorf("RECEIVED json:\n%s\ndoes not match EXPECTED:\n%s", string(receivedBytes), string(expectedBytes))
+			return fmt.Errorf("Expected %s to be equal %s, but received %s", key, expectedBytes, receivedBytes)
+		}
 	}
 
 	return nil
@@ -181,7 +183,7 @@ func thereIsARunningTestNetwork(arg1 string) error {
 func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^I make a "([^"]*)" request to "([^"]*)" on port (\d+) with:$`, iMakeARequestToOnPortWith)
 	ctx.Step(`^the response code should be (\d+)$`, theResponseCodeShouldBe)
-	ctx.Step(`^the response should match json:$`, theResponseShouldMatchJson)
+	ctx.Step(`^the response should have:$`, theResponseShouldHave)
 	ctx.Step(`^there is a running "([^"]*)" test network$`, thereIsARunningTestNetwork)
 	ctx.Step(`^there are (\d+) books with prefix "([^"]*)" by author "([^"]*)"$`, thereAreBooksWithPrefixByAuthor)
 }
