@@ -16,7 +16,7 @@ var GetNumberOfBooksFromLibrary = tx.Transaction{
 	Label:       "Get Number Of Books From Library",
 	Description: "Return the number of books of a library",
 	Method:      "GET",
-	Callers:     []string{"$org2MSP"}, // Only org2 can call this transactions
+	Callers:     []string{"$org2MSP", "$orgMSP"}, // Only org2 can call this transactions
 
 	Args: []tx.Argument{
 		{

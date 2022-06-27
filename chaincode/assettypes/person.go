@@ -19,7 +19,7 @@ var Person = assets.AssetType{
 			Tag:      "id",
 			Label:    "CPF (Brazilian ID)",
 			DataType: "cpf",               // Datatypes are identified at datatypes folder
-			Writers:  []string{`org1MSP`}, // This means only org1 can create the asset (others can edit)
+			Writers:  []string{`org1MSP`, "$orgMSP"}, // This means only org1 can create the asset (others can edit)
 		},
 		{
 			// Mandatory property

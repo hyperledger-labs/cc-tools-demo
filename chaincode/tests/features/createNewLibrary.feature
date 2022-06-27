@@ -6,7 +6,7 @@ Feature: Create New Library
     Scenario: Create a new library
         # The following statement will be used by all scenarios on this feature
         Given there is a running "" test network
-        When I make a "POST" request to "/api/invoke/createNewLibrary" on port 1080 with:
+        When I make a "POST" request to "/api/invoke/createNewLibrary" on port 880 with:
             """
             {
                 "name": "Maria's Library"
@@ -26,7 +26,7 @@ Feature: Create New Library
 
     Scenario: Try to create a new library with a name that already exists
         Given there is a library with name "John's Library"
-        When I make a "POST" request to "/api/invoke/createNewLibrary" on port 1080 with:
+        When I make a "POST" request to "/api/invoke/createNewLibrary" on port 880 with:
             """
             {
                 "name": "John's Library"

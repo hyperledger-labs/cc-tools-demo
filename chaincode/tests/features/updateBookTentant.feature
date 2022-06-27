@@ -6,7 +6,7 @@ Feature: Update Book Tentant
     Scenario: Update Book With A Existing Tentant 
         # The first 3 statements will be used by all scenarios on this feature
         Given there is a running "" test network
-        And I make a "POST" request to "/api/invoke/createAsset" on port 980 with:
+        And I make a "POST" request to "/api/invoke/createAsset" on port 880 with:
             """
             {
                 "asset": [{

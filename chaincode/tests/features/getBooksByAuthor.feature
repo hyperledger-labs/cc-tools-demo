@@ -8,7 +8,7 @@ Feature: Get Books By Author
         # The following statement will be used by all scenarios on this feature
         Given there is a running "" test network
         And there are 3 books with prefix "book" by author "Jack"
-        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 980 with:
+        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 880 with:
             """
             {
                 "authorName": "Jack"
@@ -18,7 +18,7 @@ Feature: Get Books By Author
         And the "result" field should have size 3
 
     Scenario: Request an author with no books
-        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 980 with:
+        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 880 with:
             """
             {
                 "authorName": "Mary"
@@ -30,7 +30,7 @@ Feature: Get Books By Author
     Scenario: Request an author with 2 books while there are other authors with more books
         Given there are 1 books with prefix "fantasy" by author "Mary"
         Given there are 2 books with prefix "cook" by author "John"
-        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 980 with:
+        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 880 with:
             """
             {
                 "authorName": "John"

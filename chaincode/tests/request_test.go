@@ -172,7 +172,7 @@ func thereAreBooksWithPrefixByAuthor(ctx context.Context, nBooks int, prefix str
 		}
 		dataAsBytes := bytes.NewBuffer([]byte(jsonStr))
 
-		if res, err = http.Post("http://localhost:980/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+		if res, err = http.Post("http://localhost:880/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
 			return ctx, err
 		}
 
@@ -202,7 +202,7 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 	}
 	dataAsBytes := bytes.NewBuffer([]byte(jsonStr))
 
-	if res, err = http.Post("http://localhost:1080/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+	if res, err = http.Post("http://localhost:880/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
 		return ctx, err
 	}
 
@@ -214,7 +214,7 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 }
 
 func thereIsARunningTestNetwork(arg1 string) error {
-	// Start test network
+	// Start test network with 1 org only
 	cmd := exec.Command("../../startDev.sh")
 
 	_, err := cmd.Output()
@@ -224,13 +224,11 @@ func thereIsARunningTestNetwork(arg1 string) error {
 		return err
 	}
 
-	// Wait for ccapi of all orgs
-	for i := 1; i <= 3; i++ {
-		err = waitForNetwork("org" + strconv.Itoa(i))
-		if err != nil {
-			fmt.Println(err.Error())
-			return err
-		}
+	// Wait for ccapi
+	err = waitForNetwork("org")
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
 	}
 
 	return nil

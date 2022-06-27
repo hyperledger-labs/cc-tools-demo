@@ -9,7 +9,7 @@ var Secret = assets.AssetType{
 	Label:       "Secret",
 	Description: "Secret between Org2 and Org3",
 
-	Readers: []string{"org2MSP", "org3MSP"},
+	Readers: []string{"org2MSP", "org3MSP", "$orgMSP"},
 	Props: []assets.AssetProp{
 		{
 			// Primary Key
