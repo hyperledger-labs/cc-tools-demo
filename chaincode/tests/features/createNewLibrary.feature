@@ -3,10 +3,9 @@ Feature: Create New Library
     As an API client
     I want to make a request with the name of the desired library
 
-    Background:
-        Given there is a running "" test network
-
     Scenario: Create a new library
+        # The following statement will be used by all scenarios on this feature
+        Given there is a running "" test network
         When I make a "POST" request to "/api/invoke/createNewLibrary" on port 1080 with:
             """
             {

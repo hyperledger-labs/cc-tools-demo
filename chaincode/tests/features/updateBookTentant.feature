@@ -3,7 +3,8 @@ Feature: Update Book Tentant
     As an API client
     I want to make a request
 
-    Background:
+    Scenario: Update Book With A Existing Tentant 
+        # The first 3 statements will be used by all scenarios on this feature
         Given there is a running "" test network
         And I make a "POST" request to "/api/invoke/createAsset" on port 980 with:
             """
@@ -25,8 +26,6 @@ Feature: Update Book Tentant
                 }]
 	        }
             """
-
-    Scenario: Update Book With A Existing Tentant 
         When I make a "PUT" request to "/api/invoke/updateBookTenant" on port 880 with:
             """
             {
