@@ -1,0 +1,30 @@
+version: "2"
+
+networks:
+  cc-tools-demo-net:
+    external: true
+
+services:
+  ccapi.org1.example.com:
+    image: node:carbon
+    ports:
+      - 8PORT:PORT
+      - PORT:PORT
+    command: bash -c 'npm start; sleep infinity'
+    volumes:
+      - ./:/rest-server
+      - ../fabric/crypto-config/rest-certs/org.example.com:/certs
+    logging:
+      options:
+        max-size: 50m
+    env_file:
+      - .env
+    environment:
+      - CONFIG_SDK_FILE=configsdk-org.yaml
+      - DOCKER=1
+      - CHANNEL=mainchannel
+      - CCNAME=cc-tools-demo
+    working_dir: /rest-server
+    container_name: ccapi.org.example.com
+    networks:
+      - cc-tools-demo-net
