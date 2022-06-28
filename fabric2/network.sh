@@ -24,7 +24,6 @@ export SYS_CHANNEL=sys-channel
 . scripts/utils.sh
 
 # Obtain CONTAINER_IDS and remove them
-# TODO Might want to make this optional - could clear other containers
 # This function is called when you bring a network down
 function clearContainers() {
   CONTAINER_IDS=$(docker ps -a | awk '($2 ~ /dev-peer.*/) {print $1}')
@@ -362,7 +361,9 @@ function networkDown() {
   if [ "$MODE" != "restart" ]; then
     # Bring down the network, deleting the volumes
     #Cleanup the chaincode containers
-    clearContainers
+    if [ "$CLR_CONTAINERS" = true ]; then
+      clearContainers
+    fi
     #Cleanup images
     removeUnwantedImages
     # remove orderer block and other channel configuration transactions and certs
@@ -422,6 +423,10 @@ IMAGETAG="2.2.3"
 CA_IMAGETAG="latest"
 # default database
 DATABASE="couchdb"
+# default number of organizartions
+ORG_QNTY=3
+# Clear containers - default = true
+CLR_CONTAINERS=true
 
 # Parse commandline args
 
@@ -513,6 +518,14 @@ while [[ $# -ge 1 ]] ; do
     ;;
   -verbose )
     VERBOSE=true
+    shift
+    ;;
+  -n )
+    ORG_QNTY=$2
+    shift
+    ;;
+  -noclr )
+    CLR_CONTAINERS=false
     shift
     ;;
   * )
