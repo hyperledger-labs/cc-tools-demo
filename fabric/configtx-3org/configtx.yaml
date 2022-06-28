@@ -25,7 +25,7 @@ Organizations:
         ID: OrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/example.com/msp
+        MSPDir: ../crypto-config/ordererOrganizations/example.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -49,7 +49,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: org1MSP
 
-        MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+        MSPDir: ../crypto-config/peerOrganizations/org1.example.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -81,7 +81,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: org2MSP
 
-        MSPDir: crypto-config/peerOrganizations/org2.example.com/msp
+        MSPDir: ../crypto-config/peerOrganizations/org2.example.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -113,7 +113,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: org3MSP
 
-        MSPDir: crypto-config/peerOrganizations/org3.example.com/msp
+        MSPDir: ../crypto-config/peerOrganizations/org3.example.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -244,16 +244,16 @@ Orderer: &OrdererDefaults
         Consenters:
         - Host: orderer0.org1.example.com
           Port: 7050
-          ClientTLSCert: crypto-config/peerOrganizations/org1.example.com/orderers/orderer0.org1.example.com/tls/server.crt
-          ServerTLSCert: crypto-config/peerOrganizations/org1.example.com/orderers/orderer0.org1.example.com/tls/server.crt
+          ClientTLSCert: ../crypto-config/peerOrganizations/org1.example.com/orderers/orderer0.org1.example.com/tls/server.crt
+          ServerTLSCert: ../crypto-config/peerOrganizations/org1.example.com/orderers/orderer0.org1.example.com/tls/server.crt
         - Host: orderer0.org2.example.com
           Port: 7050
-          ClientTLSCert: crypto-config/peerOrganizations/org2.example.com/orderers/orderer0.org2.example.com/tls/server.crt
-          ServerTLSCert: crypto-config/peerOrganizations/org2.example.com/orderers/orderer0.org2.example.com/tls/server.crt
+          ClientTLSCert: ../crypto-config/peerOrganizations/org2.example.com/orderers/orderer0.org2.example.com/tls/server.crt
+          ServerTLSCert: ../crypto-config/peerOrganizations/org2.example.com/orderers/orderer0.org2.example.com/tls/server.crt
         - Host: orderer0.org3.example.com
           Port: 7050
-          ClientTLSCert: crypto-config/peerOrganizations/org3.example.com/orderers/orderer0.org3.example.com/tls/server.crt
-          ServerTLSCert: crypto-config/peerOrganizations/org3.example.com/orderers/orderer0.org3.example.com/tls/server.crt
+          ClientTLSCert: ../crypto-config/peerOrganizations/org3.example.com/orderers/orderer0.org3.example.com/tls/server.crt
+          ServerTLSCert: ../crypto-config/peerOrganizations/org3.example.com/orderers/orderer0.org3.example.com/tls/server.crt
 
     Addresses:
         - orderer0.org1.example.com:7050
