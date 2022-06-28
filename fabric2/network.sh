@@ -147,50 +147,51 @@ function createOrgs() {
     fi
     infoln "Generating certificates using cryptogen tool"
 
-    infoln "Creating Org1 Identities"
+    if [ $ORG_QTY -gt 1 ] ; then
+      infoln "Creating Org1 Identities"
 
+      set -x
+      cryptogen generate --config=./organizations/cryptogen/crypto-config-org1.yaml --output="organizations"
+      res=$?
+      { set +x; } 2>/dev/null
+      if [ $res -ne 0 ]; then
+        fatalln "Failed to generate certificates..."
+      fi
 
-    set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-org1.yaml --output="organizations"
-    res=$?
-    { set +x; } 2>/dev/null
-    if [ $res -ne 0 ]; then
-      fatalln "Failed to generate certificates..."
+      infoln "Creating Org2 Identities"
+
+      set -x
+      cryptogen generate --config=./organizations/cryptogen/crypto-config-org2.yaml --output="organizations"
+      res=$?
+      { set +x; } 2>/dev/null
+      if [ $res -ne 0 ]; then
+        fatalln "Failed to generate certificates..."
+      fi
+
+      infoln "Creating Org3 Identities"
+
+      set -x
+      cryptogen generate --config=./organizations/cryptogen/crypto-config-org3.yaml --output="organizations"
+      res=$?
+      { set +x; } 2>/dev/null
+      if [ $res -ne 0 ]; then
+        fatalln "Failed to generate certificates..."
+      fi
+
+      infoln "Creating Orderer Org Identities"
+
+      set -x
+      cryptogen generate --config=./organizations/cryptogen/crypto-config-orderer.yaml --output="organizations"
+      res=$?
+      { set +x; } 2>/dev/null
+      if [ $res -ne 0 ]; then
+        fatalln "Failed to generate certificates..."
+      fi
+
+      copyRestCerts org1.example.com
+      copyRestCerts org2.example.com
+      copyRestCerts org3.example.com
     fi
-
-    infoln "Creating Org2 Identities"
-
-    set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-org2.yaml --output="organizations"
-    res=$?
-    { set +x; } 2>/dev/null
-    if [ $res -ne 0 ]; then
-      fatalln "Failed to generate certificates..."
-    fi
-
-    infoln "Creating Org3 Identities"
-
-    set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-org3.yaml --output="organizations"
-    res=$?
-    { set +x; } 2>/dev/null
-    if [ $res -ne 0 ]; then
-      fatalln "Failed to generate certificates..."
-    fi
-
-    infoln "Creating Orderer Org Identities"
-
-    set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-orderer.yaml --output="organizations"
-    res=$?
-    { set +x; } 2>/dev/null
-    if [ $res -ne 0 ]; then
-      fatalln "Failed to generate certificates..."
-    fi
-
-    copyRestCerts org1.example.com
-    copyRestCerts org2.example.com
-    copyRestCerts org3.example.com
 
   fi
 
@@ -425,7 +426,7 @@ CA_IMAGETAG="latest"
 DATABASE="couchdb"
 # default number of organizartions
 ORG_QNTY=3
-# Clear containers - default = true
+# Clear containers (down mode) -- default = true
 CLR_CONTAINERS=true
 
 # Parse commandline args
@@ -559,6 +560,13 @@ elif [ "$MODE" == "deployCC" ]; then
 else
   printHelp
   exit 1
+fi
+
+# Verify if organization number is within range
+if [ $ORG_QNTY -gt 3 -o $ORG_QNTY -lt 1 ]
+then
+  echo 'WARNING: The maximum number of organizations allowed is 3 and the minimum is 1.'
+  exit 0
 fi
 
 if [ "${MODE}" == "up" ]; then
