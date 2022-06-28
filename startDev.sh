@@ -4,8 +4,6 @@
 docker rmi -f $(docker images --quiet --filter "dangling=true")
 docker volume rm -f $(docker volume ls -qf dangling=true)
 
-exit 1
-
 # Script used to start the development environment.
 if [ ! -d "chaincode/vendor" ]; then
     cd ./chaincode; go mod vendor; cd ..
