@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
 # Clear unused images and volumes
-docker rmi $(docker images --quiet --filter "dangling=true")
-docker volume rm $(docker volume ls -qf dangling=true)
+docker rmi -f $(docker images --quiet --filter "dangling=true")
+docker volume rm -f $(docker volume ls -qf dangling=true)
+
+exit 1
 
 # Script used to start the development environment.
 if [ ! -d "chaincode/vendor" ]; then
@@ -18,7 +20,7 @@ while test $# -gt 0; do
         ;;
       *)
         errorln "Unknown flag: $1"
-        exit(1)
+        exit 1
         ;;
   esac
 done

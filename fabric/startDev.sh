@@ -253,7 +253,7 @@ while test $# -gt 0; do
         ;;
       *)
         errorln "Unknown command or flag: $1"
-        exit(1)
+        exit 1
         ;;
   esac
 done
