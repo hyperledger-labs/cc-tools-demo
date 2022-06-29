@@ -27,9 +27,11 @@ $ cd rest-server; npm install; cd ..
 ```
 
 After installing, use the script `./startDev.sh` in the root folder to start the development environment. It will
-start all components of the project.
+start all components of the project with 3 organizations.
+To start the development network with only 1 organization, run `$ ./startDev.sh -n 1`.
 
 To apply chaincode changes, run `$ ./upgradeCC.sh <version>` with a version higher than the current one (starts with 0.1).
+To upgrade a chaincode with only one organization, run `$ ./upgradeCC.sh <version> -n 1`
 
 To apply CC API changes, run `$ ./reloadCCAPI.sh`.
 
