@@ -143,7 +143,7 @@ start_network() {
               \"policy\": {
                   \"1-of\": [
                       {
-                          \"signed-by\": 1
+                          \"signed-by\": 0
                       }
                   ]
               }

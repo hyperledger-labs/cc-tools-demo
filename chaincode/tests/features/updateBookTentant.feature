@@ -44,7 +44,7 @@ Feature: Update Book Tentant
             """
             {
                 "@key": "book:a36a2920-c405-51c3-b584-dcd758338cb5",
-                "@lastTouchBy": "org1MSP",
+                "@lastTouchBy": "orgMSP",
                 "@lastTx": "updateBookTenant",
                 "currentTenant": {
 			        "@assetType": "person",

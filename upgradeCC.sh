@@ -39,8 +39,11 @@ IDENTITIES="{
     \"role\": {
             \"name\": \"member\",
             \"mspId\": \"orgMSP\"
-        }
     }
+}"
+
+POLICIES="{
+    \"signed-by\": 0
 }"
 
 curl -sS -k -X POST \
@@ -79,6 +82,13 @@ then
                 \"mspId\": \"org2MSP\"
             }
         }
+    }"
+
+    POLICIES="{
+        \"signed-by\": 1
+    },
+    {
+        \"signed-by\": 2
     }"
 fi
 
@@ -134,10 +144,7 @@ curl -k -X POST \
               \"policy\": {
                   \"1-of\": [
                       {
-                          \"signed-by\": 1
-                      },
-                      {
-                          \"signed-by\": 2
+                          \"signed-by\": 0
                       }
                   ]
               }
