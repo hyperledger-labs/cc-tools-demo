@@ -8,9 +8,18 @@
 ## are called inside proper dockers
 generateCerts() {
     docker-compose -f docker-compose-ca.yaml rm -f
-    docker-compose -f docker-compose-ca.yaml up -d
+
+    if [ "$1" == 1 ]; then
+        local orgs=(org.example.com)
+    else
+        local orgs=(org1.example.com org2.example.com org3.example.com)
+    fi
+
+    for ORG in ${orgs[@]}; do
+        docker-compose -f docker-compose-ca.yaml up -d ca.$ORG
+    done
     sleep 5
-    local orgs=('org1.example.com' 'org2.example.com' 'org3.example.com')
+    
     local SCRIPTS_FOLDER="/etc/hyperledger/fabric-ca-server/scripts"
 
     for ORG in ${orgs[@]}; do

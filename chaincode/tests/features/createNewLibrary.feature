@@ -17,7 +17,7 @@ Feature: Create New Library
             """
             {
                 "@key":         "library:3cab201f-9e2b-579d-b7b2-72297ed17f49",
-                "@lastTouchBy": "org3MSP",
+                "@lastTouchBy": "orgMSP",
                 "@lastTx":      "createNewLibrary",
                 "@assetType":   "library",
                 "name":         "Maria's Library"

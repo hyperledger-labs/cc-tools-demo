@@ -16,7 +16,7 @@ var Library = assets.AssetType{
 			Tag:      "name",
 			Label:    "Library Name",
 			DataType: "string",
-			Writers:  []string{`org3MSP`, "$orgMSP"}, // This means only org3 can create the asset (others can edit)
+			Writers:  []string{`org3MSP`, "orgMSP"}, // This means only org3 can create the asset (others can edit)
 		},
 		{
 			// Asset reference list

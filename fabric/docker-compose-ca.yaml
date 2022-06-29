@@ -45,3 +45,18 @@ services:
     volumes:
       - ./base/fabric-ca-server-template.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-template.yaml
       - ./ca/org3/:/etc/hyperledger/fabric-ca-server/
+
+  ca.org.example.com:
+    container_name: ca.org.example.com
+    extends:
+      file: base/ca-base.yaml
+      service: ca-base
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca.org.example.com
+      - ORGANIZATION_DOMAIN=org.example.com
+    ports:
+      - "7054:7054"
+    volumes:
+      - ./base/fabric-ca-server-template.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-template.yaml
+      - ./ca/org/:/etc/hyperledger/fabric-ca-server/

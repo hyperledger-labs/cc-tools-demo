@@ -1,0 +1,108 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: "2"
+
+volumes:
+  orderer0.org.example.com:
+  peer0.org.example.com:
+
+networks:
+  cc-tools-demo-net:
+    external: true
+
+services:
+  orderer0.org.example.com:
+    extends:
+      file: base/docker-compose-base.yaml
+      service: orderer0.org.example.com
+    container_name: orderer0.org.example.com
+    networks:
+      - cc-tools-demo-net
+
+  peer0.org.example.com:
+    container_name: peer0.org.example.com
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couch.peer0.org.example.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=goledger
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=123mudar456
+    extends:
+      file: base/docker-compose-base.yaml
+      service: peer0.org.example.com
+    logging:
+      options:
+        max-size: 50m  
+    networks:
+      - cc-tools-demo-net
+
+  couch.peer0.org.example.com:
+    container_name: couch.peer0.org.example.com
+    image: hyperledger/fabric-couchdb:amd64-0.4.14
+    environment:
+      - COUCHDB_USER=goledger
+      - COUCHDB_PASSWORD=123mudar456
+    ports:
+      - "5984:5984"
+    logging:
+      options:
+        max-size: "200k"
+    networks:
+      - cc-tools-demo-net
+
+  api.org.example.com:
+    container_name: api.org.example.com
+    image: goledger/network-node-rest:latest
+    tty: true
+    stdin_open: true
+    environment:
+      - KEYFILE=/rest-server/certs/admin.key
+      - CERTFILE=/rest-server/certs/admin.cert
+      - MAGIC_NUMBER=dfff482c-1df5-42ad-95d4-d8d72b2398be
+    working_dir: /rest-server
+    logging:
+      options:
+        max-size: 50m    
+    command: bash -c "node dist/index.js; sleep infinity"
+    volumes:
+      - ./crypto-config/rest-certs/org.example.com:/rest-server/certs
+      - ./configsdk-org.yaml:/rest-server/configsdk.yaml
+      - ./channel-artifacts/channel.tx:/rest-server/channel.tx
+      - ./channel-artifacts/orgMSPanchors.tx:/rest-server/anchors.tx
+      - ../chaincode:/go/src/github.com/goledgerdev/cc-tools-demo/chaincode
+    networks:
+      - cc-tools-demo-net
+    ports:
+      - 3000:3000
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:$IMAGE_TAG
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.org.example.com:7051
+      - CORE_PEER_LOCALMSPID=orgMSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org.example.com/peers/peer0.org.example.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org.example.com/peers/peer0.org.example.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org.example.com/peers/peer0.org.example.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org.example.com/users/Admin.org.example.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    logging:
+      options:
+        max-size: 50m    
+    command: /bin/bash
+    volumes:
+      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+      - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+      - ./addorg-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/addorg-artifacts
+    networks:
+      - cc-tools-demo-net
