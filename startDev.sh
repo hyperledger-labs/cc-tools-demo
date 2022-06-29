@@ -24,7 +24,7 @@ then
   echo "  startDev.sh [Flags]"
   echo
   echo "    Flags:"
-  echo "    -ca <number or orgs> - Specify number of orgs in test network (1 or 3 valid)"
+  echo "    -n <number or orgs> - Specify number of orgs in test network (1 or 3 valid)"
   echo ""
   echo " Examples:"
   echo "   startDev.sh -n 1"
