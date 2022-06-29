@@ -147,7 +147,7 @@ function createOrgs() {
     fi
     infoln "Generating certificates using cryptogen tool"
 
-    if [ $ORG_QTY -gt 1 ] ; then
+    if [ $ORG_QNTY -gt 1 ] ; then
       infoln "Creating Org1 Identities"
 
       set -x
@@ -191,6 +191,28 @@ function createOrgs() {
       copyRestCerts org1.example.com
       copyRestCerts org2.example.com
       copyRestCerts org3.example.com
+    else
+      infoln "Creating Org Identities"
+
+      set -x
+      cryptogen generate --config=./organizations/cryptogen/crypto-config-org.yaml --output="organizations"
+      res=$?
+      { set +x; } 2>/dev/null
+      if [ $res -ne 0 ]; then
+        fatalln "Failed to generate certificates..."
+      fi
+
+      infoln "Creating Orderer Org Identities"
+
+      set -x
+      cryptogen generate --config=./organizations/cryptogen/crypto-config-orderer.yaml --output="organizations"
+      res=$?
+      { set +x; } 2>/dev/null
+      if [ $res -ne 0 ]; then
+        fatalln "Failed to generate certificates..."
+      fi
+
+      copyRestCerts org.example.com
     fi
 
   fi
@@ -203,31 +225,55 @@ function createOrgs() {
 
     . organizations/fabric-ca/registerEnroll.sh
 
-  while :
-    do
-      if [ ! -f "organizations/fabric-ca/org1/tls-cert.pem" ]; then
-        sleep 1
-      else
-        break
-      fi
-    done
+  if [ $ORG_QNTY -gt 1 ] ; then
+    while :
+      do
+        if [ ! -f "organizations/fabric-ca/org1/tls-cert.pem" ]; then
+          sleep 1
+        else
+          break
+        fi
+      done
 
-    infoln "Creating Org1 Identities"
+      infoln "Creating Org1 Identities"
 
-    createOrg1
+      createOrg1
 
-    infoln "Creating Org2 Identities"
+      infoln "Creating Org2 Identities"
 
-    createOrg2
+      createOrg2
 
-    infoln "Creating Orderer Org Identities"
+      infoln "Creating Orderer Org Identities"
 
-    createOrderer
+      createOrderer
 
+    fi
+
+    infoln "Generating CCP files for Org1 and Org2"
+    ./organizations/ccp-generate.sh
+  else
+    while :
+      do
+        if [ ! -f "organizations/fabric-ca/org/tls-cert.pem" ]; then
+          sleep 1
+        else
+          break
+        fi
+      done
+
+      infoln "Creating Org Identities"
+
+      createOrg
+
+      infoln "Creating Orderer Org Identities"
+
+      createOrderer
+
+    fi
+
+    infoln "Generating CCP files for Org"
+    ./organizations/ccp-generate.sh -n 1
   fi
-
-  infoln "Generating CCP files for Org1 and Org2"
-  ./organizations/ccp-generate.sh
 }
 
 function copyRestCerts() {
@@ -288,7 +334,11 @@ function createConsortium() {
   # Note: For some unknown reason (at least for now) the block file can't be
   # named orderer.genesis.block or the orderer will fail to launch!
   set -x
-  configtxgen -profile TwoOrgsOrdererGenesis -channelID system-channel -outputBlock ./system-genesis-block/genesis.block
+  if [ $ORG_QNTY -gt 1 ] ; then
+    configtxgen -configPath "./configtx" -profile TwoOrgsOrdererGenesis -channelID system-channel -outputBlock ./system-genesis-block/genesis.block
+  else
+    configtxgen -configPath "./configtx-1org" -profile OneOrgOrdererGenesis -channelID system-channel -outputBlock ./system-genesis-block/genesis.block
+  fi
   res=$?
   { set +x; } 2>/dev/null
   if [ $res -ne 0 ]; then
@@ -339,7 +389,7 @@ function createChannel() {
   # more to create the channel creation transaction and the anchor peer updates.
   # configtx.yaml is mounted in the cli container, which allows us to use it to
   # create the channel artifacts
-  scripts/createChannel.sh $CHANNEL_NAME $CLI_DELAY $MAX_RETRY $VERBOSE
+  scripts/createChannel.sh $CHANNEL_NAME $CLI_DELAY $MAX_RETRY $VERBOSE -n $ORG_QNTY
 }
 
 
@@ -563,10 +613,10 @@ else
 fi
 
 # Verify if organization number is within range
-if [ $ORG_QNTY -gt 3 -o $ORG_QNTY -lt 1 ]
+if [ $ORG_QNTY != 3 -a $ORG_QNTY != 1 ]
 then
-  echo 'WARNING: The maximum number of organizations allowed is 3 and the minimum is 1.'
-  exit 0
+  echo 'WARNING: The number of organizations allowed is either 3 or 1.'
+  exit 1
 fi
 
 if [ "${MODE}" == "up" ]; then
