@@ -36,14 +36,14 @@ while getopts n: opt; do
     esac
 done
 
-if [ $ORG_QTY != 3 -a $ORG_QTY != 1 ]
+if [ $ORG_QNTY != 3 -a $ORG_QNTY != 1 ]
 then
   echo 'WARNING: The number of organizations allowed is either 3 or 1.'
   echo 'Defaulting to 3 organizations.'
   ORG_QNTY=3
 fi
 
-if [ $ORG_QTY -gt 1 ]
+if [ $ORG_QNTY -gt 1 ]
 then
     ORG=1
     P0PORT=7051

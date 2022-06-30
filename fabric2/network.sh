@@ -221,8 +221,15 @@ function createOrgs() {
   if [ "$CRYPTO" == "Certificate Authorities" ]; then
     infoln "Generating certificates using Fabric CA"
 
-    IMAGE_TAG=${CA_IMAGETAG} docker-compose -f $COMPOSE_FILE_CA up -d 2>&1
+    if [ $ORG_QNTY == 1 ]; then
+        local orgs=(org)
+    else
+        local orgs=(org1 org2 org3)
+    fi
 
+    for ORG in ${orgs[@]}; do
+      IMAGE_TAG=${CA_IMAGETAG} docker-compose -f $COMPOSE_FILE_CA up -d 2>&1 ca_$ORG
+    done
     . organizations/fabric-ca/registerEnroll.sh
 
   if [ $ORG_QNTY -gt 1 ] ; then
@@ -246,8 +253,6 @@ function createOrgs() {
       infoln "Creating Orderer Org Identities"
 
       createOrderer
-
-    fi
 
     infoln "Generating CCP files for Org1 and Org2"
     ./organizations/ccp-generate.sh
@@ -361,10 +366,16 @@ function networkUp() {
     createConsortium
   fi
 
-  COMPOSE_FILES="-f ${COMPOSE_FILE_BASE}"
+  if [ $ORG_QNTY == 1 ]; then
+    COMPOSE_FILES="-f ${COMPOSE_FILE_BASE_ORG}"
+    COUCHDB_COMPOSE=$COMPOSE_FILE_COUCH_ORG
+  else
+    COMPOSE_FILES="-f ${COMPOSE_FILE_BASE}"
+    COUCHDB_COMPOSE=$COMPOSE_FILE_COUCH
+  fi
 
   if [ "${DATABASE}" == "couchdb" ]; then
-    COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_COUCH}"
+    COMPOSE_FILES="${COMPOSE_FILES} -f ${COUCHDB_COMPOSE}"
   fi
 
   IMAGE_TAG=$IMAGETAG docker-compose ${COMPOSE_FILES} up -d 2>&1
@@ -389,13 +400,13 @@ function createChannel() {
   # more to create the channel creation transaction and the anchor peer updates.
   # configtx.yaml is mounted in the cli container, which allows us to use it to
   # create the channel artifacts
-  scripts/createChannel.sh $CHANNEL_NAME $CLI_DELAY $MAX_RETRY $VERBOSE -n $ORG_QNTY
+  scripts/createChannel.sh $CHANNEL_NAME $CLI_DELAY $MAX_RETRY $VERBOSE $ORG_QNTY
 }
 
 
 ## Call the script to deploy a chaincode to the channel
 function deployCC() {
-  scripts/deployCC.sh $CHANNEL_NAME $CC_NAME $CC_SRC_PATH $CC_SRC_LANGUAGE $CC_VERSION $CC_SEQUENCE $CC_INIT_FCN $CC_END_POLICY $CC_COLL_CONFIG $CLI_DELAY $MAX_RETRY $VERBOSE
+  scripts/deployCC.sh $CHANNEL_NAME $CC_NAME $CC_SRC_PATH $CC_SRC_LANGUAGE $CC_VERSION $CC_SEQUENCE $CC_INIT_FCN $CC_END_POLICY $CC_COLL_CONFIG $CLI_DELAY $MAX_RETRY $VERBOSE $ORG_QNTY
 
   if [ $? -ne 0 ]; then
     fatalln "Deploying chaincode failed"
@@ -406,6 +417,7 @@ function deployCC() {
 # Tear down running network
 function networkDown() {
   # stop org3 containers also in addition to org1 and org2, in case we were running sample to add org3
+  docker-compose -f $COMPOSE_FILE_BASE_ORG -f $COMPOSE_FILE_COUCH_ORG down --volumes --remove-orphans
   docker-compose -f $COMPOSE_FILE_BASE -f $COMPOSE_FILE_COUCH -f $COMPOSE_FILE_CA down --volumes --remove-orphans
   docker-compose -f $COMPOSE_FILE_COUCH_ORG3 -f $COMPOSE_FILE_ORG3 down --volumes --remove-orphans
   # Don't remove the generated artifacts -- note, the ledgers are always removed
@@ -453,8 +465,12 @@ CC_COLL_CONFIG="../chaincode/collections2.json"
 CC_INIT_FCN="NA"
 # use this as the default docker-compose yaml definition
 COMPOSE_FILE_BASE=docker/docker-compose-test-net.yaml
+# use this as the default docker-compose yaml definition for 1 org
+COMPOSE_FILE_BASE_ORG=docker/docker-compose-test-net-org.yaml
 # docker-compose.yaml file if you are using couchdb
 COMPOSE_FILE_COUCH=docker/docker-compose-couch.yaml
+# docker-compose.yaml file if you are using couchdb for 1 org
+COMPOSE_FILE_COUCH_ORG=docker/docker-compose-couch-org.yaml
 # certificate authorities compose file
 COMPOSE_FILE_CA=docker/docker-compose-ca.yaml
 # use this as the docker compose couch file for org3
