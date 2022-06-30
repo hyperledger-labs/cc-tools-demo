@@ -12,7 +12,6 @@ import (
 	"os/exec"
 	"reflect"
 	"strconv"
-	"time"
 
 	"github.com/cucumber/godog"
 )
@@ -225,7 +224,7 @@ func thereIsARunningTestNetwork(arg1 string) error {
 	}
 
 	// Wait for ccapi
-	err = waitForNetwork("org")
+	err = waitForNetwork("880")
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
@@ -244,28 +243,12 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^there is a library with name "([^"]*)"$`, thereIsALibraryWithName)
 }
 
-func waitForNetwork(org string) error {
-	// Read last line of ccapi log
-	strCmd := "docker logs ccapi." + org + ".example.com | tail -n 1"
+func waitForNetwork(port string) error {
+	for true {
+		_, err := http.Post("http://localhost:"+port+"/api", "application/json", nil)
 
-	wait := true
-
-	for wait {
-		// Execute log command
-		cmd := exec.Command("bash", "-c", strCmd)
-		var outb bytes.Buffer
-		cmd.Stdout = &outb
-
-		err := cmd.Run()
-		if err != nil {
-			return err
-		}
-
-		// If ccapi is listening, finalize execution
-		if outb.String() == "Listening on port 80\n" {
-			wait = false
-		} else {
-			time.Sleep(time.Second)
+		if err == nil {
+			break
 		}
 	}
 
