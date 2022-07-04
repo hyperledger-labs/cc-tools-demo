@@ -9,7 +9,7 @@ var Secret = assets.AssetType{
 	Label:       "Secret",
 	Description: "Secret between Org2 and Org3",
 
-	Readers: []string{"org2MSP", "org3MSP"},
+	Readers: []string{"org2MSP", "org3MSP", "orgMSP"},
 	Props: []assets.AssetProp{
 		{
 			// Primary Key
@@ -17,7 +17,7 @@ var Secret = assets.AssetType{
 			Tag:      "secretName",
 			Label:    "Secret Name",
 			DataType: "string",
-			Writers:  []string{`org2MSP`}, // This means only org2 can create the asset (org3 can edit)
+			Writers:  []string{`org2MSP`, "orgMSP"}, // This means only org2 can create the asset (org3 can edit)
 		},
 		{
 			// Mandatory Property

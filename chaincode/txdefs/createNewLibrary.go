@@ -16,7 +16,7 @@ var CreateNewLibrary = tx.Transaction{
 	Label:       "Create New Library",
 	Description: "Create a New Library",
 	Method:      "POST",
-	Callers:     []string{"$org3MSP"}, // Only org3 can call this transaction
+	Callers:     []string{"$org3MSP", "$orgMSP"}, // Only org3 can call this transaction
 
 	Args: []tx.Argument{
 		{
