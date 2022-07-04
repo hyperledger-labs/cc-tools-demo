@@ -12,6 +12,7 @@ import (
 	"os/exec"
 	"reflect"
 	"strconv"
+	"time"
 
 	"github.com/cucumber/godog"
 )
@@ -335,15 +336,31 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 }
 
 func waitForNetwork(port string) error {
-	for {
-		_, err := http.Post("http://localhost:"+port+"/api", "application/json", nil)
+	channel := make(chan error, 1)
+	t := time.NewTimer(3 * time.Minute)
 
-		if err == nil {
-			break
+	defer t.Stop()
+
+	go func() {
+		for {
+			_, err := http.Post("http://localhost:"+port+"/api", "application/json", nil)
+
+			if err == nil {
+				break
+			}
+
+			time.Sleep(1 * time.Second)
 		}
-	}
 
-	return nil
+		channel <- nil
+	}()
+
+	select {
+	case err := <-channel:
+		return err
+	case <-t.C:
+		return errors.New("Timed out waiting for network")
+	}
 }
 
 func verifyContainer(container string, port string) bool {
