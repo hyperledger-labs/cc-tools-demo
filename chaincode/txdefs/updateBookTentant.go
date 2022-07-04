@@ -16,7 +16,7 @@ var UpdateBookTenant = tx.Transaction{
 	Label:       "Update Book Tenant",
 	Description: "Change the tenant of a book",
 	Method:      "PUT",
-	Callers:     []string{`$org\dMSP`}, // Any orgs can call this transaction
+	Callers:     []string{`$org\dMSP`, "orgMSP"}, // Any orgs can call this transaction
 
 	Args: []tx.Argument{
 		{

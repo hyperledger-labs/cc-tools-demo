@@ -16,7 +16,7 @@ var GetBooksByAuthor = tx.Transaction{
 	Label:       "Get Books by the Author Name",
 	Description: "Return all the books from an author",
 	Method:      "GET",
-	Callers:     []string{"$org1MSP", "$org2MSP"}, // Only org1 and org2 can call this transaction
+	Callers:     []string{"$org1MSP", "$org2MSP", "$orgMSP"}, // Only org1 and org2 can call this transaction
 
 	Args: []tx.Argument{
 		{
