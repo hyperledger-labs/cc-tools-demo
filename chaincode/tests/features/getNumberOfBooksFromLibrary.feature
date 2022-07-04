@@ -4,7 +4,6 @@ Feature: Get Number Of Books From Library
     I want to make a request
 
     Scenario: Query Get Number Of Books From Library that Exists
-        # The first 3 statements will be used by all scenarios on this feature
         Given there is a running "" test network
         And I make a "POST" request to "/api/invoke/createAsset" on port 880 with:
             """
@@ -51,6 +50,7 @@ Feature: Get Number Of Books From Library
             """
 
     Scenario: Query Get Number Of Books From Library that Does Not Exists
+        Given there is a running "" test network
         When I make a "GET" request to "/api/query/getNumberOfBooksFromLibrary" on port 880 with:
             """
             {

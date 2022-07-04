@@ -54,6 +54,7 @@ Feature: Update Book Tentant
             """
 
     Scenario: Update Book With A Not Existing Tentant
+        Given there is a running "" test network
         When I make a "PUT" request to "/api/invoke/updateBookTenant" on port 880 with:
             """
             {
