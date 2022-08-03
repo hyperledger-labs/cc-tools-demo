@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/goledgerdev/cc-tools-demo/chaincode/assettypes"
@@ -74,7 +75,7 @@ func (t *CCDemo) Init(stub shim.ChaincodeStubInterface) (response pb.Response) {
 
 	// Test if argument list is empty
 	if len(args) != 1 {
-		response = shim.Error("the Init method expects 1 argument")
+		response = shim.Error("the Init method expects 1 argument, got: " + strings.Join(args, ", "))
 		response.Status = 400
 		return
 	}
