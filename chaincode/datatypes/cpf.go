@@ -8,6 +8,7 @@ import (
 )
 
 var cpf = assets.DataType{
+	AcceptedFormats: []string{"string"},
 	Parse: func(data interface{}) (string, interface{}, errors.ICCError) {
 		cpf, ok := data.(string)
 		if !ok {
