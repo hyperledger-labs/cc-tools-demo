@@ -1,0 +1,64 @@
+version: "2"
+
+networks:
+  cc-tools-demo-net:
+    external: true
+
+services:
+  ccapi.org1.example.com:
+    image: golang:1.17
+    ports:
+      - 80:80
+    command: bash -c 'go run main.go'
+    volumes:
+      - ./:/rest-server
+      - ../fabric2/organizations:/fabric/organizations
+    logging:
+      options:
+        max-size: 50m  
+    environment:
+      - SDK_PATH=./config/configsdk-org1.yaml
+      - USER=Admin
+      - ORG=org1
+    working_dir: /rest-server
+    container_name: ccapi.org1.example.com
+    networks:
+      - cc-tools-demo-net
+  ccapi.org2.example.com:
+    image: golang:1.17
+    ports:
+      - 81:80
+    command: bash -c 'go run main.go'
+    volumes:
+      - ./:/rest-server
+      - ../fabric2/organizations:/fabric/organizations
+    logging:
+      options:
+        max-size: 50m  
+    environment:
+      - SDK_PATH=./config/configsdk-org2.yaml
+      - USER=Admin
+      - ORG=org2
+    working_dir: /rest-server
+    container_name: ccapi.org2.example.com
+    networks:
+      - cc-tools-demo-net
+  ccapi.org3.example.com:
+    image: golang:1.17
+    ports:
+      - 82:80
+    command: bash -c 'go run main.go'
+    volumes:
+      - ./:/rest-server
+      - ../fabric2/organizations:/fabric/organizations
+    logging:
+      options:
+        max-size: 50m  
+    environment:
+      - SDK_PATH=./config/configsdk-org3.yaml
+      - USER=Admin
+      - ORG=org3
+    working_dir: /rest-server
+    container_name: ccapi.org3.example.com
+    networks:
+      - cc-tools-demo-net
