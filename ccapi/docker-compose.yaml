@@ -20,6 +20,8 @@ services:
       - SDK_PATH=./config/configsdk-org1.yaml
       - USER=Admin
       - ORG=org1
+      - CHANNEL=mainchannel
+      - CCNAME=cc-tools-demo
     working_dir: /rest-server
     container_name: ccapi.org1.example.com
     networks:
@@ -39,6 +41,8 @@ services:
       - SDK_PATH=./config/configsdk-org2.yaml
       - USER=Admin
       - ORG=org2
+      - CHANNEL=mainchannel
+      - CCNAME=cc-tools-demo
     working_dir: /rest-server
     container_name: ccapi.org2.example.com
     networks:
@@ -58,6 +62,8 @@ services:
       - SDK_PATH=./config/configsdk-org3.yaml
       - USER=Admin
       - ORG=org3
+      - CHANNEL=mainchannel
+      - CCNAME=cc-tools-demo
     working_dir: /rest-server
     container_name: ccapi.org3.example.com
     networks:
