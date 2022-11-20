@@ -25,8 +25,5 @@ func Respond(c *gin.Context, res interface{}, status int, err error) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"response": res,
-		"status":   http.StatusOK,
-	})
+	c.JSON(http.StatusOK, res)
 }

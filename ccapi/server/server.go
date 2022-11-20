@@ -7,7 +7,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/goledgerdev/ccapi/common"
 	"github.com/goledgerdev/ccapi/routes"
@@ -28,14 +27,6 @@ func Serve(r *gin.Engine, ctx context.Context) {
 
 	// Register routes and handlers
 	routes.AddRoutesToEngine(r)
-
-	r.Use(cors.New(cors.Config{
-		AllowOrigins: []string{
-			"http://localhost:8080", // Test addresses
-			"*",
-		},
-		AllowMethods: []string{"GET", "POST", "DELETE"},
-	}))
 
 	// Returns a http.Server from provided handler
 	srv := defaultServer(r)

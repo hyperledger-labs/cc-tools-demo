@@ -12,11 +12,7 @@ import (
 func Query(c *gin.Context) {
 	// Get channel information from request
 	req := make(map[string]interface{})
-	err := c.BindJSON(&req)
-	if err != nil {
-		common.Abort(c, http.StatusBadRequest, err)
-		return
-	}
+	c.ShouldBind(&req)
 
 	channelName := c.Param("channelName")
 	chaincodeName := c.Param("chaincodeName")
@@ -34,7 +30,7 @@ func Query(c *gin.Context) {
 		return
 	}
 
-	payload := make(map[string]interface{})
+	var payload interface{}
 	err = json.Unmarshal(res.Payload, &payload)
 	if err != nil {
 		common.Abort(c, http.StatusInternalServerError, err)
