@@ -21,7 +21,7 @@ const query = (
           txId,
           chaincodeId: process.env.CCNAME,
           fcn: txName,
-          targets: [ peers[peerIdx] ],
+          targets: [peers[peerIdx]],
         };
 
         if (transientRequest) {
@@ -35,7 +35,35 @@ const query = (
           .then((response) => {
             const responseObj = response[0] as any
             if (responseObj.status && responseObj.status != 200) {
-              reject(responseObj);
+              if (responseObj.toString().includes("chaincode is not installed")) {
+                console.log("detected uninstalled chaincode")
+                const queryReq: fabricClient.ChaincodeQueryRequest = {
+                  args,
+                  txId,
+                  chaincodeId: process.env.CCNAME,
+                  fcn: txName,
+                  targets: [peers[0]],
+                };
+
+                if (transientRequest) {
+                  const transientMap: fabricClient.TransientMap = {
+                    '@request': transientRequest,
+                  };
+                  queryReq.transientMap = transientMap;
+                }
+
+                channel.queryByChaincode(queryReq, true)
+                  .then((response) => {
+                    const responseObj = response[0] as any
+                    if (responseObj.status && responseObj.status != 200) {
+                      reject(responseObj);
+                    }
+                  }).catch((err) => {
+                    reject(err);
+                  });
+              } else {
+                reject(responseObj);
+              }
             }
             resolve(response[0].toString('utf-8'));
           })
