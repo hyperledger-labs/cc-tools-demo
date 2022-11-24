@@ -34,9 +34,11 @@ const query = (
         channel.queryByChaincode(queryReq, true)
           .then((response) => {
             const responseObj = response[0] as any
+            var ccNotInstalled = false
             if (responseObj.status && responseObj.status != 200) {
               if (responseObj.toString().includes("chaincode is not installed")) {
                 console.log("detected uninstalled chaincode")
+                ccNotInstalled = true
                 const queryReq: fabricClient.ChaincodeQueryRequest = {
                   args,
                   txId,
@@ -58,6 +60,7 @@ const query = (
                     if (responseObj.status && responseObj.status != 200) {
                       reject(responseObj);
                     }
+                    resolve(response[0].toString('utf-8'));
                   }).catch((err) => {
                     reject(err);
                   });
@@ -65,7 +68,9 @@ const query = (
                 reject(responseObj);
               }
             }
-            resolve(response[0].toString('utf-8'));
+            if (!ccNotInstalled) {
+              resolve(response[0].toString('utf-8'));
+            }
           })
           .catch((err) => {
             reject(err);
