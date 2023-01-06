@@ -47,7 +47,7 @@ cd ..
 
 # Start API
 if [ "$GENERATE_CERT" != true ]; then
-  docker-compose -f docker-compose-org1.yaml -p ccapi.org1.example.com up -d
-  docker-compose -f docker-compose-org2.yaml -p ccapi.org2.example.com up -d
-  docker-compose -f docker-compose-org3.yaml -p ccapi.org3.example.com up -d
+  docker-compose -f docker-compose-org1.yaml up -d
+  docker-compose -f docker-compose-org2.yaml up -d
+  docker-compose -f docker-compose-org3.yaml up -d
 fi
