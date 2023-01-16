@@ -1,0 +1,28 @@
+version: "2"
+
+networks:
+  cc-tools-demo-net:
+    external: true
+
+services:
+  ccapi.org.example.com:
+    image: golang:1.17
+    ports:
+      - 80:80
+    command: bash -c 'go run main.go'
+    volumes:
+      - ./:/rest-server
+      - ../fabric2/organizations:/fabric/organizations
+    logging:
+      options:
+        max-size: 50m  
+    environment:
+      - SDK_PATH=./config/configsdk-org.yaml
+      - USER=Admin
+      - ORG=org
+      - CHANNEL=mainchannel
+      - CCNAME=cc-tools-demo
+    working_dir: /rest-server
+    container_name: ccapi.org.example.com
+    networks:
+      - cc-tools-demo-net

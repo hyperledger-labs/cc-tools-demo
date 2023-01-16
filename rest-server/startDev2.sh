@@ -69,13 +69,13 @@ cd ..
 if [ "$GENERATE_CERT" != true ]; then
   if [ $ORG_QTY -gt 1 ]
   then
-    docker-compose -f docker-compose-org1.yaml -p ccapi.org1.example.com up -d
-    docker-compose -f docker-compose-org2.yaml -p ccapi.org2.example.com up -d
+    docker-compose -f docker-compose-org1.yaml up -d
+    docker-compose -f docker-compose-org2.yaml  up -d
     if [ $ORG_QTY -eq 3 ]
     then
-      docker-compose -f docker-compose-org3.yaml -p ccapi.org3.example.com up -d
+      docker-compose -f docker-compose-org3.yaml up -d
     fi
   else 
-    docker-compose -f docker-compose-org.yaml -p ccapi.org.example.com up -d
+    docker-compose -f docker-compose-org.yaml up -d
   fi
 fi

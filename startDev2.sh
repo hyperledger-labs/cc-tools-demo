@@ -26,10 +26,14 @@ if [ ! -d "chaincode/vendor" ]; then
 fi
 cd ./chaincode; go fmt ./...; cd ..
 cd ./fabric2; ./startDev.sh -n $ORG_QNTY; cd ..
-cd ./rest-server; ./startDev2.sh -n $ORG_QNTY; cd ..
 
 ## This brings up API in Node
-# cd ./rest-server; ./startDev2.sh; cd ..
+# cd ./rest-server; ./startDev2.sh -n $ORG_QNTY; cd ..
 
 ## This brings up API in Go
-cd ./ccapi; docker-compose up -d; cd ..
+if [ $ORG_QNTY == 1 ]
+then
+    cd ./ccapi; docker-compose -f docker-compose-1org.yaml up -d; cd ..
+else
+    cd ./ccapi; docker-compose up -d; cd ..
+fi
