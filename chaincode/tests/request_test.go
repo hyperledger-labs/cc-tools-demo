@@ -12,6 +12,7 @@ import (
 	"os/exec"
 	"reflect"
 	"strconv"
+	"time"
 
 	"github.com/cucumber/godog"
 )
@@ -156,14 +157,16 @@ func thereAreBooksWithPrefixByAuthor(ctx context.Context, nBooks int, prefix str
 	var err error
 
 	for i := 1; i <= nBooks; i++ {
+		// Verify if book already exists
 		requestJSON := map[string]interface{}{
-			"asset": []interface{}{
-				map[string]interface{}{
+			"query": map[string]interface{}{
+				"selector": map[string]interface{}{
 					"author":     author,
 					"title":      prefix + strconv.Itoa(i),
 					"@assetType": "book",
 				},
 			},
+			"resolve": true,
 		}
 		jsonStr, e := json.Marshal(requestJSON)
 		if e != nil {
@@ -171,12 +174,44 @@ func thereAreBooksWithPrefixByAuthor(ctx context.Context, nBooks int, prefix str
 		}
 		dataAsBytes := bytes.NewBuffer([]byte(jsonStr))
 
-		if res, err = http.Post("http://localhost:880/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+		if res, err = http.Post("http://localhost/api/query/search", "application/json", dataAsBytes); err != nil {
+			return ctx, err
+		}
+		resBody, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			return ctx, err
+		}
+		res.Body.Close()
+
+		var received map[string]interface{}
+		if err = json.Unmarshal(resBody, &received); err != nil {
 			return ctx, err
 		}
 
-		if res.StatusCode != 200 {
-			return ctx, errors.New("Failed to create book asset")
+		// Create book if it doesnt exists
+		if len(received["result"].([]interface{})) == 0 {
+			requestJSON := map[string]interface{}{
+				"asset": []interface{}{
+					map[string]interface{}{
+						"author":     author,
+						"title":      prefix + strconv.Itoa(i),
+						"@assetType": "book",
+					},
+				},
+			}
+			jsonStr, e := json.Marshal(requestJSON)
+			if e != nil {
+				return ctx, err
+			}
+			dataAsBytes := bytes.NewBuffer([]byte(jsonStr))
+
+			if res, err = http.Post("http://localhost:880/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+				return ctx, err
+			}
+
+			if res.StatusCode != 200 {
+				return ctx, errors.New("Failed to create book asset")
+			}
 		}
 	}
 
@@ -187,13 +222,15 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 	var res *http.Response
 	var err error
 
+	// Verify if library already exists
 	requestJSON := map[string]interface{}{
-		"asset": []interface{}{
-			map[string]interface{}{
+		"query": map[string]interface{}{
+			"selector": map[string]interface{}{
 				"name":       name,
 				"@assetType": "library",
 			},
 		},
+		"resolve": true,
 	}
 	jsonStr, e := json.Marshal(requestJSON)
 	if e != nil {
@@ -201,18 +238,49 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 	}
 	dataAsBytes := bytes.NewBuffer([]byte(jsonStr))
 
-	if res, err = http.Post("http://localhost:880/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+	if res, err = http.Post("http://localhost/api/query/search", "application/json", dataAsBytes); err != nil {
+		return ctx, err
+	}
+	resBody, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return ctx, err
+	}
+	res.Body.Close()
+
+	var received map[string]interface{}
+	if err = json.Unmarshal(resBody, &received); err != nil {
 		return ctx, err
 	}
 
-	if res.StatusCode != 200 {
-		return ctx, errors.New("Failed to create library asset")
+	// Create library if it doesnt exists
+	if len(received["result"].([]interface{})) == 0 {
+		requestJSON = map[string]interface{}{
+			"asset": []interface{}{
+				map[string]interface{}{
+					"name":       name,
+					"@assetType": "library",
+				},
+			},
+		}
+		jsonStr, e = json.Marshal(requestJSON)
+		if e != nil {
+			return ctx, err
+		}
+		dataAsBytes = bytes.NewBuffer([]byte(jsonStr))
+
+		if res, err = http.Post("http://localhost:880/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+			return ctx, err
+		}
+
+		if res.StatusCode != 200 {
+			return ctx, errors.New("Failed to create library asset")
+		}
 	}
 
 	return ctx, nil
 }
 
-func thereIsARunningTestNetwork(arg1 string) error {
+func thereIsARunningTestNetworkFromScratch(arg1 string) error {
 	// Start test network with 1 org only
 	cmd := exec.Command("../../startDev.sh", "-n", "1")
 
@@ -233,24 +301,79 @@ func thereIsARunningTestNetwork(arg1 string) error {
 	return nil
 }
 
+func thereIsARunningTestNetwork(arg1 string) error {
+	if !verifyContainer("api.org.example.com", "3000") {
+		// Start test network with 1 org only
+		cmd := exec.Command("../../startDev.sh", "-n", "1")
+
+		_, err := cmd.Output()
+
+		if err != nil {
+			fmt.Println(err.Error())
+			return err
+		}
+
+		// Wait for ccapi
+		err = waitForNetwork("880")
+		if err != nil {
+			fmt.Println(err.Error())
+			return err
+		}
+	}
+	return nil
+}
+
 func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^I make a "([^"]*)" request to "([^"]*)" on port (\d+) with:$`, iMakeARequestToOnPortWith)
 	ctx.Step(`^the response code should be (\d+)$`, theResponseCodeShouldBe)
 	ctx.Step(`^the response should have:$`, theResponseShouldHave)
 	ctx.Step(`^there is a running "([^"]*)" test network$`, thereIsARunningTestNetwork)
+	ctx.Step(`^there is a running "([^"]*)" test network from scratch$`, thereIsARunningTestNetworkFromScratch)
 	ctx.Step(`^there are (\d+) books with prefix "([^"]*)" by author "([^"]*)"$`, thereAreBooksWithPrefixByAuthor)
 	ctx.Step(`^the "([^"]*)" field should have size (\d+)$`, theFieldShouldHaveSize)
 	ctx.Step(`^there is a library with name "([^"]*)"$`, thereIsALibraryWithName)
 }
 
 func waitForNetwork(port string) error {
-	for true {
-		_, err := http.Post("http://localhost:"+port+"/api", "application/json", nil)
+	channel := make(chan error, 1)
+	t := time.NewTimer(3 * time.Minute)
 
-		if err == nil {
-			break
+	defer t.Stop()
+
+	go func() {
+		for {
+			_, err := http.Post("http://localhost:"+port+"/api", "application/json", nil)
+
+			if err == nil {
+				break
+			}
+
+			time.Sleep(1 * time.Second)
 		}
+
+		channel <- nil
+	}()
+
+	select {
+	case err := <-channel:
+		return err
+	case <-t.C:
+		return errors.New("Timed out waiting for network")
+	}
+}
+
+func verifyContainer(container string, port string) bool {
+	strCmd := "docker inspect --format=\"{{json .Config.ExposedPorts }}\" " + container
+
+	cmd := exec.Command("bash", "-c", strCmd)
+	var outb bytes.Buffer
+	cmd.Stdout = &outb
+
+	err := cmd.Run()
+	if err != nil {
+		return false
 	}
 
-	return nil
+	// If ccapi is the expected container, continue
+	return outb.String() == "{\""+port+"/tcp\":{}}\n"
 }

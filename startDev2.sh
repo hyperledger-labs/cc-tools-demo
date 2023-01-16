@@ -27,3 +27,9 @@ fi
 cd ./chaincode; go fmt ./...; cd ..
 cd ./fabric2; ./startDev.sh -n $ORG_QNTY; cd ..
 cd ./rest-server; ./startDev2.sh -n $ORG_QNTY; cd ..
+
+## This brings up API in Node
+# cd ./rest-server; ./startDev2.sh; cd ..
+
+## This brings up API in Go
+cd ./ccapi; docker-compose up -d; cd ..

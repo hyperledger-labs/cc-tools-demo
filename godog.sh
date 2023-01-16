@@ -8,4 +8,6 @@ if [ "$?" -ne 0 ]; then
   exit 1
 fi
 
-cd ./chaincode/tests; godog run;
+echo "Running GoDog tests..."
+echo "You may be prompted to insert system password for cert generation."
+cd ./chaincode/tests; rm -rf ca channel-artifacts crypto-config; godog run;
