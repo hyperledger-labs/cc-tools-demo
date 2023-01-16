@@ -29,6 +29,17 @@ func Invoke(c *gin.Context) {
 	}
 
 	res, status, err := chaincode.Invoke(channelName, chaincodeName, txName, [][]byte{args})
+	if err != nil {
+		common.Abort(c, http.StatusInternalServerError, err)
+		return
+	}
 
-	common.Respond(c, res, status, err)
+	var payload interface{}
+	err = json.Unmarshal(res.Payload, &payload)
+	if err != nil {
+		common.Abort(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	common.Respond(c, payload, status, err)
 }
