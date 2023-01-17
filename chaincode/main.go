@@ -24,6 +24,8 @@ func SetupCC() error {
 		Title:   header.Title,
 	})
 
+	assets.InitDynamicAssetTypeConfig(assettypes.DynamicAssetTypes)
+
 	tx.InitTxList(txList)
 
 	err := assets.CustomDataTypes(datatypes.CustomDataTypes)

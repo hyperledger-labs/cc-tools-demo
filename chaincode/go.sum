@@ -82,8 +82,8 @@ github.com/golang/protobuf v1.4.1/go.mod h1:U8fpvMrcmy5pZrNK1lt4xCsGvpyWQ/VVv6QD
 github.com/golang/protobuf v1.4.2/go.mod h1:oDoupMAO8OvCJWAcko0GGGIgR6R6ocIYbsSw735rRwI=
 github.com/golang/protobuf v1.4.3 h1:JjCZWpVbqXDqFVmTfYWEVTMIYrL/NPdPSCHPJ0T/raM=
 github.com/golang/protobuf v1.4.3/go.mod h1:oDoupMAO8OvCJWAcko0GGGIgR6R6ocIYbsSw735rRwI=
-github.com/goledgerdev/cc-tools v0.7.3 h1:bV6i/1dLKRNKDkrQ8+UaRsthbCpM9q7FuTDoVhzmIGc=
-github.com/goledgerdev/cc-tools v0.7.3/go.mod h1:QPqedLfWG2UQm4cYZ6CmX8ocxx9akPc/cRugyjoLr08=
+github.com/goledgerdev/cc-tools v0.7.4-0.20230117110417-2111672d39e9 h1:pYE3njmSYp9KXLYfLyoCanXHiYL3gzIk86DtWe6Lxiw=
+github.com/goledgerdev/cc-tools v0.7.4-0.20230117110417-2111672d39e9/go.mod h1:QPqedLfWG2UQm4cYZ6CmX8ocxx9akPc/cRugyjoLr08=
 github.com/google/btree v0.0.0-20180813153112-4030bb1f1f0c/go.mod h1:lNA+9X1NB3Zf8V7Ke586lFgjr2dZNuvo3lPJSGZ5JPQ=
 github.com/google/btree v1.0.0/go.mod h1:lNA+9X1NB3Zf8V7Ke586lFgjr2dZNuvo3lPJSGZ5JPQ=
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
