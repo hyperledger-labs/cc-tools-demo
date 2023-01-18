@@ -29,7 +29,7 @@ services:
   ccapi.org2.example.com:
     image: golang:1.17
     ports:
-      - 81:80
+      - 980:80
     command: bash -c 'go run main.go'
     volumes:
       - ./:/rest-server
@@ -50,7 +50,7 @@ services:
   ccapi.org3.example.com:
     image: golang:1.17
     ports:
-      - 82:80
+      - 1080:80
     command: bash -c 'go run main.go'
     volumes:
       - ./:/rest-server
