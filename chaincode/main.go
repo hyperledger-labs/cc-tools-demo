@@ -62,7 +62,6 @@ func (t *CCDemo) Init(stub shim.ChaincodeStubInterface) (response pb.Response) {
 	defer logTx(stub, time.Now(), &response)
 
 	if assettypes.DynamicAssetTypes.Enabled {
-		// ! Not taking effect on updateCC
 		sw := &sw.StubWrapper{
 			Stub: stub,
 		}
