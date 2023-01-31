@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 	"os"
 	"os/signal"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/goledgerdev/ccapi/chaincode"
 	"github.com/goledgerdev/ccapi/server"
+	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 )
 
 func main() {
@@ -27,10 +29,9 @@ func main() {
 	}))
 	go server.Serve(r, ctx)
 
-	// Register to chaincode events for dynamic asset types updates
-	go chaincode.Event(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "assetListChange", func() {
-		// ? Handle errors?
-		chaincode.Invoke(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "loadAssetTypeList", nil)
+	// Register to chaincode events
+	go chaincode.Event(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "eventName", func(ccEvent *fab.CCEvent) {
+		log.Println("Received CC event: ", ccEvent)
 	})
 
 	quit := make(chan os.Signal, 1)
