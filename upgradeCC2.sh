@@ -11,5 +11,5 @@ version=$1
 sequence=$2
 
 cd fabric2
-./network.sh deployCC -ccn cc-tools-demo -ccp ../chaincode -ccl go -ccv $version -ccs $sequence
+./network.sh deployCC -ccn cc-tools-demo -ccp ../chaincode -ccl go -ccv $version -ccs $sequence -cci init
 cd ..
