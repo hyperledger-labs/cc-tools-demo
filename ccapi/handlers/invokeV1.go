@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/goledgerdev/ccapi/chaincode"
@@ -23,13 +25,57 @@ func InvokeV1(c *gin.Context) {
 	chaincodeName := os.Getenv("CCNAME")
 	txName := c.Param("txname")
 
+	var collections []string
+	collectionsQuery := c.Query("@collections")
+	if collectionsQuery != "" {
+		collectionsByte, err := base64.StdEncoding.DecodeString(collectionsQuery)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "the @collections query parameter must be a base64-encoded JSON array of strings",
+			})
+			return
+		}
+
+		err = json.Unmarshal(collectionsByte, &collections)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "the @collections query parameter must be a base64-encoded JSON array of strings",
+			})
+			return
+		}
+	} else {
+		collectionsQuery := c.QueryArray("collections")
+		if len(collectionsQuery) > 0 {
+			collections = collectionsQuery
+		} else {
+			collections = []string{c.Query("collections")}
+		}
+	}
+
+	transientMap := make(map[string]interface{})
+	for key, value := range req {
+		if key[0] == '~' {
+			keyTrimmed := strings.TrimPrefix(key, "~")
+			transientMap[keyTrimmed] = value
+			delete(req, key)
+		}
+	}
+
 	args, err := json.Marshal(req)
 	if err != nil {
 		common.Abort(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	res, status, err := chaincode.Invoke(channelName, chaincodeName, txName, [][]byte{args})
+	transientMapByte, err := json.Marshal(transientMap)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	res, status, err := chaincode.Invoke(channelName, chaincodeName, txName, [][]byte{args}, transientMapByte)
 	if err != nil {
 		common.Abort(c, http.StatusInternalServerError, err)
 		return
