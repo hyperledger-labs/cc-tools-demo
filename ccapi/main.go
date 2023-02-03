@@ -23,7 +23,7 @@ func main() {
 			"http://localhost:8080", // Test addresses
 			"*",
 		},
-		AllowMethods:     []string{"GET", "POST", "DELETE"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders:     []string{"Authorization", "Origin", "Content-Type"},
 		AllowCredentials: true,
 	}))
