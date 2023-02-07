@@ -10,6 +10,7 @@ import (
 	"github.com/goledgerdev/cc-tools-demo/chaincode/datatypes"
 	"github.com/goledgerdev/cc-tools-demo/chaincode/header"
 	"github.com/goledgerdev/cc-tools/assets"
+	sw "github.com/goledgerdev/cc-tools/stubwrapper"
 	tx "github.com/goledgerdev/cc-tools/transactions"
 
 	"github.com/hyperledger/fabric-chaincode-go/shim"
@@ -23,6 +24,8 @@ func SetupCC() error {
 		Colors:  header.Colors,
 		Title:   header.Title,
 	})
+
+	assets.InitDynamicAssetTypeConfig(assettypes.DynamicAssetTypes)
 
 	tx.InitTxList(txList)
 
@@ -57,6 +60,17 @@ type CCDemo struct{}
 func (t *CCDemo) Init(stub shim.ChaincodeStubInterface) (response pb.Response) {
 	// Defer logging function
 	defer logTx(stub, time.Now(), &response)
+
+	if assettypes.DynamicAssetTypes.Enabled {
+		sw := &sw.StubWrapper{
+			Stub: stub,
+		}
+		err := assets.RestoreAssetList(sw, true)
+		if err != nil {
+			response = err.GetErrorResponse()
+			return
+		}
+	}
 
 	err := assets.StartupCheck()
 	if err != nil {
