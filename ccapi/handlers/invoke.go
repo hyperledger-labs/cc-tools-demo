@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -20,9 +19,8 @@ func Invoke(c *gin.Context) {
 		common.Abort(c, http.StatusBadRequest, err)
 		return
 	}
-
-	channelName := os.Getenv("CHANNEL")
-	chaincodeName := os.Getenv("CCNAME")
+	channelName := c.Param("channelName")
+	chaincodeName := c.Param("chaincodeName")
 	txName := c.Param("txname")
 
 	var collections []string
