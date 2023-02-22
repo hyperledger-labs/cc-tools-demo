@@ -2,12 +2,11 @@
 
 ## Directory Structure
 
-- `/fabric2`: Fabric network v2.2 used as a test environment
+- `/fabric`: Fabric network v2.2 used as a test environment
 - `/chaincode`: chaincode-related files
 - `/ccapi`: chaincode REST API in Golang project
 
 The following directories are deprecated:
-- `/fabric`: Fabric network v1.4 used as a test environment (deprecated)
 - `/rest-server`: chaincode REST API in Node.js project (deprecated)
 
 ## Development

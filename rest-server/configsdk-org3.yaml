@@ -103,15 +103,15 @@ organizations:
 #
 orderers:
   orderer0:
-    url: grpcs://orderer0.org3.example.com:7050
+    url: grpcs://orderer.example.com:7050
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
     grpcOptions:
-      ssl-target-name-override: orderer0.org3.example.com
+      ssl-target-name-override: orderer.example.com
 
     tlsCACerts:
-      path: /certs/ca.crt
+      path: /certs/orderertls.crt
 
 #
 # List of peers to send various requests to, including endorsement, query

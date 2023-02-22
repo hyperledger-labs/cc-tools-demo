@@ -60,7 +60,7 @@ curl -k -X POST \
 
 printf '\n\nCreate book\n'
 curl -k -X POST \
-  "http://${HOST}:980/api/invoke/createAsset" \
+  "http://${HOST}:81/api/invoke/createAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -134,7 +134,7 @@ curl -k -X POST \
 
 printf '\n\nDelete book\n'
 curl -k -X DELETE \
-  "http://${HOST}:980/api/invoke/deleteAsset" \
+  "http://${HOST}:81/api/invoke/deleteAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{

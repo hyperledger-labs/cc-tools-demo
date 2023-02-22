@@ -13,14 +13,14 @@ services:
     command: bash -c 'npm start; sleep infinity'
     volumes:
       - ./:/rest-server
-      - ../fabric2/organizations/rest-certs/org1.example.com:/certs
+      - ../fabric/organizations/rest-certs/org1.example.com:/certs
     logging:
       options:
         max-size: 50m  
     env_file:
       - .env
     environment:
-      - CONFIG_SDK_FILE=configsdk2-org1.yaml
+      - CONFIG_SDK_FILE=configsdk-org1.yaml
       - DOCKER=1
       - CHANNEL=mainchannel
       - CCNAME=cc-tools-demo

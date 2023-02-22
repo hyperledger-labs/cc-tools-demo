@@ -12,7 +12,7 @@ services:
     command: bash -c 'go run main.go'
     volumes:
       - ./:/rest-server
-      - ../fabric2/organizations:/fabric/organizations
+      - ../fabric/organizations:/fabric/organizations
     logging:
       options:
         max-size: 50m  
