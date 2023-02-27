@@ -6,22 +6,32 @@ else
   HOST=$1
 fi
 
+CCAPI_ORG1_PORT=80
+CCAPI_ORG2_PORT=81
+CCAPI_ORG3_PORT=82
+
+if [[ $(docker container ls -f name=ccapi.org --format '{{.Names}}') == "ccapi.org.example.com" ]]
+then
+  CCAPI_ORG2_PORT=80
+  CCAPI_ORG3_PORT=80
+fi
+
 printf "Sending requests to ${HOST}"
 
 printf '\n\nGet Header\n';
 curl -k \
-  "http://${HOST}:80/api/query/getHeader" \
+  "http://${HOST}:${CCAPI_ORG1_PORT}/api/query/getHeader" \
   -H 'cache-control: no-cache'
 
 
 printf '\n\nGet Transactions\n';
 curl -k \
-  "http://${HOST}:80/api/query/getTx" \
+  "http://${HOST}:${CCAPI_ORG1_PORT}/api/query/getTx" \
   -H 'cache-control: no-cache'
 
 printf '\n\nGet CreateAsset definition\n';
 curl -k -X POST \
-  "http://${HOST}:80/api/query/getTx" \
+  "http://${HOST}:${CCAPI_ORG1_PORT}/api/query/getTx" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -31,12 +41,12 @@ curl -k -X POST \
 
 printf '\n\nGet Asset Types\n';
 curl -k \
-  "http://${HOST}:80/api/query/getSchema/" \
+  "http://${HOST}:${CCAPI_ORG1_PORT}/api/query/getSchema/" \
   -H 'cache-control: no-cache'
 
 printf '\n\nGet person schema\n';
 curl -k -X POST \
-  "http://${HOST}:80/api/query/getSchema" \
+  "http://${HOST}:${CCAPI_ORG1_PORT}/api/query/getSchema" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -45,7 +55,7 @@ curl -k -X POST \
 
 printf '\n\nCreate person\n'
 curl -k -X POST \
-  "http://${HOST}/api/invoke/createAsset" \
+  "http://${HOST}:${CCAPI_ORG1_PORT}/api/invoke/createAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -60,7 +70,7 @@ curl -k -X POST \
 
 printf '\n\nCreate book\n'
 curl -k -X POST \
-  "http://${HOST}:81/api/invoke/createAsset" \
+  "http://${HOST}:${CCAPI_ORG2_PORT}/api/invoke/createAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -80,7 +90,7 @@ curl -k -X POST \
 
 printf '\n\nRead book\n';
 curl -k -X POST \
-  "http://${HOST}:80/api/query/readAsset" \
+  "http://${HOST}:${CCAPI_ORG1_PORT}/api/query/readAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -108,7 +118,7 @@ curl -k -X PUT \
 
 printf '\n\nRead person to check if it was updated\n';
 curl -k -X POST \
-  "http://${HOST}:80/api/query/readAsset" \
+  "http://${HOST}:${CCAPI_ORG1_PORT}/api/query/readAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -134,7 +144,7 @@ curl -k -X POST \
 
 printf '\n\nDelete book\n'
 curl -k -X DELETE \
-  "http://${HOST}:81/api/invoke/deleteAsset" \
+  "http://${HOST}:${CCAPI_ORG2_PORT}/api/invoke/deleteAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -147,7 +157,7 @@ curl -k -X DELETE \
 
 printf '\n\nDelete person\n'
 curl -k -X DELETE \
-  "http://${HOST}:80/api/invoke/deleteAsset" \
+  "http://${HOST}:${CCAPI_ORG1_PORT}/api/invoke/deleteAsset" \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
