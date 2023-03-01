@@ -37,17 +37,17 @@ fi
 
 if [ $ORG_QTY -gt 1 ]
 then
-  sed "s/PORT/${SED_PORT}/g" template/docker-compose-org1-template.yaml > docker-compose-org1.yaml
-  sed "s/PORT/${SED_PORT}/g" template/docker-compose-org2-template.yaml > docker-compose-org2.yaml
-  docker-compose -f docker-compose-org1.yaml -f docker-compose-org2.yaml -f docker-compose-temp.yaml down --volumes
+  sed "s/PORT/${SED_PORT}/g" template/docker-compose-org1-template2.yaml > docker-compose-org1.yaml
+  sed "s/PORT/${SED_PORT}/g" template/docker-compose-org2-template2.yaml > docker-compose-org2.yaml
+  docker-compose -f docker-compose-org1.yaml -f docker-compose-org2.yaml down --volumes
   if [ $ORG_QTY -eq 3 ]
   then
-    sed "s/PORT/${SED_PORT}/g" template/docker-compose-org3-template.yaml > docker-compose-org3.yaml
+    sed "s/PORT/${SED_PORT}/g" template/docker-compose-org3-template2.yaml > docker-compose-org3.yaml
     docker-compose docker-compose-org3.yaml down --volumes
   fi
 else
-  sed "s/PORT/${SED_PORT}/g" template/docker-compose-org-template.yaml > docker-compose-org.yaml
-  docker-compose -f docker-compose-org.yaml docker-compose-temp.yaml down --volumes
+  sed "s/PORT/${SED_PORT}/g" template/docker-compose-org-template2.yaml > docker-compose-org.yaml
+  docker-compose -f docker-compose-org.yaml down --volumes
 fi
 
 cd scripts
@@ -67,11 +67,10 @@ cd ..
 
 # Start API
 if [ "$GENERATE_CERT" != true ]; then
-  docker-compose -f docker-compose-temp.yaml up >> /dev/null
   if [ $ORG_QTY -gt 1 ]
   then
     docker-compose -f docker-compose-org1.yaml up -d
-    docker-compose -f docker-compose-org2.yaml up -d
+    docker-compose -f docker-compose-org2.yaml  up -d
     if [ $ORG_QTY -eq 3 ]
     then
       docker-compose -f docker-compose-org3.yaml up -d

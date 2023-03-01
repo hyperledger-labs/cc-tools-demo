@@ -6,13 +6,13 @@ networks:
 
 services:
   ccapi.org.example.com:
-    image: golang:1.17
+    image: golang:1.18
     ports:
       - 80:80
     command: bash -c 'go run main.go'
     volumes:
       - ./:/rest-server
-      - ../fabric2/organizations:/fabric/organizations
+      - ../fabric/organizations:/fabric/organizations
     logging:
       options:
         max-size: 50m  
