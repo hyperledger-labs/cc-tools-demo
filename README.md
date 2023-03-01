@@ -38,41 +38,38 @@ $ cd chaincode; go mod vendor; cd ..
 $ cd ccapi; go mod vendor; cd ..
 ```
 
-## Deploying test env in v1.4
-
-After installing, use the script `./startDev.sh` in the root folder to start the development environment. It will
-start all components of the project with 3 organizations.
-To start the development network with only 1 organization, run `$ ./startDev.sh -n 1`.
-
-To apply chaincode changes, run `$ ./upgradeCC.sh <version>` with a version higher than the current one (starts with 0.1).
-To upgrade a chaincode with only one organization, run `$ ./upgradeCC.sh <version> -n 1`
-
-To apply CC API changes, run `$ ./reloadCCAPI.sh`.
 
 ## Deploying test env in v2.2
 
-After installing, use the script `./startDev2.sh` in the root folder to start the development environment. It will
-start all components of the project with 3 organizations. Deploying with only 1 org will come in a future version.
+After installing, use the script `./startDev.sh` in the root folder to start the development environment. It will
+start all components of the project with 3 organizations.
 
-To apply chaincode changes, run `$ ./upgradeCC2.sh <version> <sequence>` with a version higher than the current one (starts with 0.1).
+If you want to deploy with 1 organization, run the command `./startDev.sh -n 1`.
+
+To apply chaincode changes, run `$ ./upgradeCC2.sh <version> <sequence>` with a version higher than the current one (starts with 0.1). Append `-n 1` to the command if running with 1 organization.
 
 To apply CC API changes, run `$ ./reloadCCAPI.sh`.
 
 ## Observations for Chaincode API
 
-If you want to deploy the Node.js Chaincode API with the scripts that deploy v2.2 you can uncomment `startDev2.sh:L15` and comment `startDev2.sh:L18`. 
+If you want to deploy the Node.js Chaincode API with the scripts that deploy v2.2 you can uncomment `startDev.sh:L31` and comment `startDev2.sh:L34:39`. 
 
 ```sh
 ## This brings up API in Node
-# cd ./rest-server; ./startDev2.sh; cd ..
+# cd ./rest-server; ./startDev.sh -n $ORG_QNTY; cd ..
 
 ## This brings up API in Go
-cd ./ccapi; docker-compose up -d; cd ..
+if [ $ORG_QNTY == 1 ]
+then
+    cd ./ccapi; docker-compose -f docker-compose-1org.yaml up -d; cd ..
+else
+    cd ./ccapi; docker-compose up -d; cd ..
+fi
 ```
 
 ## Automated tryout and test
 
-To test transactions after starting all components, run `$ ./tryout.sh`.
+To test transactions after starting all components, run `$ ./tryout.sh`. 
 
 To test transactions using the godog tool, run `$ ./godog.sh`.
 
