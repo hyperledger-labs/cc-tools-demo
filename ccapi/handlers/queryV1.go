@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"os"
@@ -11,19 +12,25 @@ import (
 )
 
 func QueryV1(c *gin.Context) {
-	// Get channel information from request
-	req := make(map[string]interface{})
-	c.ShouldBind(&req)
+	var args []byte
+	var err error
+
+	if c.Request.Method == "GET" {
+		request := c.Query("@request")
+		args, _ = base64.StdEncoding.DecodeString(request)
+	} else if c.Request.Method == "POST" {
+		req := make(map[string]interface{})
+		c.ShouldBind(&req)
+		args, err = json.Marshal(req)
+		if err != nil {
+			common.Abort(c, http.StatusInternalServerError, err)
+			return
+		}
+	}
 
 	channelName := os.Getenv("CHANNEL")
 	chaincodeName := os.Getenv("CCNAME")
 	txName := c.Param("txname")
-
-	args, err := json.Marshal(req)
-	if err != nil {
-		common.Abort(c, http.StatusInternalServerError, err)
-		return
-	}
 
 	res, status, err := chaincode.Query(channelName, chaincodeName, txName, [][]byte{args})
 	if err != nil {
