@@ -17,7 +17,10 @@ func Invoke(channelName, ccName, txName string, txArgs [][]byte, transientReques
 	}
 
 	// Execute chaincode with channel's client
-	rq := channel.Request{ChaincodeID: ccName, Fcn: txName, Args: txArgs}
+	rq := channel.Request{ChaincodeID: ccName, Fcn: txName}
+	if len(txArgs) > 0 {
+		rq.Args = txArgs
+	}
 
 	if len(transientRequest) != 0 {
 		transientMap := make(map[string][]byte)

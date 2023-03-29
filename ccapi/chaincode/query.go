@@ -17,7 +17,11 @@ func Query(channelName, ccName, txName string, txArgs [][]byte) (*channel.Respon
 	}
 
 	// Execute chaincode with channel's client
-	rq := channel.Request{ChaincodeID: ccName, Fcn: txName, Args: txArgs}
+	rq := channel.Request{ChaincodeID: ccName, Fcn: txName}
+	if len(txArgs) > 0 {
+		rq.Args = txArgs
+	}
+
 	res, err := fabMngr.Client.Query(rq, channel.WithRetry(retry.DefaultChannelOpts))
 
 	if err != nil {
