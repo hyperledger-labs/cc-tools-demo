@@ -16,7 +16,9 @@ func Query(c *gin.Context) {
 
 	if c.Request.Method == "GET" {
 		request := c.Query("@request")
-		args, _ = base64.StdEncoding.DecodeString(request)
+		if request != "" {
+			args, _ = base64.StdEncoding.DecodeString(request)
+		}
 	} else if c.Request.Method == "POST" {
 		req := make(map[string]interface{})
 		c.ShouldBind(&req)
@@ -31,7 +33,12 @@ func Query(c *gin.Context) {
 	chaincodeName := c.Param("chaincodeName")
 	txName := c.Param("txname")
 
-	res, status, err := chaincode.Query(channelName, chaincodeName, txName, [][]byte{args})
+	argList := [][]byte{}
+	if args != nil {
+		argList = append(argList, args)
+	}
+
+	res, status, err := chaincode.Query(channelName, chaincodeName, txName, argList)
 	if err != nil {
 		common.Abort(c, http.StatusInternalServerError, err)
 		return

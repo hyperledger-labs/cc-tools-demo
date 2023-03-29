@@ -75,7 +75,12 @@ func InvokeV1(c *gin.Context) {
 		return
 	}
 
-	res, status, err := chaincode.Invoke(channelName, chaincodeName, txName, [][]byte{args}, transientMapByte)
+	argList := [][]byte{}
+	if args != nil {
+		argList = append(argList, args)
+	}
+
+	res, status, err := chaincode.Invoke(channelName, chaincodeName, txName, argList, transientMapByte)
 	if err != nil {
 		common.Abort(c, http.StatusInternalServerError, err)
 		return
