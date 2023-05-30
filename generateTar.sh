@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 # Default values for the flags
 FLAG_CCAPI=false
