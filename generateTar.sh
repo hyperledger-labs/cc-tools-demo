@@ -33,7 +33,7 @@ while [[ $# -gt 0 ]]; do
             fi
             ;;
         --help | -h)
-            echo "Usage: ./generateTar.sh [--ccapi] [--label <label>]"
+            echo "Usage: ./generateTar.sh [--ccapi] [--label <label>] [--name <name>]"
             echo "  --ccapi, -c: Include rest-server in the tar file. Default is false."
             echo "  --help , -h: Show this help message."
             echo "  --label, -l: Label to be used for the chaincode package. Default is 1.0."
