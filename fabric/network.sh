@@ -18,7 +18,7 @@ fi
 export FABRIC_CFG_PATH=${PWD}/configtx
 export VERBOSE=false
 # export COMPOSE_PROJECT_NAME=net
-export IMAGE_TAG=2.2.3
+export IMAGE_TAG=2.4.7
 export SYS_CHANNEL=sys-channel
 
 . scripts/utils.sh
@@ -485,7 +485,7 @@ CC_VERSION="0.1"
 # Chaincode definition sequence
 CC_SEQUENCE=1
 # default image tag
-IMAGETAG="2.2.3"
+IMAGETAG="2.4.7"
 # default ca image tag
 CA_IMAGETAG="latest"
 # default database
