@@ -7,6 +7,8 @@ import (
 )
 
 func addCCRoutes(rg *gin.RouterGroup) {
+	rg.POST("/gateway/:channelName/:chaincodeName/invoke/:txname", handlers.InvokeGateway)
+
 	rg.POST("/:channelName/:chaincodeName/invoke/:txname", handlers.Invoke)
 	rg.PUT("/:channelName/:chaincodeName/invoke/:txname", handlers.Invoke)
 	rg.DELETE("/:channelName/:chaincodeName/invoke/:txname", handlers.Invoke)
