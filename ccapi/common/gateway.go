@@ -4,6 +4,7 @@ import (
 	"crypto/x509"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/hyperledger/fabric-gateway/pkg/client"
@@ -24,7 +25,7 @@ func CreateGrpcConnection(endpoint string) (*grpc.ClientConn, error) {
 	if gatewayTLSCredentials == nil {
 		gatewayServerName := os.Getenv("FABRIC_GATEWAY_NAME")
 
-		cred, err := createTransportCredential(GetTLSCert(), gatewayServerName)
+		cred, err := createTransportCredential(GetTLSCACert(), gatewayServerName)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to create tls credentials")
 		}
@@ -39,7 +40,7 @@ func CreateGrpcConnection(endpoint string) (*grpc.ClientConn, error) {
 func CreateGatewayConnection(grpcConn *grpc.ClientConn) (*client.Gateway, error) {
 	// Check identity was created
 	if gatewayId == nil {
-		id, err := newIdentity(GetTLSCert(), GetMSPID())
+		id, err := newIdentity(getSignCert(os.Getenv("USER")), GetMSPID())
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to create new identity")
 		}
@@ -48,7 +49,7 @@ func CreateGatewayConnection(grpcConn *grpc.ClientConn) (*client.Gateway, error)
 
 	// Check sign function was created
 	if gatewaySign == nil {
-		sign, err := newSign(GetTLSKey())
+		sign, err := newSign(getSignKey(os.Getenv("USER")))
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to create new sign function")
 		}
@@ -123,4 +124,18 @@ func loadCertificate(filename string) (*x509.Certificate, error) {
 		return nil, fmt.Errorf("failed to read certificate file: %w", err)
 	}
 	return identity.CertificateFromPEM(certificatePEM)
+}
+
+func getSignCert(user string) string {
+	cryptoPath := GetCryptoPath()
+	filename := user + "@" + os.Getenv("ORG") + "." + os.Getenv("DOMAIN") + "-cert.pem"
+
+	return strings.Replace(cryptoPath, "{username}", user, 1) + "/signcerts/" + filename
+}
+
+func getSignKey(user string) string {
+	cryptoPath := GetCryptoPath()
+	filename := "priv_sk"
+
+	return strings.Replace(cryptoPath, "{username}", user, 1) + "/keystore/" + filename
 }
