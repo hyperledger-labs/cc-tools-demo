@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -117,7 +118,7 @@ func GetClientOrg() string {
 	return orgName
 }
 
-func GetTLSCert() string {
+func GetCryptoPath() string {
 	sdk, err := GetSDK()
 	if err != nil {
 		return ""
@@ -128,7 +129,33 @@ func GetTLSCert() string {
 		return ""
 	}
 
-	i, ok := cfg.Lookup("client.tlsCerts.client.certfile")
+	i, ok := cfg.Lookup("client.cryptoconfig.path")
+	if !ok {
+		return ""
+	}
+	basePath, _ := i.(string)
+
+	i, ok = cfg.Lookup(fmt.Sprintf("organizations.%s.cryptoPath", os.Getenv("ORG")))
+	if !ok {
+		return ""
+	}
+
+	certPath, _ := i.(string)
+	return basePath + "/" + certPath
+}
+
+func GetTLSCACert() string {
+	sdk, err := GetSDK()
+	if err != nil {
+		return ""
+	}
+
+	cfg, err := sdk.Sdk.Config()
+	if err != nil {
+		return ""
+	}
+
+	i, ok := cfg.Lookup("client.tlsCerts.client.cacertfile")
 	if !ok {
 		return ""
 	}
@@ -137,7 +164,7 @@ func GetTLSCert() string {
 	return certPath
 }
 
-func GetTLSKey() string {
+func GetMSPID() string {
 	sdk, err := GetSDK()
 	if err != nil {
 		return ""
@@ -148,27 +175,13 @@ func GetTLSKey() string {
 		return ""
 	}
 
-	i, ok := cfg.Lookup("client.tlsCerts.client.keyfile")
+	i, ok := cfg.Lookup(fmt.Sprintf("organizations.%s.mspid", os.Getenv("ORG")))
 	if !ok {
 		return ""
 	}
 
-	keyPath, _ := i.(string)
-	return keyPath
-}
-
-func GetMSPID() string {
-	sdk, err := GetSDK()
-	if err != nil {
-		return ""
-	}
-
-	client, err := sdk.Sdk.Context()()
-	if err != nil {
-		return ""
-	}
-
-	return client.Identifier().MSPID
+	mspid, _ := i.(string)
+	return mspid
 }
 
 // Closes sdk instance if it was created
