@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/goledgerdev/ccapi/chaincode"
@@ -11,7 +12,21 @@ import (
 	"github.com/pkg/errors"
 )
 
-func InvokeGateway(c *gin.Context) {
+func InvokeGatewayDefault(c *gin.Context) {
+	channelName := os.Getenv("CHANNEL")
+	chaincodeName := os.Getenv("CCNAME")
+
+	invokeGateway(c, channelName, chaincodeName)
+}
+
+func InvokeGatewayCustom(c *gin.Context) {
+	channelName := c.Param("channelName")
+	chaincodeName := c.Param("chaincodeName")
+
+	invokeGateway(c, channelName, chaincodeName)
+}
+
+func invokeGateway(c *gin.Context, channelName, chaincodeName string) {
 	// Get channel information from request
 	req := make(map[string]interface{})
 	err := c.BindJSON(&req)
@@ -20,8 +35,6 @@ func InvokeGateway(c *gin.Context) {
 		return
 	}
 
-	channelName := c.Param("channelName")
-	chaincodeName := c.Param("chaincodeName")
 	txName := c.Param("txname")
 
 	var collections []string
