@@ -49,8 +49,8 @@ func queryGateway(c *gin.Context, channelName, chaincodeName string) {
 
 	// Query
 	result, err := chaincode.QueryGateway(channelName, chaincodeName, txName, string(args))
-	status := http.StatusInternalServerError // TODO: Improve getting error status
 	if err != nil {
+		err, status := common.ParseError(err)
 		common.Abort(c, status, err)
 		return
 	}
@@ -63,5 +63,5 @@ func queryGateway(c *gin.Context, channelName, chaincodeName string) {
 		return
 	}
 
-	common.Respond(c, payload, status, err)
+	common.Respond(c, payload, http.StatusOK, nil)
 }

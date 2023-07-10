@@ -1,17 +1,23 @@
 package common
 
 import (
+	"context"
 	"crypto/x509"
 	"fmt"
+	"net/http"
 	"os"
+	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/hyperledger/fabric-gateway/pkg/client"
 	"github.com/hyperledger/fabric-gateway/pkg/identity"
+	"github.com/hyperledger/fabric-protos-go-apiv2/gateway"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/status"
 )
 
 var (
@@ -116,6 +122,63 @@ func newSign(keyPath string) (identity.Sign, error) {
 	}
 
 	return sign, nil
+}
+
+// Returns error and status code
+func ParseError(err error) (error, int) {
+	var errMsg string
+
+	switch err := err.(type) {
+	case *client.EndorseError:
+		errMsg = "endorse error for transaction"
+	case *client.SubmitError:
+		errMsg = "submit error for transaction"
+	case *client.CommitStatusError:
+		if errors.Is(err, context.DeadlineExceeded) {
+			errMsg = "timeout waiting for transaction commit status"
+		} else {
+			errMsg = "error obtaining commit status for transaction"
+		}
+	case *client.CommitError:
+		errMsg = "transaction failed to commit"
+	default:
+		errMsg = "unexpected error type:" + err.Error()
+	}
+
+	statusErr := status.Convert(err)
+
+	details := statusErr.Details()
+	if len(details) == 0 {
+		return errors.New(errMsg), http.StatusInternalServerError
+	}
+
+	for _, detail := range details {
+		switch detail := detail.(type) {
+		case *gateway.ErrorDetail:
+			status, msg := extractStatusAndMessage(detail.Message)
+			return errors.New(msg), status
+		}
+	}
+
+	return errors.New(errMsg), http.StatusInternalServerError
+}
+
+func extractStatusAndMessage(msg string) (int, string) {
+	pattern := `chaincode response (\b(\d{3})\b), `
+	reg := regexp.MustCompile(pattern)
+	matches := reg.FindStringSubmatch(msg)
+
+	if len(matches) == 0 {
+		return http.StatusInternalServerError, msg
+	}
+
+	errMsg := strings.Replace(msg, matches[0], "", 1)
+	status, err := strconv.Atoi(matches[1])
+	if err != nil {
+		status = http.StatusInternalServerError
+	}
+
+	return status, errMsg
 }
 
 func loadCertificate(filename string) (*x509.Certificate, error) {
