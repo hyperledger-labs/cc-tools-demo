@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/goledgerdev/ccapi/chaincode"
@@ -37,31 +38,39 @@ func invokeGateway(c *gin.Context, channelName, chaincodeName string) {
 
 	txName := c.Param("txname")
 
-	var collections []string
-	collectionsQuery := c.Query("@collections")
-	if collectionsQuery != "" {
-		collectionsByte, err := base64.StdEncoding.DecodeString(collectionsQuery)
+	// Get endorsers names
+	var endorsers []string
+	endorsersQuery := c.Query("@endorsers")
+	if endorsersQuery != "" {
+		endorsersByte, err := base64.StdEncoding.DecodeString(endorsersQuery)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "the @collections query parameter must be a base64-encoded JSON array of strings",
+				"error": "the @endorsers query parameter must be a base64-encoded JSON array of strings",
 			})
 			return
 		}
 
-		err = json.Unmarshal(collectionsByte, &collections)
+		err = json.Unmarshal(endorsersByte, &endorsers)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "the @collections query parameter must be a base64-encoded JSON array of strings",
+				"error": "the @endorsers query parameter must be a base64-encoded JSON array of strings",
 			})
 			return
 		}
-	} else {
-		collectionsQuery := c.QueryArray("collections")
-		if len(collectionsQuery) > 0 {
-			collections = collectionsQuery
-		} else {
-			collections = []string{c.Query("collections")}
+	}
+
+	// Make transient request
+	transientMap := make(map[string][]byte)
+	for key, value := range req {
+		if key[0] == '~' {
+			keyTrimmed := strings.TrimPrefix(key, "~")
+			byteValue, _ := json.Marshal(value)
+			transientMap[keyTrimmed] = byteValue
+			delete(req, key)
 		}
+	}
+	if len(transientMap) == 0 {
+		transientMap = nil
 	}
 
 	// Make args
@@ -72,7 +81,7 @@ func invokeGateway(c *gin.Context, channelName, chaincodeName string) {
 	}
 
 	// Invoke
-	result, err := chaincode.InvokeGateway(channelName, chaincodeName, txName, string(reqBytes), nil, nil)
+	result, err := chaincode.InvokeGateway(channelName, chaincodeName, txName, string(reqBytes), transientMap, endorsers)
 	if err != nil {
 		err, status := common.ParseError(err)
 		common.Abort(c, status, err)

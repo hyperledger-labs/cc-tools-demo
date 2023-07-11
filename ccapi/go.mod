@@ -13,7 +13,7 @@ require (
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/hyperledger/fabric-config v0.1.0 // indirect
 	github.com/hyperledger/fabric-gateway v1.2.2
-	github.com/hyperledger/fabric-protos-go-apiv2 v0.2.0 // indirect
+	github.com/hyperledger/fabric-protos-go-apiv2 v0.2.0
 	github.com/hyperledger/fabric-sdk-go v1.0.0
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/mattn/go-isatty v0.0.18 // indirect

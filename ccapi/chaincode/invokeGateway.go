@@ -31,11 +31,16 @@ func InvokeGateway(channelName, chaincodeName, txName, args string, transientArg
 	contract := network.GetContract(chaincodeName)
 
 	// Invoke transaction
-	if transientArgs != nil {
+	if transientArgs != nil && len(endorsingOrgs) > 0 {
 		return contract.Submit(txName,
 			client.WithArguments(args),
 			client.WithTransient(transientArgs),
 			client.WithEndorsingOrganizations(endorsingOrgs...),
+		)
+	} else if transientArgs != nil {
+		return contract.Submit(txName,
+			client.WithArguments(args),
+			client.WithTransient(transientArgs),
 		)
 	}
 
