@@ -28,7 +28,7 @@ func InvokeGatewayCustom(c *gin.Context) {
 }
 
 func invokeGateway(c *gin.Context, channelName, chaincodeName string) {
-	// Get channel information from request
+	// Get request body
 	req := make(map[string]interface{})
 	err := c.BindJSON(&req)
 	if err != nil {

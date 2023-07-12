@@ -29,7 +29,7 @@ func queryGateway(c *gin.Context, channelName, chaincodeName string) {
 	var args []byte
 	var err error
 
-	// Get channel information from request
+	// Get request data
 	if c.Request.Method == "GET" {
 		request := c.Query("@request")
 		if request != "" {
