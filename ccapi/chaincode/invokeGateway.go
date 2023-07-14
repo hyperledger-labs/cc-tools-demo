@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func InvokeGateway(channelName, chaincodeName, txName, args string, transientArgs map[string][]byte, endorsingOrgs []string) ([]byte, error) {
+func InvokeGateway(channelName, chaincodeName, txName, args string, transientArgs []byte, endorsingOrgs []string) ([]byte, error) {
 	// Gateway endpoint
 	endpoint := os.Getenv("FABRIC_GATEWAY_ENDPOINT")
 
@@ -30,11 +30,15 @@ func InvokeGateway(channelName, chaincodeName, txName, args string, transientArg
 	network := gw.GetNetwork(channelName)
 	contract := network.GetContract(chaincodeName)
 
+	// Make transient request
+	transientMap := make(map[string][]byte)
+	transientMap["@request"] = transientArgs
+
 	// Invoke transaction
 	if transientArgs != nil && len(endorsingOrgs) > 0 {
 		return contract.Submit(txName,
 			client.WithArguments(args),
-			client.WithTransient(transientArgs),
+			client.WithTransient(transientMap),
 			client.WithEndorsingOrganizations(endorsingOrgs...),
 		)
 	}
@@ -42,7 +46,7 @@ func InvokeGateway(channelName, chaincodeName, txName, args string, transientArg
 	if transientArgs != nil {
 		return contract.Submit(txName,
 			client.WithArguments(args),
-			client.WithTransient(transientArgs),
+			client.WithTransient(transientMap),
 		)
 	}
 

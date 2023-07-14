@@ -60,15 +60,16 @@ func invokeGateway(c *gin.Context, channelName, chaincodeName string) {
 	}
 
 	// Make transient request
-	transientMap := make(map[string][]byte)
+	transientMap := make(map[string]interface{})
 	for key, value := range req {
 		if key[0] == '~' {
 			keyTrimmed := strings.TrimPrefix(key, "~")
-			byteValue, _ := json.Marshal(value)
-			transientMap[keyTrimmed] = byteValue
+			transientMap[keyTrimmed] = value
 			delete(req, key)
 		}
 	}
+
+	transientBytes, _ := json.Marshal(transientMap)
 	if len(transientMap) == 0 {
 		transientMap = nil
 	}
@@ -81,7 +82,7 @@ func invokeGateway(c *gin.Context, channelName, chaincodeName string) {
 	}
 
 	// Invoke
-	result, err := chaincode.InvokeGateway(channelName, chaincodeName, txName, string(reqBytes), transientMap, endorsers)
+	result, err := chaincode.InvokeGateway(channelName, chaincodeName, txName, string(reqBytes), transientBytes, endorsers)
 	if err != nil {
 		err, status := common.ParseError(err)
 		common.Abort(c, status, err)
