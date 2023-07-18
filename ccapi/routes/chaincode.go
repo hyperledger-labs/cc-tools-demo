@@ -17,7 +17,7 @@ func addCCRoutes(rg *gin.RouterGroup) {
 	rg.POST("/gateway/invoke/:txname", handlers.InvokeGatewayDefault)
 	rg.PUT("/gateway/invoke/:txname", handlers.InvokeGatewayDefault)
 	rg.DELETE("/gateway/invoke/:txname", handlers.InvokeGatewayDefault)
-	rg.POST("/gateway/query/:txname/", handlers.QueryGatewayDefault)
+	rg.POST("/gateway/query/:txname", handlers.QueryGatewayDefault)
 	rg.GET("/gateway/query/:txname", handlers.QueryGatewayDefault)
 
 	// Other

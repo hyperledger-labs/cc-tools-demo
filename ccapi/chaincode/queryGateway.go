@@ -30,5 +30,9 @@ func QueryGateway(channelName, chaincodeName, txName, args string) ([]byte, erro
 	contract := network.GetContract(chaincodeName)
 
 	// Query transaction
+	if len(args) == 0 {
+		return contract.EvaluateTransaction(txName)
+	}
+
 	return contract.EvaluateTransaction(txName, args)
 }
