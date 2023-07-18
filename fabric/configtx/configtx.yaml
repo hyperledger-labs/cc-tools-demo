@@ -344,8 +344,13 @@ Profiles:
                     - *org2
                     - *org3
     TwoOrgsChannel:
-        Consortium: SampleConsortium
         <<: *ChannelDefaults
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
         Application:
             <<: *ApplicationDefaults
             Organizations:
