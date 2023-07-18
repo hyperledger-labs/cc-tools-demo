@@ -41,7 +41,7 @@ curl -k -X POST \
 
 printf '\n\nGet Asset Types\n';
 curl -k \
-  "http://${HOST}:${CCAPI_ORG1_PORT}/api/gateway/query/getSchema/" \
+  "http://${HOST}:${CCAPI_ORG1_PORT}/api/gateway/query/getSchema" \
   -H 'cache-control: no-cache'
 
 printf '\n\nGet person schema\n';
