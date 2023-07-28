@@ -24,9 +24,14 @@ type EventHandler struct {
 	Transaction string
 	Channel     string
 	Chaincode   string
+	BaseLog     string
 }
 
 func (event EventHandler) Execute(ccEvent *fab.CCEvent) {
+	if len(event.BaseLog) > 0 {
+		fmt.Println(event.BaseLog)
+	}
+
 	if event.Type == EventLog {
 		var logStr string
 		nerr := json.Unmarshal(ccEvent.Payload, &logStr)
@@ -35,7 +40,9 @@ func (event EventHandler) Execute(ccEvent *fab.CCEvent) {
 			return
 		}
 
-		fmt.Println("Event '", event.Label, "' log: ", logStr)
+		if len(logStr) > 0 {
+			fmt.Println("Event '", event.Label, "' log: ", logStr)
+		}
 	} else if event.Type == EventTransaction {
 		ch := os.Getenv("CHANNEL")
 		if event.Channel != "" {
