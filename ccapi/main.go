@@ -30,9 +30,11 @@ func main() {
 	go server.Serve(r, ctx)
 
 	// Register to chaincode events
-	go chaincode.Event(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "eventName", func(ccEvent *fab.CCEvent) {
+	go chaincode.WaitForEvent(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "eventName", func(ccEvent *fab.CCEvent) {
 		log.Println("Received CC event: ", ccEvent)
 	})
+
+	chaincode.RegisterForEvents()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)

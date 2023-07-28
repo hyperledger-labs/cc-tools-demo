@@ -5,6 +5,7 @@ import (
 
 	"github.com/goledgerdev/cc-tools/assets"
 	"github.com/goledgerdev/cc-tools/errors"
+	"github.com/goledgerdev/cc-tools/events"
 	sw "github.com/goledgerdev/cc-tools/stubwrapper"
 	tx "github.com/goledgerdev/cc-tools/transactions"
 )
@@ -50,6 +51,23 @@ var CreateNewLibrary = tx.Transaction{
 		if nerr != nil {
 			return nil, errors.WrapError(nil, "failed to encode asset to JSON format")
 		}
+
+		// args, ok := json.Marshal(map[string]interface{}{
+		// 	"library": libraryAsset,
+		// })
+		// if ok != nil {
+		// 	return nil, errors.WrapError(nil, "failed to encode asset to JSON format")
+		// }
+
+		// Invoke tx
+		// events.CallEvent(stub, "testEvent", args)
+
+		// logP, ok := json.Marshal("Biblioteca")
+		// if ok != nil {
+		// 	return nil, errors.WrapError(nil, "failed to encode asset to JSON format")
+		// }
+
+		events.CallEvent(stub, "testEvent", []byte("biblioteca"))
 
 		return libraryJSON, nil
 	},
