@@ -6,5 +6,5 @@ import (
 )
 
 var eventTypeList = []events.Event{
-	eventtypes.TestEvent,
+	eventtypes.CreateLibraryLog,
 }

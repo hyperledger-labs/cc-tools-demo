@@ -2,6 +2,7 @@ package txdefs
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/goledgerdev/cc-tools/assets"
 	"github.com/goledgerdev/cc-tools/errors"
@@ -52,22 +53,14 @@ var CreateNewLibrary = tx.Transaction{
 			return nil, errors.WrapError(nil, "failed to encode asset to JSON format")
 		}
 
-		// args, ok := json.Marshal(map[string]interface{}{
-		// 	"library": libraryAsset,
-		// })
-		// if ok != nil {
-		// 	return nil, errors.WrapError(nil, "failed to encode asset to JSON format")
-		// }
+		// Marshall message to be logged
+		logMsg, ok := json.Marshal(fmt.Sprintf("New library name: %s", name))
+		if ok != nil {
+			return nil, errors.WrapError(nil, "failed to encode asset to JSON format")
+		}
 
-		// Invoke tx
-		// events.CallEvent(stub, "testEvent", args)
-
-		// logP, ok := json.Marshal("Biblioteca")
-		// if ok != nil {
-		// 	return nil, errors.WrapError(nil, "failed to encode asset to JSON format")
-		// }
-
-		events.CallEvent(stub, "testEvent", []byte("biblioteca"))
+		// Call event to log the message
+		events.CallEvent(stub, "createLibraryLog", logMsg)
 
 		return libraryJSON, nil
 	},
