@@ -29,4 +29,4 @@ rm -rf organizations/ordererOrganizations
 rm -rf organizations/rest-certs
 docker network create cc-tools-demo-net
 ./network.sh up createChannel -n $ORG_QNTY
-./network.sh deployCC -ccn cc-tools-demo -ccp ../chaincode -ccl go -n $ORG_QNTY -cccg $CCCG_PATH
+./network.sh deployCC -ccn cc-tools-demo -ccp ../chaincode -ccl go -n $ORG_QNTY -cccg $CCCG_PATH -ccep "OR('org1MSP.peer')"

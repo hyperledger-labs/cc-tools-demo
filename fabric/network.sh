@@ -191,6 +191,9 @@ function createOrgs() {
       copyRestCerts org1.example.com
       copyRestCerts org2.example.com
       copyRestCerts org3.example.com
+
+      infoln "Generating CCP files for Org1 and Org2"
+      ./organizations/ccp-generate.sh
     else
       infoln "Creating Org Identities"
 
@@ -213,6 +216,8 @@ function createOrgs() {
       fi
 
       copyRestCerts org.example.com
+      infoln "Generating CCP files for Org"
+      ./organizations/ccp-generate.sh -n 1
     fi
 
   fi
@@ -232,52 +237,52 @@ function createOrgs() {
     done
     . organizations/fabric-ca/registerEnroll.sh
 
-  if [ $ORG_QNTY -gt 1 ] ; then
-    while :
-      do
-        if [ ! -f "organizations/fabric-ca/org1/tls-cert.pem" ]; then
-          sleep 1
-        else
-          break
-        fi
-      done
+    if [ $ORG_QNTY -gt 1 ] ; then
+      while :
+        do
+          if [ ! -f "organizations/fabric-ca/org1/tls-cert.pem" ]; then
+            sleep 1
+          else
+            break
+          fi
+        done
 
-      infoln "Creating Org1 Identities"
+        infoln "Creating Org1 Identities"
 
-      createOrg1
+        createOrg1
 
-      infoln "Creating Org2 Identities"
+        infoln "Creating Org2 Identities"
 
-      createOrg2
+        createOrg2
 
-      infoln "Creating Orderer Org Identities"
+        infoln "Creating Orderer Org Identities"
 
-      createOrderer
+        createOrderer
 
-    infoln "Generating CCP files for Org1 and Org2"
-    ./organizations/ccp-generate.sh
-  else
-    while :
-      do
-        if [ ! -f "organizations/fabric-ca/org/tls-cert.pem" ]; then
-          sleep 1
-        else
-          break
-        fi
-      done
+        infoln "Generating CCP files for Org1 and Org2"
+        ./organizations/ccp-generate.sh
+    else
+      while :
+        do
+          if [ ! -f "organizations/fabric-ca/org/tls-cert.pem" ]; then
+            sleep 1
+          else
+            break
+          fi
+        done
 
-      infoln "Creating Org Identities"
+        infoln "Creating Org Identities"
 
-      createOrg
+        createOrg
 
-      infoln "Creating Orderer Org Identities"
+        infoln "Creating Orderer Org Identities"
 
-      createOrderer
+        createOrderer
 
+        infoln "Generating CCP files for Org"
+        ./organizations/ccp-generate.sh -n 1
     fi
 
-    infoln "Generating CCP files for Org"
-    ./organizations/ccp-generate.sh -n 1
   fi
 }
 
