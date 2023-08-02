@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 	"time"
 
@@ -40,6 +41,19 @@ func SetupCC() error {
 
 // main function starts up the chaincode in the container during instantiate
 func main() {
+	// Generate collection json
+	args := os.Args[1:]
+	if len(args) > 0 && args[0] == "-g" {
+		nOrgs := 0
+		if len(args) > 1 && args[1] == "--orgs-1" {
+			nOrgs = 1
+		} else if len(args) > 1 && args[1] == "--orgs-3" {
+			nOrgs = 3
+		}
+		generateCollection(nOrgs)
+		return
+	}
+
 	log.Printf("Starting chaincode %s version %s\n", header.Name, header.Version)
 
 	err := SetupCC()
