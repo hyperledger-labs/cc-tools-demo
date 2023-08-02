@@ -4,6 +4,7 @@ fabric/crypto-config
 fabric/channel-artifacts
 fabric/ca
 chaincode/vendor/*
+chaincode/collections.json
 ccapi/vendor/*
 rest-server/data/*
 rest-server/dist/*
