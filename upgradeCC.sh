@@ -36,13 +36,6 @@ fi
 
 CCCG_PATH="../chaincode/collections.json"
 
-# if [ $ORG_QNTY == 1 ]
-# then
-#   CCCG_PATH="../chaincode/collections2-org.json"
-# else
-#   CCCG_PATH="../chaincode/collections.json"
-# fi
-
 cd ./chaincode; go fmt ./...; cd ..
 
 version=$1
