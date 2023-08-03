@@ -70,7 +70,7 @@ case $FLAG_CCAPI in
     go)
         # Create temporary directory for rest-server
         mkdir -p tmp/rest-server
-        cp -r ccapi/* tmp/rest-server
+        cp -r ccapi/. tmp/rest-server
 
         # Compress file with rest-server (GoFabric will use the one provided)
         tar -c --exclude=vendor -zf ${FLAG_NAME}.tar.gz chaincode.tar.gz -C tmp rest-server
