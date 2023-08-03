@@ -72,7 +72,7 @@ then
     echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org3.example.com/connection-org3.json
     echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org3.example.com/connection-org3.yaml
 else
-    ORG=""
+    ORG="org"
     P0PORT=7051
     CAPORT=7054
     PEERPEM=organizations/peerOrganizations/org.example.com/tlsca/tlsca.org.example.com-cert.pem
