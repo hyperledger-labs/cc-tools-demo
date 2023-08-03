@@ -136,6 +136,7 @@ func RegisterForEvents() {
 				Chaincode:   eventMap["chaincode"].(string),
 				Label:       eventMap["label"].(string),
 				BaseLog:     eventMap["baseLog"].(string),
+				ReadOnly:    eventMap["readOnly"].(bool),
 			}
 
 			go HandleEvent(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), eventHandler)

@@ -6,7 +6,7 @@ go 1.13
 
 require (
 	github.com/cucumber/godog v0.12.5
-	github.com/goledgerdev/cc-tools v0.0.0-20230728105335-14b866b28f74
+	github.com/goledgerdev/cc-tools v0.0.0-20230803185341-790c286a3980
 	github.com/hyperledger/fabric-chaincode-go v0.0.0-20210603161043-af0e3898842a
 	github.com/hyperledger/fabric-protos-go v0.0.0-20210528200356-82833ecdac31
 	github.com/mitchellh/mapstructure v1.3.2 // indirect
