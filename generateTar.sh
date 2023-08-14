@@ -57,6 +57,10 @@ while [[ $# -gt 0 ]]; do
             echo "  --help , -h: Show this help message."
             echo "  --label, -l: Label to be used for the chaincode package. Default is 1.0."
             echo "  --name , -n: Name of the chaincode package. Default is ${FLAG_NAME}."
+            echo "  --org  , -o: Include an organization in the collection configuration file"
+            echo "      This option can be used multiple times to include multiple organizations"
+            echo "      If no organizations are specified, the default is to include any organization found in the readers"
+            echo "  --skip , -s: Skip the generation of the collections.json file"
             exit 0
             ;;
         *)
