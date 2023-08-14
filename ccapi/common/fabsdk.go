@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -34,9 +35,10 @@ var instance *sdk
 
 // GetSDK returns a fabric sdk instance.
 //
-// 		A new sdk is created if:
-// 		- it is the first time it is beeing used, or
-// 		- new sdk options are given
+//	A new sdk is created if:
+//	- it is the first time it is beeing used, or
+//	- new sdk options are given
+//
 // Otherwise, it returns the one previoulsy created.
 // If options are given, the new sdk is not a singleton, and must
 // be closed by whoever invoked it.
@@ -114,6 +116,72 @@ func GetClientOrg() string {
 	}
 
 	return orgName
+}
+
+func GetCryptoPath() string {
+	sdk, err := GetSDK()
+	if err != nil {
+		return ""
+	}
+
+	cfg, err := sdk.Sdk.Config()
+	if err != nil {
+		return ""
+	}
+
+	i, ok := cfg.Lookup("client.cryptoconfig.path")
+	if !ok {
+		return ""
+	}
+	basePath, _ := i.(string)
+
+	i, ok = cfg.Lookup(fmt.Sprintf("organizations.%s.cryptoPath", os.Getenv("ORG")))
+	if !ok {
+		return ""
+	}
+
+	certPath, _ := i.(string)
+	return basePath + "/" + certPath
+}
+
+func GetTLSCACert() string {
+	sdk, err := GetSDK()
+	if err != nil {
+		return ""
+	}
+
+	cfg, err := sdk.Sdk.Config()
+	if err != nil {
+		return ""
+	}
+
+	i, ok := cfg.Lookup("client.tlsCerts.client.cacertfile")
+	if !ok {
+		return ""
+	}
+
+	certPath, _ := i.(string)
+	return certPath
+}
+
+func GetMSPID() string {
+	sdk, err := GetSDK()
+	if err != nil {
+		return ""
+	}
+
+	cfg, err := sdk.Sdk.Config()
+	if err != nil {
+		return ""
+	}
+
+	i, ok := cfg.Lookup(fmt.Sprintf("organizations.%s.mspid", os.Getenv("ORG")))
+	if !ok {
+		return ""
+	}
+
+	mspid, _ := i.(string)
+	return mspid
 }
 
 // Closes sdk instance if it was created
