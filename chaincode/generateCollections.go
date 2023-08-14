@@ -6,6 +6,17 @@ import (
 	"io/ioutil"
 )
 
+type ArrayFlags []string
+
+func (i *ArrayFlags) String() string {
+	return "my string representation"
+}
+
+func (i *ArrayFlags) Set(value string) error {
+	*i = append(*i, value)
+	return nil
+}
+
 type CollectionElem struct {
 	Name              string `json:"name"`
 	RequiredPeerCount int    `json:"requiredPeerCount"`
@@ -15,7 +26,7 @@ type CollectionElem struct {
 	Policy            string `json:"policy"`
 }
 
-func generateCollection(nOrgs int) {
+func generateCollection(orgs ArrayFlags) {
 	collection := []CollectionElem{}
 
 	for _, a := range assetTypeList {
@@ -26,7 +37,7 @@ func generateCollection(nOrgs int) {
 				MaxPeerCount:      3,
 				BlockToLive:       1000000,
 				MemberOnlyRead:    true,
-				Policy:            generatePolicy(a.Readers, nOrgs),
+				Policy:            generatePolicy(a.Readers, orgs),
 			}
 			collection = append(collection, elem)
 		}
@@ -44,16 +55,19 @@ func generateCollection(nOrgs int) {
 	}
 }
 
-func generatePolicy(readers []string, nOrgs int) string {
+func generatePolicy(readers []string, orgs ArrayFlags) string {
 	firstElem := true
 	policy := "OR("
 	for _, r := range readers {
-		if nOrgs == 1 {
-			if r == "org1MSP" || r == "org2MSP" || r == "org3MSP" {
-				continue
+		if len(orgs) > 0 {
+			found := false
+			for _, o := range orgs {
+				if r == o {
+					found = true
+					break
+				}
 			}
-		} else if nOrgs == 3 {
-			if r == "orgMSP" {
+			if !found {
 				continue
 			}
 		}

@@ -23,9 +23,9 @@ if [ "$SKIP_COLL_GEN" = false ] ; then
     echo 'Generating collections configuration file...'
     if [ $ORG_QNTY == 1 ]
     then
-        cd ./chaincode; go run . -g --orgs-1; cd ..
+        cd ./chaincode; go run . -g --orgs orgMSP; cd ..
     else
-        cd ./chaincode; go run . -g --orgs-3; cd ..
+        cd ./chaincode; go run . -g --orgs org1MSP org2MSP org3MSP; cd ..
     fi
 fi
 
