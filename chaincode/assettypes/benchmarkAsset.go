@@ -18,5 +18,10 @@ var BenchmarkAsset = assets.AssetType{
 			Label:    "ID",
 			DataType: "string", // Datatypes are identified at datatypes folder
 		},
+		{
+			Tag:      "timestamp",
+			Label:    "Timestamp",
+			DataType: "datetime",
+		},
 	},
 }

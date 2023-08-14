@@ -21,3 +21,25 @@ organizations:
     connectionProfile:
       path: '../fabric/organizations/peerOrganizations/org1.example.com/connection-org1.yaml'
       discover: true
+  # - mspid: org2MSP
+  #   identities:
+  #     certificates:
+  #     - name: 'User1'
+  #       clientPrivateKey:
+  #         path: '../fabric/organizations/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/keystore/priv_sk'
+  #       clientSignedCert:
+  #         path: '../fabric/organizations/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/signcerts/User1@org2.example.com-cert.pem'
+  #   connectionProfile:
+  #     path: '../fabric/organizations/peerOrganizations/org2.example.com/connection-org2.yaml'
+  #     discover: true
+  # - mspid: org3MSP
+  #   identities:
+  #     certificates:
+  #     - name: 'User1'
+  #       clientPrivateKey:
+  #         path: '../fabric/organizations/peerOrganizations/org3.example.com/users/User1@org3.example.com/msp/keystore/priv_sk'
+  #       clientSignedCert:
+  #         path: '../fabric/organizations/peerOrganizations/org3.example.com/users/User1@org3.example.com/msp/signcerts/User1@org3.example.com-cert.pem'
+  #   connectionProfile:
+  #     path: '../fabric/organizations/peerOrganizations/org3.example.com/connection-org3.yaml'
+  #     discover: true

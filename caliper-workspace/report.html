@@ -134,7 +134,7 @@
             <ul>
                 <h3>&nbspBenchmark results</h3>
                 <li><a href="#benchmarksummary">Summary</a></li>
-                    <li><a href="#readAsset">readAsset</a></li>
+                    <li><a href="#updateAsset">updateAsset</a></li>
             </ul>
             <ul>
                 <h3>&nbspSystem under test</h3>
@@ -152,29 +152,29 @@
                     </tr>
 
                     <tr>
-                         <td>readAsset</td> <td>4700</td> <td>0</td> <td>158.8</td> <td>0.08</td> <td>0.01</td> <td>0.02</td> <td>158.7</td>
+                         <td>updateAsset</td> <td>54</td> <td>0</td> <td>1.8</td> <td>2.10</td> <td>0.07</td> <td>1.50</td> <td>1.7</td>
                     </tr>
                 </table>
             </div>
-            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="readAsset">
-                <h2>Benchmark round: readAsset</h2>
-                <p>Read asset benchmark</p>
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="updateAsset">
+                <h2>Benchmark round: updateAsset</h2>
+                <p>Update asset benchmark</p>
                 <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">txDuration: 30
 rateControl:
   type: fixed-load
   opts:
     transactionLoad: 2
 </pre>
-                        <h3>Performance metrics for readAsset</h3>
+                        <h3>Performance metrics for updateAsset</h3>
                             <table style="min-width: 100%;">
                                 <tr>
                                      <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
                                 </tr>
                                 <tr>
-                                     <td>readAsset</td> <td>4700</td> <td>0</td> <td>158.8</td> <td>0.08</td> <td>0.01</td> <td>0.02</td> <td>158.7</td>
+                                     <td>updateAsset</td> <td>54</td> <td>0</td> <td>1.8</td> <td>2.10</td> <td>0.07</td> <td>1.50</td> <td>1.7</td>
                                 </tr>
                             </table>
-                        <h3>Resource utilization for readAsset</h3>
+                        <h3>Resource utilization for updateAsset</h3>
             </div>
 
             <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;">
@@ -185,17 +185,17 @@ description: test benchmark
 workers:
   number: 2
 rounds:
-  - label: readAsset
-    description: Read asset benchmark
+  - label: updateAsset
+    description: Update asset benchmark
     txDuration: 30
     rateControl:
       type: fixed-load
       opts:
         transactionLoad: 2
     workload:
-      module: workload&#x2F;readAsset.js
+      module: workload&#x2F;updateAsset.js
       arguments:
-        assets: 10
+        assets: 100
         contractId: cc-tools-demo
 </pre>
                 <h3>SUT</h3>
