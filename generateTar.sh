@@ -6,6 +6,7 @@ FLAG_LABEL="1.0"
 
 # You can change this if you want to avoid using the --name flag
 FLAG_NAME="cc-tools-demo"
+SKIP_COLL_GEN=false
 
 # Process command-line arguments
 while [[ $# -gt 0 ]]; do
@@ -37,6 +38,19 @@ while [[ $# -gt 0 ]]; do
                 exit 1
             fi
             ;;
+        --org | -o)
+            if [[ $# -gt 1 ]]; then
+                orgs+=("$2")
+                shift 2
+            else
+                echo "Error: --org flag requires a value."
+                exit 1
+            fi
+            ;;
+        --skip | -s)
+            SKIP_COLL_GEN=true
+            shift 1
+            ;;
         --help | -h)
             echo "Usage: ./generateTar.sh [--ccapi] [--label <label>] [--name <name>]"
             echo "  --ccapi, -c: Include rest-server in the tar file. Valid values are 'node' and 'go'. Default is no ccapi."
@@ -51,6 +65,17 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# Generate collection configuration file
+if [ "$SKIP_COLL_GEN" = false ]
+then
+    if [ ${#orgs[@]} -gt 0 ]
+    then
+        cd ./chaincode; go run . -g --orgs ${orgs[@]}; cd ..
+    else
+        cd ./chaincode; go run . -g; cd ..
+    fi
+fi
 
 # Remove previous tar file
 rm -f ${FLAG_NAME}.tar.gz
