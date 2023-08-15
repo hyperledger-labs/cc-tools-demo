@@ -22,14 +22,14 @@ test:
         rateControl:
           type: fixed-rate
           opts:
-            tps: 30
+            tps: 25
         workload:
           module: workload/readAsset.js
           arguments:
             assets: 10
             contractId: cc-tools-demo
       - label: readQuery-fixed-load
-        description: Read asset from couchdb query transaction Benchmark
+        description: Read asset from couchdb query transaction with fixed load Benchmark
         txDuration: 30
         rateControl:
           type: fixed-load
@@ -39,6 +39,30 @@ test:
           module: workload/readQuery.js
           arguments:
             assets: 10
+            contractId: cc-tools-demo
+      - label: readQuery-fixed-rate
+        description: Read asset from couchdb query transaction with fixed rate Benchmark
+        txDuration: 30
+        rateControl:
+          type: fixed-rate
+          opts:
+            tps: 25
+        workload:
+          module: workload/readQuery.js
+          arguments:
+            assets: 10
+            contractId: cc-tools-demo
+      - label: updateAsset-fixed-load
+        description: Update asset with fixed rate benchmark
+        txDuration: 30
+        rateControl:
+          type: fixed-rate
+          opts:
+            tps: 25
+        workload:
+          module: workload/updateAsset.js
+          arguments:
+            assets: 100
             contractId: cc-tools-demo
       - label: updateAsset-fixed-load
         description: Update asset with fixed load benchmark
@@ -70,7 +94,7 @@ test:
         rateControl:
           type: fixed-rate
           opts:
-            tps: 30
+            tps: 25
         workload:
           module: workload/createAsset.js
           arguments:
@@ -94,7 +118,7 @@ test:
         rateControl:
           type: fixed-rate
           opts:
-            tps: 30
+            tps: 25
         workload:
           module: workload/createAsset.js
           arguments:
