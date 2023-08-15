@@ -16,6 +16,18 @@ test:
           arguments:
             assets: 10
             contractId: cc-tools-demo
+      - label: readAsset-fixed-rate
+        description: Read asset with fixed load benchmark
+        txDuration: 30
+        rateControl:
+          type: fixed-rate
+          opts:
+            tps: 20
+        workload:
+          module: workload/readAsset.js
+          arguments:
+            assets: 10
+            contractId: cc-tools-demo
       - label: createAsset-fixed-load
         description: CreateAsset with fixed load benchmark
         txDuration: 30
