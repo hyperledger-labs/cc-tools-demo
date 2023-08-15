@@ -14,4 +14,7 @@ var txList = []tx.Transaction{
 	txdefs.GetNumberOfBooksFromLibrary,
 	txdefs.UpdateBookTenant,
 	txdefs.GetBooksByAuthor,
+	txdefs.CreateBenchmarkAsset,
+	txdefs.GetBenchmarkAsset,
+	txdefs.UpdateBenchmarkAsset,
 }

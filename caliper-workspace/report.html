@@ -128,13 +128,18 @@
                 <li>DLT: &nbsp<span style="font-weight: 500;">fabric</span></li>
                 <li>Name: &nbsp<span style="font-weight: 500;">cc-tools-demo-contract-benchmark</span></li>
                 <li>Description: &nbsp<span style="font-weight: 500;">test benchmark</span></li>
-                <li>Benchmark Rounds: &nbsp<span style="font-weight: 500;">1</span></li>
+                <li>Benchmark Rounds: &nbsp<span style="font-weight: 500;">6</span></li>
                 <li><a href="#benchmarkInfo">Details</a></li>
             </ul>
             <ul>
                 <h3>&nbspBenchmark results</h3>
                 <li><a href="#benchmarksummary">Summary</a></li>
-                    <li><a href="#readAsset">readAsset</a></li>
+                    <li><a href="#readAsset-fixed-load">readAsset-fixed-load</a></li>
+                    <li><a href="#readAsset-fixed-rate">readAsset-fixed-rate</a></li>
+                    <li><a href="#readQuery-fixed-load">readQuery-fixed-load</a></li>
+                    <li><a href="#updateAsset-fixed-load">updateAsset-fixed-load</a></li>
+                    <li><a href="#createAsset-fixed-load">createAsset-fixed-load</a></li>
+                    <li><a href="#createAsset-fixed-rate">createAsset-fixed-rate</a></li>
             </ul>
             <ul>
                 <h3>&nbspSystem under test</h3>
@@ -152,29 +157,149 @@
                     </tr>
 
                     <tr>
-                         <td>readAsset</td> <td>4700</td> <td>0</td> <td>158.8</td> <td>0.08</td> <td>0.01</td> <td>0.02</td> <td>158.7</td>
+                         <td>readAsset-fixed-load</td> <td>5023</td> <td>0</td> <td>140.7</td> <td>0.08</td> <td>0.01</td> <td>0.01</td> <td>140.6</td>
+                    </tr>
+                    <tr>
+                         <td>readAsset-fixed-rate</td> <td>602</td> <td>0</td> <td>20.0</td> <td>0.04</td> <td>0.01</td> <td>0.02</td> <td>20.0</td>
+                    </tr>
+                    <tr>
+                         <td>readQuery-fixed-load</td> <td>0</td> <td>4767</td> <td>161.0</td> <td>-</td> <td>-</td> <td>-</td> <td>161.0</td>
+                    </tr>
+                    <tr>
+                         <td>updateAsset-fixed-load</td> <td>0</td> <td>4121</td> <td>115.8</td> <td>-</td> <td>-</td> <td>-</td> <td>115.8</td>
+                    </tr>
+                    <tr>
+                         <td>createAsset-fixed-load</td> <td>54</td> <td>0</td> <td>1.7</td> <td>2.25</td> <td>0.12</td> <td>1.58</td> <td>1.6</td>
+                    </tr>
+                    <tr>
+                         <td>createAsset-fixed-rate</td> <td>602</td> <td>0</td> <td>20.0</td> <td>2.23</td> <td>0.09</td> <td>0.41</td> <td>18.7</td>
                     </tr>
                 </table>
             </div>
-            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="readAsset">
-                <h2>Benchmark round: readAsset</h2>
-                <p>Read asset benchmark</p>
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="readAsset-fixed-load">
+                <h2>Benchmark round: readAsset-fixed-load</h2>
+                <p>Read asset with fixed load benchmark</p>
                 <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">txDuration: 30
 rateControl:
   type: fixed-load
   opts:
     transactionLoad: 2
 </pre>
-                        <h3>Performance metrics for readAsset</h3>
+                        <h3>Performance metrics for readAsset-fixed-load</h3>
                             <table style="min-width: 100%;">
                                 <tr>
                                      <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
                                 </tr>
                                 <tr>
-                                     <td>readAsset</td> <td>4700</td> <td>0</td> <td>158.8</td> <td>0.08</td> <td>0.01</td> <td>0.02</td> <td>158.7</td>
+                                     <td>readAsset-fixed-load</td> <td>5023</td> <td>0</td> <td>140.7</td> <td>0.08</td> <td>0.01</td> <td>0.01</td> <td>140.6</td>
                                 </tr>
                             </table>
-                        <h3>Resource utilization for readAsset</h3>
+                        <h3>Resource utilization for readAsset-fixed-load</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="readAsset-fixed-rate">
+                <h2>Benchmark round: readAsset-fixed-rate</h2>
+                <p>Read asset with fixed load benchmark</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">txDuration: 30
+rateControl:
+  type: fixed-rate
+  opts:
+    tps: 20
+</pre>
+                        <h3>Performance metrics for readAsset-fixed-rate</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>readAsset-fixed-rate</td> <td>602</td> <td>0</td> <td>20.0</td> <td>0.04</td> <td>0.01</td> <td>0.02</td> <td>20.0</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for readAsset-fixed-rate</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="readQuery-fixed-load">
+                <h2>Benchmark round: readQuery-fixed-load</h2>
+                <p>Read asset from couchdb query transaction Benchmark</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">txDuration: 30
+rateControl:
+  type: fixed-load
+  opts:
+    transactionLoad: 2
+</pre>
+                        <h3>Performance metrics for readQuery-fixed-load</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>readQuery-fixed-load</td> <td>0</td> <td>4767</td> <td>161.0</td> <td>-</td> <td>-</td> <td>-</td> <td>161.0</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for readQuery-fixed-load</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="updateAsset-fixed-load">
+                <h2>Benchmark round: updateAsset-fixed-load</h2>
+                <p>Update asset with fixed load benchmark</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">txDuration: 30
+rateControl:
+  type: fixed-load
+  opts:
+    transactionLoad: 2
+</pre>
+                        <h3>Performance metrics for updateAsset-fixed-load</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>updateAsset-fixed-load</td> <td>0</td> <td>4121</td> <td>115.8</td> <td>-</td> <td>-</td> <td>-</td> <td>115.8</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for updateAsset-fixed-load</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="createAsset-fixed-load">
+                <h2>Benchmark round: createAsset-fixed-load</h2>
+                <p>CreateAsset with fixed load benchmark</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">txDuration: 30
+rateControl:
+  type: fixed-load
+  opts:
+    transactionLoad: 2
+</pre>
+                        <h3>Performance metrics for createAsset-fixed-load</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>createAsset-fixed-load</td> <td>54</td> <td>0</td> <td>1.7</td> <td>2.25</td> <td>0.12</td> <td>1.58</td> <td>1.6</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for createAsset-fixed-load</h3>
+            </div>
+
+            <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;" id="createAsset-fixed-rate">
+                <h2>Benchmark round: createAsset-fixed-rate</h2>
+                <p>CreateAsset with fixed rate benchmark</p>
+                <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">txDuration: 30
+rateControl:
+  type: fixed-rate
+  opts:
+    tps: 20
+</pre>
+                        <h3>Performance metrics for createAsset-fixed-rate</h3>
+                            <table style="min-width: 100%;">
+                                <tr>
+                                     <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
+                                </tr>
+                                <tr>
+                                     <td>createAsset-fixed-rate</td> <td>602</td> <td>0</td> <td>20.0</td> <td>2.23</td> <td>0.09</td> <td>0.41</td> <td>18.7</td>
+                                </tr>
+                            </table>
+                        <h3>Resource utilization for createAsset-fixed-rate</h3>
             </div>
 
             <div style="border-bottom: 1px solid #d9d9d9; padding-bottom: 10px;">
@@ -185,8 +310,8 @@ description: test benchmark
 workers:
   number: 2
 rounds:
-  - label: readAsset
-    description: Read asset benchmark
+  - label: readAsset-fixed-load
+    description: Read asset with fixed load benchmark
     txDuration: 30
     rateControl:
       type: fixed-load
@@ -196,6 +321,64 @@ rounds:
       module: workload&#x2F;readAsset.js
       arguments:
         assets: 10
+        contractId: cc-tools-demo
+  - label: readAsset-fixed-rate
+    description: Read asset with fixed load benchmark
+    txDuration: 30
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 20
+    workload:
+      module: workload&#x2F;readAsset.js
+      arguments:
+        assets: 10
+        contractId: cc-tools-demo
+  - label: readQuery-fixed-load
+    description: Read asset from couchdb query transaction Benchmark
+    txDuration: 30
+    rateControl:
+      type: fixed-load
+      opts:
+        transactionLoad: 2
+    workload:
+      module: workload&#x2F;readQuery.js
+      arguments:
+        assets: 10
+        contractId: cc-tools-demo
+  - label: updateAsset-fixed-load
+    description: Update asset with fixed load benchmark
+    txDuration: 30
+    rateControl:
+      type: fixed-load
+      opts:
+        transactionLoad: 2
+    workload:
+      module: workload&#x2F;updateAsset.js
+      arguments:
+        assets: 100
+        contractId: cc-tools-demo
+  - label: createAsset-fixed-load
+    description: CreateAsset with fixed load benchmark
+    txDuration: 30
+    rateControl:
+      type: fixed-load
+      opts:
+        transactionLoad: 2
+    workload:
+      module: workload&#x2F;createAsset.js
+      arguments:
+        contractId: cc-tools-demo
+  - label: createAsset-fixed-rate
+    description: CreateAsset with fixed rate benchmark
+    txDuration: 30
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 20
+    workload:
+      module: workload&#x2F;createAsset.js
+      arguments:
         contractId: cc-tools-demo
 </pre>
                 <h3>SUT</h3>
