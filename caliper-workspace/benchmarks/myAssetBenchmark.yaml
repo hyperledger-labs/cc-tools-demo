@@ -4,8 +4,8 @@ test:
     workers:
       number: 2
     rounds:
-      - label: readAsset
-        description: Read asset benchmark
+      - label: readAsset-fixed-load
+        description: Read asset with fixed load benchmark
         txDuration: 30
         rateControl:
           type: fixed-load
@@ -15,4 +15,26 @@ test:
           module: workload/readAsset.js
           arguments:
             assets: 10
+            contractId: cc-tools-demo
+      - label: createAsset-fixed-load
+        description: CreateAsset with fixed load benchmark
+        txDuration: 30
+        rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 2
+        workload:
+          module: workload/createAsset.js
+          arguments:
+            contractId: cc-tools-demo
+      - label: createAsset-fixed-rate
+        description: CreateAsset with fixed rate benchmark
+        txDuration: 30
+        rateControl:
+          type: fixed-rate
+          opts:
+            tps: 20
+        workload:
+          module: workload/createAsset.js
+          arguments:
             contractId: cc-tools-demo
