@@ -22,7 +22,7 @@ test:
         rateControl:
           type: fixed-rate
           opts:
-            tps: 20
+            tps: 30
         workload:
           module: workload/readAsset.js
           arguments:
@@ -52,8 +52,8 @@ test:
           arguments:
             assets: 100
             contractId: cc-tools-demo
-      - label: createAsset-fixed-load
-        description: CreateAsset with fixed load benchmark
+      - label: createAsset-fixed-load-small-payload
+        description: CreateAsset with fixed load and small payload benchmark
         txDuration: 30
         rateControl:
           type: fixed-load
@@ -62,15 +62,41 @@ test:
         workload:
           module: workload/createAsset.js
           arguments:
+            data: "test"
             contractId: cc-tools-demo
-      - label: createAsset-fixed-rate
-        description: CreateAsset with fixed rate benchmark
+      - label: createAsset-fixed-rate-small-payload
+        description: CreateAsset with fixed rate and small payload benchmark
         txDuration: 30
         rateControl:
           type: fixed-rate
           opts:
-            tps: 20
+            tps: 30
         workload:
           module: workload/createAsset.js
           arguments:
+            data: "test"
+            contractId: cc-tools-demo
+      - label: createAsset-fixed-load-large-payload
+        description: CreateAsset with fixed load and large payload benchmark
+        txDuration: 30
+        rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 2
+        workload:
+          module: workload/createAsset.js
+          arguments:
+            filePath: test-data/large-doc-150kb.pdf
+            contractId: cc-tools-demo
+      - label: createAsset-fixed-rate-large-payload
+        description: CreateAsset with fixed rate and large payload benchmark
+        txDuration: 30
+        rateControl:
+          type: fixed-rate
+          opts:
+            tps: 30
+        workload:
+          module: workload/createAsset.js
+          arguments:
+            filePath: test-data/large-doc-150kb.pdf
             contractId: cc-tools-demo

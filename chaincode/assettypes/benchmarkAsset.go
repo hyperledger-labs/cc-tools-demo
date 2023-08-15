@@ -23,5 +23,10 @@ var BenchmarkAsset = assets.AssetType{
 			Label:    "Timestamp",
 			DataType: "datetime",
 		},
+		{
+			Tag:      "data",
+			Label:    "Data",
+			DataType: "string",
+		},
 	},
 }

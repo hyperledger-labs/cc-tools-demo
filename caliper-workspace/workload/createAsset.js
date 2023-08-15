@@ -1,6 +1,7 @@
 'use strict';
 
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
+const { readFile } = require('fs').promises;
 
 class MyWorkload extends WorkloadModuleBase {
     constructor() {
@@ -9,6 +10,8 @@ class MyWorkload extends WorkloadModuleBase {
     }
 
     async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        this.data = roundArguments.filePath ? (await readFile(roundArguments.filePath)).toString('base64') : roundArguments.data
+
         await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
     }
 
@@ -18,7 +21,7 @@ class MyWorkload extends WorkloadModuleBase {
             contractId: this.roundArguments.contractId,
             contractFunction: 'createAsset',
             invokerIdentity: 'User1',
-            contractArguments: ['{"asset":[{"@assetType": "benchmarkAsset","id": "'+randomId+'"}]}'],
+            contractArguments: ['{"asset":[{"@assetType": "benchmarkAsset", "data": "'+this.data+'", "id": "'+randomId+'"}]}'],
             readOnly: false
         };
 
