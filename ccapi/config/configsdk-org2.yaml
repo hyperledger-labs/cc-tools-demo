@@ -38,6 +38,7 @@ client:
       # 使用byfn中Admin@org2的证书
       keyfile: /fabric/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/tls/client.key
       certfile: /fabric/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/tls/client.cert
+      cacertfile: /fabric/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/tls/ca.crt
 
 ################################## General part ##################################
 
