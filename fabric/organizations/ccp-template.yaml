@@ -2,14 +2,14 @@
 name: test-network-org${ORG}
 version: 1.0.0
 client:
-  organization: Org${ORG}
+  organization: org${ORG}
   connection:
     timeout:
       peer:
         endorser: '300'
 organizations:
-  Org${ORG}:
-    mspid: Org${ORG}MSP
+  org${ORG}:
+    mspid: org${ORG}MSP
     peers:
     - peer0.org${ORG}.example.com
     certificateAuthorities:
