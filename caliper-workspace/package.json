@@ -1,10 +1,11 @@
 {
   "dependencies": {
+    "@grpc/grpc-js": "^1.6.7",
     "@hyperledger/caliper-cli": "^0.5.0",
-    "fabric-network": "^2.2.12"
+    "@hyperledger/fabric-gateway": "^1.0.1"
   },
   "scripts": {
     "start": "caliper launch manager --caliper-workspace . --caliper-benchconfig benchmarks/myAssetBenchmark.yaml --caliper-networkconfig networks/networkConfig.yaml --caliper-fabric-gateway-enabled true",
-    "bind": "caliper bind --caliper-bind-sut fabric:2.2 --caliper-bind-cwd ./ --caliper-bind-args='-g'"
+    "bind": "caliper bind --caliper-bind-sut fabric:2.4 --caliper-bind-cwd ./ --caliper-bind-args='-g'"
   }
 }
