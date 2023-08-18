@@ -16,10 +16,6 @@ then
   ORG_QNTY=3
 fi
 
-# Script used to start the development environment.
-## This brings up API in Node
-# cd ./rest-server; ./startDev2.sh -n $ORG_QNTY; cd ..
-
 ## This brings up API in Go
 if [ $ORG_QNTY == 1 ]
 then
