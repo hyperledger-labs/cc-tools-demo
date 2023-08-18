@@ -287,8 +287,13 @@ Profiles:
                 Organizations:
                     - *org
     OneOrgChannel:
-        Consortium: SampleConsortium
         <<: *ChannelDefaults
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
         Application:
             <<: *ApplicationDefaults
             Organizations:

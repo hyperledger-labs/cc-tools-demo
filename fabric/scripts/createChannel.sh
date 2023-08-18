@@ -23,9 +23,9 @@ createChannelTx() {
 	set -x
 	if [ $ORG_QNTY -gt 1 ]
 	then
-		configtxgen -configPath "./configtx" -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/${CHANNEL_NAME}.tx -channelID $CHANNEL_NAME
+		configtxgen -configPath "./configtx" -profile TwoOrgsChannel -outputBlock ./channel-artifacts/${CHANNEL_NAME}.block -channelID $CHANNEL_NAME
 	else
-		configtxgen -configPath "./configtx-1org" -profile OneOrgChannel -outputCreateChannelTx ./channel-artifacts/${CHANNEL_NAME}.tx -channelID $CHANNEL_NAME
+		configtxgen -configPath "./configtx-1org" -profile OneOrgChannel -outputBlock ./channel-artifacts/${CHANNEL_NAME}.block -channelID $CHANNEL_NAME
 	fi
 	res=$?
 	{ set +x; } 2>/dev/null
@@ -45,7 +45,7 @@ createChannel() {
 	while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ] ; do
 		sleep $DELAY
 		set -x
-		peer channel create -o localhost:7050 -c $CHANNEL_NAME --ordererTLSHostnameOverride orderer.example.com -f ./channel-artifacts/${CHANNEL_NAME}.tx --outputBlock $BLOCKFILE --tls --cafile $ORDERER_CA >&log.txt
+		osnadmin channel join --channelID $CHANNEL_NAME --config-block ./channel-artifacts/${CHANNEL_NAME}.block -o localhost:7052 --ca-file "$ORDERER_CA" --client-cert $ORDERER_ADMIN_TLS_SIGN_CERT --client-key $ORDERER_ADMIN_TLS_PRIVATE_KEY>&log.txt
 		res=$?
 		{ set +x; } 2>/dev/null
 		let rc=$res
