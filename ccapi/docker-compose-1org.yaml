@@ -20,8 +20,12 @@ services:
       - SDK_PATH=./config/configsdk-org.yaml
       - USER=Admin
       - ORG=org
+      - DOMAIN=example.com
       - CHANNEL=mainchannel
       - CCNAME=cc-tools-demo
+      - FABRIC_GATEWAY_ENDPOINT=peer0.org.example.com:7051
+      - FABRIC_GATEWAY_NAME=peer0.org.example.com
+      - GOLANG_PROTOBUF_REGISTRATION_CONFLICT=warn
     working_dir: /rest-server
     container_name: ccapi.org.example.com
     networks:
