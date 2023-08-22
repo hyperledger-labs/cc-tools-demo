@@ -27,9 +27,6 @@ fi
 cd ./chaincode; go fmt ./...; cd ..
 cd ./fabric; ./startDev.sh -n $ORG_QNTY; cd ..
 
-## This brings up API in Node
-# cd ./rest-server; ./startDev.sh -n $ORG_QNTY; cd ..
-
 ## This brings up API in Go
 if [ $ORG_QNTY == 1 ]
 then
