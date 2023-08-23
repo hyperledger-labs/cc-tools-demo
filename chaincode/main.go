@@ -10,6 +10,7 @@ import (
 	"github.com/goledgerdev/cc-tools-demo/chaincode/datatypes"
 	"github.com/goledgerdev/cc-tools-demo/chaincode/header"
 	"github.com/goledgerdev/cc-tools/assets"
+	"github.com/goledgerdev/cc-tools/events"
 	sw "github.com/goledgerdev/cc-tools/stubwrapper"
 	tx "github.com/goledgerdev/cc-tools/transactions"
 
@@ -35,6 +36,9 @@ func SetupCC() error {
 		return err
 	}
 	assets.InitAssetList(append(assetTypeList, assettypes.CustomAssets...))
+
+	events.InitEventList(eventTypeList)
+
 	return nil
 }
 

@@ -16,12 +16,15 @@ tar \
 
 # Compress file with rest-server
 # GoFabric will use the one provided
+# mkdir -p tmp/rest-server
+# cp -r ccapi/* tmp/rest-server
 # tar \
-# --exclude=node_modules \
+# --exclude=vendor \
 # --exclude=src/assettypes/customAssets.go \
 # --exclude=src/collections.json \
 # --exclude=src/header/header.go \
-# -czf cc-tools-demo.tar.gz src rest-server
+# -czf cc-tools-demo.tar.gz src -C tmp rest-server
+# rm -rf tmp
 
 
 rm -rf src

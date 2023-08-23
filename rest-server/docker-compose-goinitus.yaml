@@ -1,7 +1,0 @@
-version: '3'
-services:
-  goinitus:
-    image: goledger/cc-webclient:latest
-    container_name: goinitus
-    ports:
-      - "8080:80"
