@@ -11,7 +11,6 @@ services:
       context: .
     ports:
       - 80:80
-    command: bash -c 'go run main.go'
     volumes:
       - ./:/rest-server
       - ../fabric/organizations:/fabric/organizations
