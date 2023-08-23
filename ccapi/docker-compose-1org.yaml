@@ -6,7 +6,9 @@ networks:
 
 services:
   ccapi.org.example.com:
-    image: golang:1.18
+    build:
+      dockerfile: Dockerfile
+      context: .
     ports:
       - 80:80
     command: bash -c 'go run main.go'

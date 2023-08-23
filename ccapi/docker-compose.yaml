@@ -6,10 +6,11 @@ networks:
 
 services:
   ccapi.org1.example.com:
-    image: golang:1.18
+    build:
+      dockerfile: Dockerfile
+      context: .
     ports:
       - 80:80
-    command: bash -c 'go run main.go'
     volumes:
       - ./:/rest-server
       - ../fabric/organizations:/fabric/organizations
@@ -31,10 +32,11 @@ services:
     networks:
       - cc-tools-demo-net
   ccapi.org2.example.com:
-    image: golang:1.18
+    build:
+      dockerfile: Dockerfile
+      context: .
     ports:
       - 980:80
-    command: bash -c 'go run main.go'
     volumes:
       - ./:/rest-server
       - ../fabric/organizations:/fabric/organizations
@@ -56,10 +58,11 @@ services:
     networks:
       - cc-tools-demo-net
   ccapi.org3.example.com:
-    image: golang:1.18
+    build:
+      dockerfile: Dockerfile
+      context: .
     ports:
       - 1080:80
-    command: bash -c 'go run main.go'
     volumes:
       - ./:/rest-server
       - ../fabric/organizations:/fabric/organizations
