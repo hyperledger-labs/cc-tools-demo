@@ -21,8 +21,6 @@ import (
 )
 
 var (
-	gatewayId             *identity.X509Identity
-	gatewaySign           identity.Sign
 	gatewayTLSCredentials *credentials.TransportCredentials
 )
 
@@ -43,25 +41,21 @@ func CreateGrpcConnection(endpoint string) (*grpc.ClientConn, error) {
 	return grpc.Dial(endpoint, grpc.WithTransportCredentials(*gatewayTLSCredentials))
 }
 
-func CreateGatewayConnection(grpcConn *grpc.ClientConn) (*client.Gateway, error) {
-	// Check identity was created
-	if gatewayId == nil {
-		id, err := newIdentity(getSignCert(os.Getenv("USER")), GetMSPID())
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to create new identity")
-		}
-		gatewayId = id
+func CreateGatewayConnection(grpcConn *grpc.ClientConn, user string) (*client.Gateway, error) {
+	// Create identity
+	id, err := newIdentity(getSignCert(user), GetMSPID())
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create new identity")
+	}
+	gatewayId := id
+
+	// Create sign function
+	sign, err := newSign(getSignKey(user))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create new sign function")
 	}
 
-	// Check sign function was created
-	if gatewaySign == nil {
-		sign, err := newSign(getSignKey(os.Getenv("USER")))
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to create new sign function")
-		}
-
-		gatewaySign = sign
-	}
+	gatewaySign := sign
 
 	// Create a Gateway connection for a specific client identity.
 	return client.Connect(
