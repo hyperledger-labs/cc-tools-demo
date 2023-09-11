@@ -3,6 +3,7 @@ package txdefs
 import (
 	"encoding/json"
 
+	"github.com/goledgerdev/cc-tools/accesscontrol"
 	"github.com/goledgerdev/cc-tools/assets"
 	"github.com/goledgerdev/cc-tools/errors"
 	sw "github.com/goledgerdev/cc-tools/stubwrapper"
@@ -16,7 +17,10 @@ var GetNumberOfBooksFromLibrary = tx.Transaction{
 	Label:       "Get Number Of Books From Library",
 	Description: "Return the number of books of a library",
 	Method:      "GET",
-	Callers:     []string{"$org2MSP", "$orgMSP"}, // Only org2 can call this transactions
+	Callers: []accesscontrol.Caller{ // Only org2 can call this transaction
+		{MSP: "org2MSP"},
+		{MSP: "orgMSP"},
+	},
 
 	Args: []tx.Argument{
 		{
