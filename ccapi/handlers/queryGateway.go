@@ -48,7 +48,7 @@ func queryGateway(c *gin.Context, channelName, chaincodeName string) {
 	txName := c.Param("txname")
 
 	// Query
-	user := c.GetHeader("user")
+	user := c.GetHeader("User")
 	result, err := chaincode.QueryGateway(channelName, chaincodeName, txName, string(args), user)
 	if err != nil {
 		err, status := common.ParseError(err)
