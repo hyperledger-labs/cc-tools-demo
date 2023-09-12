@@ -9,8 +9,26 @@ import (
 	"github.com/goledgerdev/cc-tools/mock"
 )
 
+const clientUserOrg2Cert string = `-----BEGIN CERTIFICATE-----
+MIICKzCCAdGgAwIBAgIRANlrNyW+FJdC1n3b2uqAH+gwCgYIKoZIzj0EAwIwczEL
+MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+cmFuY2lzY28xGTAXBgNVBAoTEG9yZzIuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh
+Lm9yZzIuZXhhbXBsZS5jb20wHhcNMjMwOTEyMjEwOTAwWhcNMzMwOTA5MjEwOTAw
+WjBsMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN
+U2FuIEZyYW5jaXNjbzEPMA0GA1UECxMGY2xpZW50MR8wHQYDVQQDDBZVc2VyMUBv
+cmcyLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfQ8ISNJB
+MhJqUjjtKkkiDhmOElLMabjhw7K/4D5tKfwHilY7rOWV+XRUDKFAxw2f2ImW3AAs
+cAo6shS2jPyLI6NNMEswDgYDVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwKwYD
+VR0jBCQwIoAgMFP0bQ6QE7la/v0AXYw7boHMnjisxfjhxYak1g1DhBwwCgYIKoZI
+zj0EAwIDSAAwRQIhAJOeweSEKwdUZckzTv31n6Sfjsl4tXF2eyqA0tsL/voHAiBF
+HYqjQ2S+f++Bjv/kFLvhdY7/acdJYsWH2xyO1XseeA==
+-----END CERTIFICATE-----`
+
 func TestGetNumberOfBooksFromLibrary(t *testing.T) {
-	stub := mock.NewMockStub("org2MSP", new(CCDemo))
+	stub, err := mock.NewMockStubWithCert("org2MSP", new(CCDemo), []byte(clientUserOrg2Cert))
+	if err != nil {
+		t.FailNow()
+	}
 
 	// Setup state
 	setupBook := map[string]interface{}{
