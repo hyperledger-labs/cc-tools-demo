@@ -40,6 +40,10 @@ func QueryV1(c *gin.Context) {
 	}
 
 	user := c.GetHeader("User")
+	if user == "" {
+		user = "Admin"
+	}
+
 	res, status, err := chaincode.Query(channelName, chaincodeName, txName, user, argList)
 	if err != nil {
 		common.Abort(c, http.StatusInternalServerError, err)

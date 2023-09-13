@@ -81,6 +81,10 @@ func InvokeV1(c *gin.Context) {
 	}
 
 	user := c.GetHeader("User")
+	if user == "" {
+		user = "Admin"
+	}
+
 	res, status, err := chaincode.Invoke(channelName, chaincodeName, txName, user, argList, transientMapByte)
 	if err != nil {
 		common.Abort(c, http.StatusInternalServerError, err)
