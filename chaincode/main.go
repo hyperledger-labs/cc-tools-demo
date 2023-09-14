@@ -138,23 +138,6 @@ func InitFunc(stub shim.ChaincodeStubInterface) (response pb.Response) {
 		return
 	}
 
-	// // Get the args from the transaction proposal
-	// args := stub.GetStringArgs()
-
-	// // Test if argument list is empty
-	// if len(args) != 1 {
-	// 	response = shim.Error("the Init method expects 1 argument, got: " + strings.Join(args, ", "))
-	// 	response.Status = 400
-	// 	return
-	// }
-
-	// // Test if argument is "init" or "upgrade". Fails otherwise.
-	// if args[0] != "init" && args[0] != "upgrade" {
-	// 	response = shim.Error("the argument should be init or upgrade (as sent by Node.js SDK)")
-	// 	response.Status = 400
-	// 	return
-	// }
-
 	response = shim.Success(nil)
 	return
 }
