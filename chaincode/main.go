@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strings"
 	"time"
 
 	"github.com/goledgerdev/cc-tools-demo/chaincode/assettypes"
@@ -17,6 +16,8 @@ import (
 	"github.com/hyperledger/fabric-chaincode-go/shim"
 	pb "github.com/hyperledger/fabric-protos-go/peer"
 )
+
+var startupCheckExecuted = false
 
 func SetupCC() error {
 	tx.InitHeader(tx.Header{
@@ -62,6 +63,18 @@ type CCDemo struct{}
 // data. Note that chaincode upgrade also calls this function to reset
 // or to migrate data.
 func (t *CCDemo) Init(stub shim.ChaincodeStubInterface) (response pb.Response) {
+
+	res := InitFunc(stub)
+	startupCheckExecuted = true
+	if res.Status != 200 {
+		return res
+	}
+
+	response = shim.Success(nil)
+	return
+}
+
+func InitFunc(stub shim.ChaincodeStubInterface) (response pb.Response) {
 	// Defer logging function
 	defer logTx(stub, time.Now(), &response)
 
@@ -88,23 +101,6 @@ func (t *CCDemo) Init(stub shim.ChaincodeStubInterface) (response pb.Response) {
 		return
 	}
 
-	// Get the args from the transaction proposal
-	args := stub.GetStringArgs()
-
-	// Test if argument list is empty
-	if len(args) != 1 {
-		response = shim.Error("the Init method expects 1 argument, got: " + strings.Join(args, ", "))
-		response.Status = 400
-		return
-	}
-
-	// Test if argument is "init" or "upgrade". Fails otherwise.
-	if args[0] != "init" && args[0] != "upgrade" {
-		response = shim.Error("the argument should be init or upgrade (as sent by Node.js SDK)")
-		response.Status = 400
-		return
-	}
-
 	response = shim.Success(nil)
 	return
 }
@@ -113,6 +109,15 @@ func (t *CCDemo) Init(stub shim.ChaincodeStubInterface) (response pb.Response) {
 func (t *CCDemo) Invoke(stub shim.ChaincodeStubInterface) (response pb.Response) {
 	// Defer logging function
 	defer logTx(stub, time.Now(), &response)
+
+	if !startupCheckExecuted {
+		fmt.Println("Running startup check...")
+		res := InitFunc(stub)
+		if res.Status != 200 {
+			return res
+		}
+		startupCheckExecuted = true
+	}
 
 	var result []byte
 
