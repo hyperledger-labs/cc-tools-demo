@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strings"
 	"time"
 
 	"github.com/goledgerdev/cc-tools-demo/chaincode/assettypes"
@@ -64,47 +63,11 @@ type CCDemo struct{}
 // data. Note that chaincode upgrade also calls this function to reset
 // or to migrate data.
 func (t *CCDemo) Init(stub shim.ChaincodeStubInterface) (response pb.Response) {
-	// Defer logging function
-	defer logTx(stub, time.Now(), &response)
 
-	if assettypes.DynamicAssetTypes.Enabled {
-		sw := &sw.StubWrapper{
-			Stub: stub,
-		}
-		err := assets.RestoreAssetList(sw, true)
-		if err != nil {
-			response = err.GetErrorResponse()
-			return
-		}
-	}
-
-	err := assets.StartupCheck()
-	if err != nil {
-		response = err.GetErrorResponse()
-		return
-	}
-
-	err = tx.StartupCheck()
-	if err != nil {
-		response = err.GetErrorResponse()
-		return
-	}
-
-	// Get the args from the transaction proposal
-	args := stub.GetStringArgs()
-
-	// Test if argument list is empty
-	if len(args) != 1 {
-		response = shim.Error("the Init method expects 1 argument, got: " + strings.Join(args, ", "))
-		response.Status = 400
-		return
-	}
-
-	// Test if argument is "init" or "upgrade". Fails otherwise.
-	if args[0] != "init" && args[0] != "upgrade" {
-		response = shim.Error("the argument should be init or upgrade (as sent by Node.js SDK)")
-		response.Status = 400
-		return
+	res := InitFunc(stub)
+	startupCheckExecuted = true
+	if res.Status != 200 {
+		return res
 	}
 
 	response = shim.Success(nil)
