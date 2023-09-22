@@ -35,6 +35,8 @@ download_binaries(){
 
   echo "Downloading fabric binaries..."
   ./install-fabric.sh --fabric-version 2.5.3 binary
+
+  rm install-fabric.sh
 }
 
 FILE=bin
