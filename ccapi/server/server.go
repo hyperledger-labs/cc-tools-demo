@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/goledgerdev/ccapi/common"
-	"github.com/goledgerdev/ccapi/routes"
+	"github.com/hyperledger-labs/ccapi/common"
+	"github.com/hyperledger-labs/ccapi/routes"
 )
 
 func defaultServer(r *gin.Engine) *http.Server {
