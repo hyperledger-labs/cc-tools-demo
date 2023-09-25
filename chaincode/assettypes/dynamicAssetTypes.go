@@ -1,7 +1,7 @@
 package assettypes
 
 import (
-	"github.com/goledgerdev/cc-tools/assets"
+	"github.com/hyperledger-labs/cc-tools/assets"
 )
 
 // DynamicAssetTypes contains the configuration for the Dynamic AssetTypes feature.

@@ -3,7 +3,7 @@ package assettypes
 import (
 	"fmt"
 
-	"github.com/goledgerdev/cc-tools/assets"
+	"github.com/hyperledger-labs/cc-tools/assets"
 )
 
 var Person = assets.AssetType{

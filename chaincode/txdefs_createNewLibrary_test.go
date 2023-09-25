@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	cc "github.com/goledgerdev/cc-tools-demo/chaincode"
-	"github.com/goledgerdev/cc-tools/mock"
+	cc "github.com/hyperledger-labs/cc-tools-demo/chaincode"
+	"github.com/hyperledger-labs/cc-tools/mock"
 )
 
 func TestCreateNewLibrary(t *testing.T) {

@@ -3,10 +3,10 @@ package txdefs
 import (
 	"encoding/json"
 
-	"github.com/goledgerdev/cc-tools/assets"
-	"github.com/goledgerdev/cc-tools/errors"
-	sw "github.com/goledgerdev/cc-tools/stubwrapper"
-	tx "github.com/goledgerdev/cc-tools/transactions"
+	"github.com/hyperledger-labs/cc-tools/assets"
+	"github.com/hyperledger-labs/cc-tools/errors"
+	sw "github.com/hyperledger-labs/cc-tools/stubwrapper"
+	tx "github.com/hyperledger-labs/cc-tools/transactions"
 )
 
 // Return the number of books of a library

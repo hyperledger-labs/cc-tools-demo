@@ -1,6 +1,6 @@
 package assettypes
 
-import "github.com/goledgerdev/cc-tools/assets"
+import "github.com/hyperledger-labs/cc-tools/assets"
 
 // Description of a book
 var Book = assets.AssetType{
