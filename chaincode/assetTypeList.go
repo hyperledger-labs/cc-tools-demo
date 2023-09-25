@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/goledgerdev/cc-tools-demo/chaincode/assettypes"
-	"github.com/goledgerdev/cc-tools/assets"
+	"github.com/hyperledger-labs/cc-tools-demo/chaincode/assettypes"
+	"github.com/hyperledger-labs/cc-tools/assets"
 )
 
 var assetTypeList = []assets.AssetType{

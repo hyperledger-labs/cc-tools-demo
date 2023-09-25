@@ -1,6 +1,6 @@
-github.com/goledgerdev/cc-tools v0.9.0 h1:FAWSxo0ckD7R+IPd0nnKZ2qDHa/tN+S+r1FrR0Xg1XE=
-github.com/goledgerdev/cc-tools v0.9.0/go.mod h1:QPqedLfWG2UQm4cYZ6CmX8ocxx9akPc/cRugyjoLr08=
 github.com/cucumber/godog v0.12.6 h1:3IToXviU45G7FgijwTk/LdB4iojn8zUFDfQLj4MMiHc=
 github.com/gofrs/uuid v4.4.0+incompatible h1:3qXRTX8/NbyulANqlc0lchS1gqAVxRgsuW1YrTJupqA=
 github.com/hashicorp/go-immutable-radix v1.3.1 h1:DKHmCUm2hRBK510BaiZlwvpD40f8bJFeZnpfm2KLowc=
 github.com/hashicorp/go-memdb v1.3.4 h1:XSL3NR682X/cVk2IeV0d70N4DZ9ljI885xAEU8IoK3c=
+github.com/hyperledger-labs/cc-tools v0.0.0-20230925111202-1b51d7cd3cc5 h1:Q7ZmNfYonwaPdlTutN+IN9jOBOT9byEjnKWqzJ3a7zY=
+github.com/hyperledger-labs/cc-tools v0.0.0-20230925111202-1b51d7cd3cc5/go.mod h1:sR+BOyLX8mNk1CBbc7YTA6U0TxCe/urrT0TJyKF+8Uw=

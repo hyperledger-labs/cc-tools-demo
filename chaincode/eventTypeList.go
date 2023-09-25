@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/goledgerdev/cc-tools-demo/chaincode/eventtypes"
-	"github.com/goledgerdev/cc-tools/events"
+	"github.com/hyperledger-labs/cc-tools-demo/chaincode/eventtypes"
+	"github.com/hyperledger-labs/cc-tools/events"
 )
 
 var eventTypeList = []events.Event{
