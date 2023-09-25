@@ -3,7 +3,7 @@ package chaincode
 import (
 	"os"
 
-	"github.com/goledgerdev/ccapi/common"
+	"github.com/hyperledger-labs/ccapi/common"
 	"github.com/pkg/errors"
 )
 

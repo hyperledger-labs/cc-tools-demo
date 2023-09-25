@@ -1,4 +1,4 @@
-module github.com/goledgerdev/ccapi
+module github.com/hyperledger-labs/ccapi
 
 go 1.13
 
