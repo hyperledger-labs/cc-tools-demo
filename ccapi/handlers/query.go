@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/goledgerdev/ccapi/chaincode"
-	"github.com/goledgerdev/ccapi/common"
+	"github.com/hyperledger-labs/ccapi/chaincode"
+	"github.com/hyperledger-labs/ccapi/common"
 )
 
 func Query(c *gin.Context) {

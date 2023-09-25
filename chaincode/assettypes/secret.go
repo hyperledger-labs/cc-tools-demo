@@ -1,6 +1,6 @@
 package assettypes
 
-import "github.com/goledgerdev/cc-tools/assets"
+import "github.com/hyperledger-labs/cc-tools/assets"
 
 // Secret is and information available only for org2 and org3
 // Collections.json configuration is necessary

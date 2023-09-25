@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/goledgerdev/ccapi/handlers"
+	"github.com/hyperledger-labs/ccapi/handlers"
 
 	"github.com/gin-gonic/gin"
 )

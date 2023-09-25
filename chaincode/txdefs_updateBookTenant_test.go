@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/goledgerdev/cc-tools/mock"
+	"github.com/hyperledger-labs/cc-tools/mock"
 )
 
 // const clientUserOrg1Cert string = `-----BEGIN CERTIFICATE-----

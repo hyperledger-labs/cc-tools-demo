@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/goledgerdev/cc-tools/accesscontrol"
-	"github.com/goledgerdev/cc-tools/assets"
-	"github.com/goledgerdev/cc-tools/errors"
-	"github.com/goledgerdev/cc-tools/events"
-	sw "github.com/goledgerdev/cc-tools/stubwrapper"
-	tx "github.com/goledgerdev/cc-tools/transactions"
+	"github.com/hyperledger-labs/cc-tools/accesscontrol"
+	"github.com/hyperledger-labs/cc-tools/assets"
+	"github.com/hyperledger-labs/cc-tools/errors"
+	"github.com/hyperledger-labs/cc-tools/events"
+	sw "github.com/hyperledger-labs/cc-tools/stubwrapper"
+	tx "github.com/hyperledger-labs/cc-tools/transactions"
 )
 
 // Create a new Library on channel
