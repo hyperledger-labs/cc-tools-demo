@@ -1,6 +1,6 @@
 package eventtypes
 
-import "github.com/goledgerdev/cc-tools/events"
+import "github.com/hyperledger-labs/cc-tools/events"
 
 // CreateLibraryLog is a log to be emitted on the CCAPI when a library is created
 var CreateLibraryLog = events.Event{
