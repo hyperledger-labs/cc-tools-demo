@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 )
 
@@ -81,30 +80,17 @@ func (event EventHandler) Execute(ccEvent *fab.CCEvent) {
 			return
 		}
 
-		// Invoke executeEvent tx
-		var res *channel.Response
-		var err error
+		// Invoke tx
+		txName := "executeEvent"
 		if event.ReadOnly {
-			res, _, err = Invoke(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "runEvent", [][]byte{args}, nil)
-			if err != nil {
-				fmt.Println("error invoking transaction: ", err)
-				return
-			}
-		} else {
-			res, _, err = Invoke(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "executeEvent", [][]byte{args}, nil)
-			if err != nil {
-				fmt.Println("error invoking transaction: ", err)
-				return
-			}
+			txName = "runEvent"
 		}
 
-		var response map[string]interface{}
-		nerr := json.Unmarshal(res.Payload, &response)
-		if nerr != nil {
-			fmt.Println("error unmarshalling response: ", nerr)
+		_, _, err := Invoke(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), txName, [][]byte{args}, nil)
+		if err != nil {
+			fmt.Println("error invoking transaction: ", err)
 			return
 		}
-		fmt.Println("Response: ", response)
 	} else {
 		fmt.Println("Event type not supported")
 	}
