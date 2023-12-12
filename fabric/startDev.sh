@@ -16,12 +16,7 @@ then
   ORG_QNTY=3
 fi
 
-if [ $ORG_QNTY == 1 ]
-then
-  CCCG_PATH="../chaincode/collections2-org.json"
-else
-  CCCG_PATH="../chaincode/collections2.json"
-fi
+CCCG_PATH="../chaincode/collections.json"
 
 ./network.sh down -n $ORG_QNTY
 rm -rf organizations/peerOrganizations
