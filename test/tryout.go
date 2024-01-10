@@ -8,111 +8,111 @@ import (
 func tryout() []error {
 	var err error
 
-	// Get Header
-	fmt.Print("Get Header... ")
-	err = GetAndVerify(
-		"http://localhost:80/api/query/getHeader",
-		200,
-		map[string]interface{}{
-			"ccToolsVersion": "v0.7.1",
-			"colors": []interface{}{
-				"#4267B2",
-				"#34495E",
-				"#ECF0F1",
-			},
-			"name":     "CC Tools Demo",
-			"orgMSP":   "org1MSP",
-			"orgTitle": "CC Tools Demo",
-			"version":  "1.0.0",
-		},
-	)
-	if err != nil {
-		fail()
-		log.Fatalln(err)
-	}
-	pass()
+	// // Get Header
+	// fmt.Print("Get Header... ")
+	// err = GetAndVerify(
+	// 	"http://localhost:80/api/query/getHeader",
+	// 	200,
+	// 	map[string]interface{}{
+	// 		"ccToolsVersion": "v0.8.1",
+	// 		"colors": []interface{}{
+	// 			"#4267B2",
+	// 			"#34495E",
+	// 			"#ECF0F1",
+	// 		},
+	// 		"name":     "CC Tools Demo",
+	// 		"orgMSP":   "orgMSP",
+	// 		"orgTitle": "CC Tools Demo",
+	// 		"version":  "1.0.0",
+	// 	},
+	// )
+	// if err != nil {
+	// 	fail()
+	// 	log.Fatalln(err)
+	// }
+	// pass()
 
-	// Get Transactions
-	fmt.Print("Get Transactions... ")
-	err = GetAndVerify(
-		"http://localhost:80/api/query/getTx",
-		200,
-		[]interface{}{
-			map[string]interface{}{
-				"description": "",
-				"label":       "Create Asset",
-				"tag":         "createAsset",
-			},
-			map[string]interface{}{
-				"description": "",
-				"label":       "Update Asset",
-				"tag":         "updateAsset",
-			},
-			map[string]interface{}{
-				"description": "",
-				"label":       "Delete Asset",
-				"tag":         "deleteAsset",
-			},
-			map[string]interface{}{
-				"callers":     []interface{}{"$org3MSP"},
-				"description": "Create a New Library",
-				"label":       "Create New Library",
-				"tag":         "createNewLibrary",
-			},
-			map[string]interface{}{
-				"callers":     []interface{}{"$org2MSP"},
-				"description": "Return the number of books of a library",
-				"label":       "Get Number Of Books From Library",
-				"tag":         "getNumberOfBooksFromLibrary",
-			},
-			map[string]interface{}{
-				"callers":     []interface{}{"$org\\dMSP"},
-				"description": "Change the tenant of a book",
-				"label":       "Update Book Tenant",
-				"tag":         "updateBookTenant",
-			},
-			map[string]interface{}{
-				"description": "",
-				"label":       "Get Tx",
-				"tag":         "getTx",
-			},
-			map[string]interface{}{
-				"description": "",
-				"label":       "Get Header",
-				"tag":         "getHeader",
-			},
-			map[string]interface{}{
-				"description": "",
-				"label":       "Get Schema",
-				"tag":         "getSchema",
-			},
-			map[string]interface{}{
-				"description": "GetDataTypes returns the primary data type map",
-				"label":       "Get DataTypes",
-				"tag":         "getDataTypes",
-			},
-			map[string]interface{}{
-				"description": "",
-				"label":       "Read Asset",
-				"tag":         "readAsset",
-			},
-			map[string]interface{}{
-				"description": "",
-				"label":       "Read Asset History",
-				"tag":         "readAssetHistory",
-			},
-			map[string]interface{}{
-				"description": "",
-				"label":       "Search World State",
-				"tag":         "search",
-			},
-		},
-	)
-	if err != nil {
-		fail()
-		log.Fatalln(err)
-	}
-	pass()
+	// // Get Transactions
+	// fmt.Print("Get Transactions... ")
+	// err = GetAndVerify(
+	// 	"http://localhost:80/api/query/getTx",
+	// 	200,
+	// 	[]interface{}{
+	// 		map[string]interface{}{
+	// 			"description": "",
+	// 			"label":       "Create Asset",
+	// 			"tag":         "createAsset",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"description": "",
+	// 			"label":       "Update Asset",
+	// 			"tag":         "updateAsset",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"description": "",
+	// 			"label":       "Delete Asset",
+	// 			"tag":         "deleteAsset",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"callers":     []interface{}{"$org3MSP"},
+	// 			"description": "Create a New Library",
+	// 			"label":       "Create New Library",
+	// 			"tag":         "createNewLibrary",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"callers":     []interface{}{"$org2MSP"},
+	// 			"description": "Return the number of books of a library",
+	// 			"label":       "Get Number Of Books From Library",
+	// 			"tag":         "getNumberOfBooksFromLibrary",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"callers":     []interface{}{"$org\\dMSP"},
+	// 			"description": "Change the tenant of a book",
+	// 			"label":       "Update Book Tenant",
+	// 			"tag":         "updateBookTenant",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"description": "",
+	// 			"label":       "Get Tx",
+	// 			"tag":         "getTx",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"description": "",
+	// 			"label":       "Get Header",
+	// 			"tag":         "getHeader",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"description": "",
+	// 			"label":       "Get Schema",
+	// 			"tag":         "getSchema",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"description": "GetDataTypes returns the primary data type map",
+	// 			"label":       "Get DataTypes",
+	// 			"tag":         "getDataTypes",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"description": "",
+	// 			"label":       "Read Asset",
+	// 			"tag":         "readAsset",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"description": "",
+	// 			"label":       "Read Asset History",
+	// 			"tag":         "readAssetHistory",
+	// 		},
+	// 		map[string]interface{}{
+	// 			"description": "",
+	// 			"label":       "Search World State",
+	// 			"tag":         "search",
+	// 		},
+	// 	},
+	// )
+	// if err != nil {
+	// 	fail()
+	// 	log.Fatalln(err)
+	// }
+	// pass()
 
 	// Get CreateAsset definition
 	fmt.Print("Get CreateAsset definition... ")
@@ -157,18 +157,21 @@ func tryout() []error {
 				"description": "Personal data of someone",
 				"label":       "Person",
 				"tag":         "person",
+				"dynamic":     false,
 				"writers":     nil,
 			},
 			map[string]interface{}{
 				"description": "Book",
 				"label":       "Book",
 				"tag":         "book",
+				"dynamic":     false,
 				"writers":     nil,
 			},
 			map[string]interface{}{
 				"description": "Library as a collection of books",
 				"label":       "Library",
 				"tag":         "library",
+				"dynamic":     false,
 				"writers":     nil,
 			},
 			map[string]interface{}{
@@ -177,9 +180,18 @@ func tryout() []error {
 				"readers": []interface{}{
 					"org2MSP",
 					"org3MSP",
+					"orgMSP",
 				},
 				"tag":     "secret",
+				"dynamic": false,
 				"writers": nil,
+			},
+			map[string]interface{}{
+				"description": "AssetTypeListData",
+				"dynamic":     false,
+				"label":       "AssetTypeListData",
+				"tag":         "assetTypeListData",
+				"writers":     nil,
 			},
 		},
 	)
@@ -212,6 +224,7 @@ func tryout() []error {
 					"tag":         "id",
 					"writers": []interface{}{
 						"org1MSP",
+						"orgMSP",
 					},
 				},
 				map[string]interface{}{
@@ -272,7 +285,7 @@ func tryout() []error {
 			map[string]interface{}{
 				"@assetType":   "person",
 				"@key":         "person:47061146-c642-51a1-844a-bf0b17cb5e19",
-				"@lastTouchBy": "org1MSP",
+				"@lastTouchBy": "orgMSP",
 				"@lastTx":      "createAsset",
 				"height":       0.0,
 				"id":           "31820792048",

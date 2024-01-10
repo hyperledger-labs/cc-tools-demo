@@ -52,6 +52,7 @@ func PostAndVerify(url string, body interface{}, expectedStatus int, expectedRes
 	if err != nil {
 		return err
 	}
+
 	if !reflect.DeepEqual(expectedResponse, receivedResponse) {
 		return fmt.Errorf("unexpected response\n\nexpected: %#v\n\nreceived: %#v", expectedResponse, receivedResponse)
 	}
