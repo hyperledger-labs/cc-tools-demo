@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"time"
@@ -45,6 +46,16 @@ func SetupCC() error {
 
 // main function starts up the chaincode in the container during instantiate
 func main() {
+	// Generate collection json
+	genFlag := flag.Bool("g", false, "Enable collection generation")
+	flag.Bool("orgs", false, "List of orgs to generate collection for")
+	flag.Parse()
+	if *genFlag {
+		listOrgs := flag.Args()
+		generateCollection(listOrgs)
+		return
+	}
+
 	log.Printf("Starting chaincode %s version %s\n", header.Name, header.Version)
 
 	err := SetupCC()
