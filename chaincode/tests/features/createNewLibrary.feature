@@ -4,8 +4,8 @@ Feature: Create New Library
     I want to make a request with the name of the desired library
 
     Scenario: Create a new library
-        Given there is a running "" test network from scratch
-        When I make a "POST" request to "/api/invoke/createNewLibrary" on port 880 with:
+        Given there is a running "" test network
+        When I make a "POST" request to "/api/invoke/createNewLibrary" on port 80 with:
             """
             {
                 "name": "Elizabeth's Library"
@@ -26,7 +26,7 @@ Feature: Create New Library
     Scenario: Try to create a new library with a name that already exists
         Given there is a running "" test network
         Given there is a library with name "John's Library"
-        When I make a "POST" request to "/api/invoke/createNewLibrary" on port 880 with:
+        When I make a "POST" request to "/api/invoke/createNewLibrary" on port 80 with:
             """
             {
                 "name": "John's Library"

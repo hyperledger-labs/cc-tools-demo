@@ -6,7 +6,7 @@ Feature: Update Book Tentant
     Scenario: Update Book With A Existing Tentant 
         # The first 3 statements will be used by all scenarios on this feature
         Given there is a running "" test network
-        And I make a "POST" request to "/api/invoke/createAsset" on port 880 with:
+        And I make a "POST" request to "/api/invoke/createAsset" on port 80 with:
             """
             {
                 "asset": [{
@@ -16,7 +16,7 @@ Feature: Update Book Tentant
                     }]
             }
             """
-        And I make a "POST" request to "/api/invoke/createAsset" on port 880 with:
+        And I make a "POST" request to "/api/invoke/createAsset" on port 80 with:
             """
            {
                 "asset": [{
@@ -26,7 +26,7 @@ Feature: Update Book Tentant
                 }]
 	        }
             """
-        When I make a "PUT" request to "/api/invoke/updateBookTenant" on port 880 with:
+        When I make a "PUT" request to "/api/invoke/updateBookTenant" on port 80 with:
             """
             {
                 "book": {
@@ -55,7 +55,7 @@ Feature: Update Book Tentant
 
     Scenario: Update Book With A Not Existing Tentant
         Given there is a running "" test network
-        When I make a "PUT" request to "/api/invoke/updateBookTenant" on port 880 with:
+        When I make a "PUT" request to "/api/invoke/updateBookTenant" on port 80 with:
             """
             {
                 "book": {

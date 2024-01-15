@@ -205,7 +205,7 @@ func thereAreBooksWithPrefixByAuthor(ctx context.Context, nBooks int, prefix str
 			}
 			dataAsBytes := bytes.NewBuffer([]byte(jsonStr))
 
-			if res, err = http.Post("http://localhost:880/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+			if res, err = http.Post("http://localhost:80/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
 				return ctx, err
 			}
 
@@ -253,7 +253,7 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 	}
 
 	// Create library if it doesnt exists
-	if len(received["result"].([]interface{})) == 0 {
+	if received["result"] == nil || len(received["result"].([]interface{})) == 0 {
 		requestJSON = map[string]interface{}{
 			"asset": []interface{}{
 				map[string]interface{}{
@@ -268,7 +268,7 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 		}
 		dataAsBytes = bytes.NewBuffer([]byte(jsonStr))
 
-		if res, err = http.Post("http://localhost:880/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+		if res, err = http.Post("http://localhost:80/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
 			return ctx, err
 		}
 
@@ -292,7 +292,7 @@ func thereIsARunningTestNetworkFromScratch(arg1 string) error {
 	}
 
 	// Wait for ccapi
-	err = waitForNetwork("880")
+	err = waitForNetwork("80")
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
@@ -302,7 +302,7 @@ func thereIsARunningTestNetworkFromScratch(arg1 string) error {
 }
 
 func thereIsARunningTestNetwork(arg1 string) error {
-	if !verifyContainer("api.org.example.com", "3000") {
+	if !verifyContainer("ccapi.org.example.com", "3000") {
 		// Start test network with 1 org only
 		cmd := exec.Command("../../startDev.sh", "-n", "1")
 
@@ -314,13 +314,17 @@ func thereIsARunningTestNetwork(arg1 string) error {
 		}
 
 		// Wait for ccapi
-		err = waitForNetwork("880")
+		err = waitForNetwork("80")
 		if err != nil {
 			fmt.Println(err.Error())
 			return err
 		}
 	}
 	return nil
+}
+
+func InitializeTestSuite(ctx *godog.TestSuiteContext) {
+	ctx.BeforeSuite(func() {})
 }
 
 func InitializeScenario(ctx *godog.ScenarioContext) {
@@ -332,6 +336,27 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^there are (\d+) books with prefix "([^"]*)" by author "([^"]*)"$`, thereAreBooksWithPrefixByAuthor)
 	ctx.Step(`^the "([^"]*)" field should have size (\d+)$`, theFieldShouldHaveSize)
 	ctx.Step(`^there is a library with name "([^"]*)"$`, thereIsALibraryWithName)
+
+	// ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
+	// 	// Start test network with 1 org only
+	// 	cmd := exec.Command("../../startDev.sh", "-n", "1")
+
+	// 	_, err := cmd.Output()
+
+	// 	if err != nil {
+	// 		fmt.Println(err.Error())
+	// 		return ctx, err
+	// 	}
+
+	// 	// Wait for ccapi
+	// 	err = waitForNetwork("80")
+	// 	if err != nil {
+	// 		fmt.Println(err.Error())
+	// 		return ctx, err
+	// 	}
+
+	// 	return ctx, nil
+	// })
 }
 
 func waitForNetwork(port string) error {
