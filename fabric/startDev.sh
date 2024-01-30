@@ -34,22 +34,29 @@ download_binaries(){
   rm install-fabric.sh
 }
 
-FILE=bin
-if [ ! -d "$FILE" ]; then
-  echo "Directory $FILE not found"
-  download_binaries
+# Check PATH
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+# Binaries to check
+fabric_binaries=("fabric-ca-client" "fabric-ca-server" "osnadmin" "configtxgen" "configtxlator" "cryptogen" "discover" "orderer" "peer")
+
+all_binaries_exist() {
+  for binary in "${fabric_binaries[@]}"; do
+    if ! command_exists "$binary"; then
+      return 1
+    fi
+  done
+  return 0
+}
+
+if all_binaries_exist; then
+  echo "All Fabric binaries are available in the system path."
 else
-  cd bin;
-  numFiles="$(ls -1 | wc -l)"
-  if [ "$numFiles" -ne 10 ];
-  then
-    cd ..
-    echo "Missing some fabric binaries"
-    download_binaries
-  else
-    cd ..
-  fi
-fi
+  echo "Some or all Fabric binaries are missing from the system path."
+  download_binaries
+fi 
 
 docker network create cc-tools-demo-net
 ./network.sh up createChannel -n $ORG_QNTY
