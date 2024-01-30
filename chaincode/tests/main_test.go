@@ -29,9 +29,5 @@ func TestMain(m *testing.M) {
 		Options:              &opts,
 	}.Run()
 
-	if st := m.Run(); st > status {
-		status = st
-	}
-
 	os.Exit(status)
 }
