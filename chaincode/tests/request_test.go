@@ -336,27 +336,6 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^there are (\d+) books with prefix "([^"]*)" by author "([^"]*)"$`, thereAreBooksWithPrefixByAuthor)
 	ctx.Step(`^the "([^"]*)" field should have size (\d+)$`, theFieldShouldHaveSize)
 	ctx.Step(`^there is a library with name "([^"]*)"$`, thereIsALibraryWithName)
-
-	// ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
-	// 	// Start test network with 1 org only
-	// 	cmd := exec.Command("../../startDev.sh", "-n", "1")
-
-	// 	_, err := cmd.Output()
-
-	// 	if err != nil {
-	// 		fmt.Println(err.Error())
-	// 		return ctx, err
-	// 	}
-
-	// 	// Wait for ccapi
-	// 	err = waitForNetwork("80")
-	// 	if err != nil {
-	// 		fmt.Println(err.Error())
-	// 		return ctx, err
-	// 	}
-
-	// 	return ctx, nil
-	// })
 }
 
 func waitForNetwork(port string) error {

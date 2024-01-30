@@ -11,11 +11,11 @@ import (
 
 var opts = godog.Options{
 	Output: colors.Colored(os.Stdout),
-	Format: "progress", // can define default values
+	Format: "progress",
 }
 
 func init() {
-	godog.BindCommandLineFlags("godog.", &opts) // godog v0.11.0 and later
+	godog.BindCommandLineFlags("godog.", &opts)
 }
 
 func TestMain(m *testing.M) {
