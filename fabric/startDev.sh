@@ -55,7 +55,23 @@ if all_binaries_exist; then
   echo "All Fabric binaries are available in the system path."
 else
   echo "Some or all Fabric binaries are missing from the system path."
-  download_binaries
+  
+  FILE=bin
+  if [ ! -d "$FILE" ]; then
+    echo "Directory $FILE not found"
+    download_binaries
+  else
+    echo "Bin directory already exists"
+    cd bin
+    numFiles="$(ls -1 | wc -l)"
+    if [ "$numFiles" -ne 10 ]; then
+      cd ..
+      echo "Missing some fabric binaries in bin directory"
+      download_binaries
+    else
+      cd ..
+    fi
+  fi
 fi 
 
 docker network create cc-tools-demo-net
