@@ -302,7 +302,7 @@ func thereIsARunningTestNetworkFromScratch(arg1 string) error {
 }
 
 func thereIsARunningTestNetwork(arg1 string) error {
-	if !verifyContainer("ccapi.org.example.com", "3000") {
+	if !verifyContainer("ccapi.org.example.com", "80") {
 		// Start test network with 1 org only
 		cmd := exec.Command("../../startDev.sh", "-n", "1")
 
