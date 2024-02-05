@@ -282,7 +282,8 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 
 func thereIsARunningTestNetworkFromScratch(arg1 string) error {
 	// Start test network with 1 org only
-	cmd := exec.Command("../../startDev.sh", "-n", "1")
+	cmd := exec.Command("./startDev.sh", "-n", "1")
+	cmd.Dir = "../../"
 
 	_, err := cmd.Output()
 
