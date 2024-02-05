@@ -54,7 +54,7 @@ func (event EventHandler) Execute(ccEvent *fab.CCEvent) {
 			cc = event.Chaincode
 		}
 
-		res, _, err := Invoke(ch, cc, event.Transaction, [][]byte{ccEvent.Payload}, nil)
+		res, _, err := Invoke(ch, cc, event.Transaction, os.Getenv("USER"), [][]byte{ccEvent.Payload}, nil)
 		if err != nil {
 			fmt.Println("error invoking transaction: ", err)
 			return

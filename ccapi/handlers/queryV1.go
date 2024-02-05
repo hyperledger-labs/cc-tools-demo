@@ -39,7 +39,12 @@ func QueryV1(c *gin.Context) {
 		argList = append(argList, args)
 	}
 
-	res, status, err := chaincode.Query(channelName, chaincodeName, txName, argList)
+	user := c.GetHeader("User")
+	if user == "" {
+		user = "Admin"
+	}
+
+	res, status, err := chaincode.Query(channelName, chaincodeName, txName, user, argList)
 	if err != nil {
 		common.Abort(c, status, err)
 		return

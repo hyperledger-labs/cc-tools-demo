@@ -3,6 +3,7 @@ package txdefs
 import (
 	"encoding/json"
 
+	"github.com/hyperledger-labs/cc-tools/accesscontrol"
 	"github.com/hyperledger-labs/cc-tools/assets"
 	"github.com/hyperledger-labs/cc-tools/errors"
 	sw "github.com/hyperledger-labs/cc-tools/stubwrapper"
@@ -16,7 +17,10 @@ var UpdateBookTenant = tx.Transaction{
 	Label:       "Update Book Tenant",
 	Description: "Change the tenant of a book",
 	Method:      "PUT",
-	Callers:     []string{`$org\dMSP`, "orgMSP"}, // Any orgs can call this transaction
+	Callers: []accesscontrol.Caller{ // Any org can call this transaction
+		{MSP: `$org\dMSP`},
+		{MSP: "orgMSP"},
+	},
 
 	Args: []tx.Argument{
 		{

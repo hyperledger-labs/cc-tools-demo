@@ -78,7 +78,7 @@ func HandleEvent(channelName, ccName string, event EventHandler) {
 
 func RegisterForEvents() {
 	// Get registered events on the chaincode
-	res, _, err := Invoke(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "getEvents", nil, nil)
+	res, _, err := Invoke(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "getEvents", os.Getenv("USER"), nil, nil)
 	if err != nil {
 		fmt.Println("error registering for events: ", err)
 		return

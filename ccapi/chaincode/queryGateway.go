@@ -7,7 +7,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func QueryGateway(channelName, chaincodeName, txName, args string) ([]byte, error) {
+func QueryGateway(channelName, chaincodeName, txName, args, user string) ([]byte, error) {
 	// Gateway endpoint
 	endpoint := os.Getenv("FABRIC_GATEWAY_ENDPOINT")
 
@@ -19,7 +19,7 @@ func QueryGateway(channelName, chaincodeName, txName, args string) ([]byte, erro
 	defer grpcConn.Close()
 
 	// Create gateway connection
-	gw, err := common.CreateGatewayConnection(grpcConn)
+	gw, err := common.CreateGatewayConnection(grpcConn, user)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create gateway connection")
 	}
