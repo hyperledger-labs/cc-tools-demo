@@ -10,8 +10,9 @@ import (
 )
 
 var opts = godog.Options{
-	Output: colors.Colored(os.Stdout),
-	Format: "progress",
+	Output:        colors.Colored(os.Stdout),
+	Format:        Format(),
+	StopOnFailure: true,
 }
 
 func init() {
@@ -30,4 +31,15 @@ func TestMain(m *testing.M) {
 	}.Run()
 
 	os.Exit(status)
+}
+
+func Format() string {
+	format := "progress"
+	for _, arg := range os.Args[1:] {
+		if arg == "-test.v=true" { // go test transforms -v option
+			format = "pretty"
+			break
+		}
+	}
+	return format
 }
