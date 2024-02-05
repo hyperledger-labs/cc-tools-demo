@@ -7,7 +7,7 @@ Feature: Get Books By Author
     Scenario: Request an author with multiple books
         Given there is a running "" test network
         And there are 3 books with prefix "book" by author "Jack"
-        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 880 with:
+        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 80 with:
             """
             {
                 "authorName": "Jack"
@@ -18,7 +18,7 @@ Feature: Get Books By Author
 
     Scenario: Request an author with no books
         Given there is a running "" test network
-        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 880 with:
+        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 80 with:
             """
             {
                 "authorName": "Mary"
@@ -31,7 +31,7 @@ Feature: Get Books By Author
         Given there is a running "" test network
         Given there are 1 books with prefix "fantasy" by author "Missy"
         Given there are 2 books with prefix "cook" by author "John"
-        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 880 with:
+        When I make a "GET" request to "/api/query/getBooksByAuthor" on port 80 with:
             """
             {
                 "authorName": "John"

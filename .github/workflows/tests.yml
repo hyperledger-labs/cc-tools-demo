@@ -24,5 +24,8 @@ jobs:
     - name: Build
       run: go build -v github.com/hyperledger-labs/cc-tools-demo/chaincode
 
-    - name: Test
+    - name: Unit tests
       run: go test github.com/hyperledger-labs/cc-tools-demo/chaincode -coverpkg=./... -v
+    
+    - name: Integration tests
+      run: go test -v ./tests

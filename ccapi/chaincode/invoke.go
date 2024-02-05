@@ -29,10 +29,9 @@ func Invoke(channelName, ccName, txName string, txArgs [][]byte, transientReques
 	}
 
 	res, err := fabMngr.Client.Execute(rq, channel.WithRetry(retry.DefaultChannelOpts))
-
 	if err != nil {
-		return nil, http.StatusInternalServerError, err
+		return nil, extractStatusCode(err.Error()), err
 	}
 
-	return &res, http.StatusInternalServerError, nil
+	return &res, http.StatusOK, nil
 }
