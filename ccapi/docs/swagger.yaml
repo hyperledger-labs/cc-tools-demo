@@ -96,12 +96,14 @@ paths:
             type: string
           required: true
           description: Name of the channel.
+          example: "mainchannel"
         - in: path
           name: chaincodeName
           schema:
             type: string
           required: true
           description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       responses:
         "200":
           description: OK
@@ -120,12 +122,14 @@ paths:
             type: string
           required: true
           description: Name of the channel.
+          example: "mainchannel"
         - in: path
           name: chaincodeName
           schema:
             type: string
           required: true
           description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       responses:
         "200":
           description: OK
@@ -142,12 +146,14 @@ paths:
             type: string
           required: true
           description: Name of the channel.
+          example: "mainchannel"
         - in: path
           name: chaincodeName
           schema:
             type: string
           required: true
           description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         description: The txName field must contain the name of a transaction defined by the chaincode.
         content:
@@ -181,12 +187,14 @@ paths:
             type: string
           required: true
           description: Name of the channel.
+          example: "mainchannel"
         - in: path
           name: chaincodeName
           schema:
             type: string
           required: true
           description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       responses:
         "200":
           description: OK
@@ -203,12 +211,14 @@ paths:
             type: string
           required: true
           description: Name of the channel.
+          example: "mainchannel"
         - in: path
           name: chaincodeName
           schema:
             type: string
           required: true
           description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         description: The assetType must contain an asset type defined by the chaincode.
         content:
@@ -242,12 +252,14 @@ paths:
             type: string
           required: true
           description: Name of the channel.
+          example: "mainchannel"
         - in: path
           name: chaincodeName
           schema:
             type: string
           required: true
           description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         description: The asset must be an array of objects. Each object must contain the asset type in the @assetType field and the asset data in the other fields.
         content:
@@ -290,12 +302,14 @@ paths:
             type: string
           required: true
           description: Name of the channel.
+          example: "mainchannel"
         - in: path
           name: chaincodeName
           schema:
             type: string
           required: true
           description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         content:
           application/json:
@@ -331,12 +345,14 @@ paths:
             type: string
           required: true
           description: Name of the channel.
+          example: "mainchannel"
         - in: path
           name: chaincodeName
           schema:
             type: string
           required: true
           description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         content:
           application/json:
@@ -372,12 +388,14 @@ paths:
             type: string
           required: true
           description: Name of the channel.
+          example: "mainchannel"
         - in: path
           name: chaincodeName
           schema:
             type: string
           required: true
           description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       description: "Query JSON as defined by CouchDB docs: https://docs.couchdb.org/en/stable/api/database/find.html"
       requestBody:
         required: true
@@ -436,12 +454,14 @@ paths:
             type: string
           required: true
           description: Name of the channel.
+          example: "mainchannel"
         - in: path
           name: chaincodeName
           schema:
             type: string
           required: true
           description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         content:
           application/json:
@@ -482,12 +502,14 @@ paths:
             type: string
           required: true
           description: Name of the channel.
+          example: "mainchannel"
         - in: path
           name: chaincodeName
           schema:
             type: string
           required: true
           description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         content:
           application/json:
