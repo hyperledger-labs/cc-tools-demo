@@ -8,38 +8,24 @@ servers:
 tags:
   - name: Basic Operations
 paths:
-  /invoke/{txName}:
+  /gateway/{channelName}/{chaincodeName}/invoke/{txname}:
     post:
       tags:
         - Basic Operations
       summary: Executes transaction txName and writes the result to the blockchain.
       parameters:
         - in: path
-          name: txName
+          name: channelName
           schema:
             type: string
           required: true
-          description: Name of the transaction to be executed.
-      requestBody:
-        description: The request body must match the definition of the transaction arguments.
-        content:
-          application/json:
-            schema:
-              type: object
-      responses:
-        "200":
-          description: OK
-        "4XX":
-          description: Bad Request
-        5XX:
-          description: Internal error
-
-  /query/{txName}:
-    post:
-      tags:
-        - Basic Operations
-      summary: Executes transaction txName and returns only the result, without writing it to the blockchain.
-      parameters:
+          description: Name of the channel.
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
         - in: path
           name: txName
           schema:
@@ -60,22 +46,90 @@ paths:
         5XX:
           description: Internal error
 
-  /query/getHeader:
+  /gateway/{channelName}/{chaincodeName}/query/{txname}:
+    post:
+      tags:
+        - Basic Operations
+      summary: Executes transaction txName and returns only the result, without writing it to the blockchain.
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+        - in: path
+          name: txName
+          schema:
+            type: string
+          required: true
+          description: Name of the transaction to be executed.
+      requestBody:
+        description: The request body must match the definition of the transaction arguments.
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: OK
+        "4XX":
+          description: Bad Request
+        5XX:
+          description: Internal error
+
+  /gateway/{channelName}/{chaincodeName}/query/getHeader:
     get:
       tags:
         - Basic Operations
       summary: Retrieves information about the chaincode.
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+          example: "mainchannel"
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       responses:
         "200":
           description: OK
         5XX:
           description: Internal error.
 
-  /query/getTx:
+  /gateway/{channelName}/{chaincodeName}/query/getTx:
     get:
       tags:
         - Basic Operations
       summary: Requests the list of defined transactions.
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+          example: "mainchannel"
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       responses:
         "200":
           description: OK
@@ -85,6 +139,21 @@ paths:
       tags:
         - Basic Operations
       summary: Gets the description of a specific transaction.
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+          example: "mainchannel"
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         description: The txName field must contain the name of a transaction defined by the chaincode.
         content:
@@ -106,11 +175,26 @@ paths:
         5XX:
           description: Internal error
 
-  /query/getSchema:
+  /gateway/{channelName}/{chaincodeName}/query/getSchema:
     get:
       tags:
         - Basic Operations
       summary: Searches the list of existing assets.
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+          example: "mainchannel"
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       responses:
         "200":
           description: OK
@@ -120,6 +204,21 @@ paths:
       tags:
         - Basic Operations
       summary: Gets the description of a specific asset type.
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+          example: "mainchannel"
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         description: The assetType must contain an asset type defined by the chaincode.
         content:
@@ -141,11 +240,26 @@ paths:
         5XX:
           description: Internal error
 
-  /invoke/createAsset:
+  /gateway/{channelName}/{chaincodeName}/invoke/createAsset:
     post:
       tags:
         - Basic Operations
       summary: Create asset on the blockchain
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+          example: "mainchannel"
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         description: The asset must be an array of objects. Each object must contain the asset type in the @assetType field and the asset data in the other fields.
         content:
@@ -176,11 +290,26 @@ paths:
         5XX:
           description: Internal error
 
-  /query/readAsset:
+  /gateway/{channelName}/{chaincodeName}/query/readAsset:
     post:
       tags:
         - Basic Operations
       summary: "Reads an asset from the blockchain using its primary key."
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+          example: "mainchannel"
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         content:
           application/json:
@@ -204,11 +333,26 @@ paths:
         5XX:
           description: Internal error
 
-  /query/readAssetHistory:
+  /gateway/{channelName}/{chaincodeName}/query/readAssetHistory:
     post:
       tags:
         - Basic Operations
       summary: "Reads the history of an asset from the blockchain using its primary key."
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+          example: "mainchannel"
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         content:
           application/json:
@@ -232,11 +376,26 @@ paths:
         5XX:
           description: Internal error
 
-  /query/search:
+  /gateway/{channelName}/{chaincodeName}/query/search:
     post:
       tags:
         - Basic Operations
       summary: Searches the blockchain world state using CouchDB rich queries
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+          example: "mainchannel"
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       description: "Query JSON as defined by CouchDB docs: https://docs.couchdb.org/en/stable/api/database/find.html"
       requestBody:
         required: true
@@ -283,11 +442,26 @@ paths:
         5XX:
           description: Internal error
 
-  /invoke/updateAsset:
+  /gateway/{channelName}/{chaincodeName}/invoke/updateAsset:
     put:
       tags:
         - Basic Operations
       summary: Updates an existing asset
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+          example: "mainchannel"
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         content:
           application/json:
@@ -316,11 +490,26 @@ paths:
         5XX:
           description: Internal error
 
-  /invoke/deleteAsset:
+  /gateway/{channelName}/{chaincodeName}/invoke/deleteAsset:
     delete:
       tags:
         - Basic Operations
       summary: Deletes an existing asset
+      parameters:
+        - in: path
+          name: channelName
+          schema:
+            type: string
+          required: true
+          description: Name of the channel.
+          example: "mainchannel"
+        - in: path
+          name: chaincodeName
+          schema:
+            type: string
+          required: true
+          description: Name of the chaincode in channel.
+          example: "cc-tools-demo"
       requestBody:
         content:
           application/json:
