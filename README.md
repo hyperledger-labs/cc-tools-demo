@@ -2,17 +2,17 @@
 
 ## Directory Structure
 
-- `/fabric`: Fabric network v2.2 used as a test environment
+- `/fabric`: Fabric network v2.5 used as a test environment
 - `/chaincode`: chaincode-related files
 - `/ccapi`: chaincode REST API in Golang project
 
 ## Development
 
-The `cc-tools` library has been tested in Fabric v1.4, v2.2 and v2.4 networks.
+The `cc-tools` library has been tested in Fabric v2.2, v2.4 and v2.5 networks.
 
 Dependencies for chaincode and chaincode API:
 
-- Go 1.14 or higher
+- Go 1.21 or higher
 
 Dependencies for test environment:
 
