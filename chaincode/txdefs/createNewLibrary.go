@@ -22,11 +22,11 @@ var CreateNewLibrary = tx.Transaction{
 	Callers: []accesscontrol.Caller{ // Only org3 client can call this transaction
 		{
 			MSP: "org3MSP",
-			OU:  "client", // Just for tests
+			OU:  "admin",
 		},
 		{
 			MSP: "orgMSP",
-			OU:  "client",
+			OU:  "admin",
 		},
 	},
 
