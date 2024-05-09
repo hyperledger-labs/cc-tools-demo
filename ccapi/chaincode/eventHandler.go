@@ -86,7 +86,7 @@ func (event EventHandler) Execute(ccEvent *fab.CCEvent) {
 			txName = "runEvent"
 		}
 
-		_, _, err := Invoke(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), txName, [][]byte{args}, nil)
+		_, _, err := Invoke(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), txName, os.Getenv("USER"), [][]byte{args}, nil)
 		if err != nil {
 			fmt.Println("error invoking transaction: ", err)
 			return
