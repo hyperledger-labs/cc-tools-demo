@@ -46,7 +46,7 @@ func QueryV1(c *gin.Context) {
 
 	res, status, err := chaincode.Query(channelName, chaincodeName, txName, user, argList)
 	if err != nil {
-		common.Abort(c, http.StatusInternalServerError, err)
+		common.Abort(c, status, err)
 		return
 	}
 

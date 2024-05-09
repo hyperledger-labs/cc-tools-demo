@@ -50,14 +50,14 @@ var UpdateBookTenant = tx.Transaction{
 		// Returns Book from channel
 		bookAsset, err := bookKey.Get(stub)
 		if err != nil {
-			return nil, errors.WrapError(err, "failed to get asset from the ledger")
+			return nil, errors.WrapErrorWithStatus(err, "failed to get asset from the ledger", err.Status())
 		}
 		bookMap := (map[string]interface{})(*bookAsset)
 
 		// Returns person from channel
 		tenantAsset, err := tenantKey.Get(stub)
 		if err != nil {
-			return nil, errors.WrapError(err, "failed to get asset from the ledger")
+			return nil, errors.WrapErrorWithStatus(err, "failed to get asset from the ledger", err.Status())
 		}
 		tenantMap := (map[string]interface{})(*tenantAsset)
 

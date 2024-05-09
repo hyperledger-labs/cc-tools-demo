@@ -23,10 +23,10 @@ func Query(channelName, ccName, txName, user string, txArgs [][]byte) (*channel.
 	}
 
 	res, err := fabMngr.Client.Query(rq, channel.WithRetry(retry.DefaultChannelOpts))
-
 	if err != nil {
-		return nil, http.StatusInternalServerError, err
+		status := extractStatusCode(err.Error())
+		return nil, status, err
 	}
 
-	return &res, http.StatusInternalServerError, nil
+	return &res, http.StatusOK, nil
 }

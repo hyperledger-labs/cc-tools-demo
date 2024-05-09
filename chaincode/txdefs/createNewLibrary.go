@@ -54,7 +54,7 @@ var CreateNewLibrary = tx.Transaction{
 		// Save the new library on channel
 		_, err = libraryAsset.PutNew(stub)
 		if err != nil {
-			return nil, errors.WrapError(err, "Error saving asset on blockchain")
+			return nil, errors.WrapErrorWithStatus(err, "Error saving asset on blockchain", err.Status())
 		}
 
 		// Marshal asset back to JSON format
