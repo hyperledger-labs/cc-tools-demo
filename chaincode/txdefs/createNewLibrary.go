@@ -19,7 +19,7 @@ var CreateNewLibrary = tx.Transaction{
 	Label:       "Create New Library",
 	Description: "Create a New Library",
 	Method:      "POST",
-	Callers: []accesscontrol.Caller{ // Only org3 client can call this transaction
+	Callers: []accesscontrol.Caller{ // Only org3 admin can call this transaction
 		{
 			MSP: "org3MSP",
 			OU:  "admin",
