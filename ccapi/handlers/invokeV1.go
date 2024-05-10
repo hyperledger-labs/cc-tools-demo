@@ -80,7 +80,12 @@ func InvokeV1(c *gin.Context) {
 		argList = append(argList, args)
 	}
 
-	res, status, err := chaincode.Invoke(channelName, chaincodeName, txName, argList, transientMapByte)
+	user := c.GetHeader("User")
+	if user == "" {
+		user = "Admin"
+	}
+
+	res, status, err := chaincode.Invoke(channelName, chaincodeName, txName, user, argList, transientMapByte)
 	if err != nil {
 		common.Abort(c, status, err)
 		return

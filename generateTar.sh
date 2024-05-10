@@ -80,7 +80,7 @@ fi
 rm -f ${FLAG_NAME}.tar.gz
 
 # Make sure go mod is up to date
-cd chaincode && go mod vendor && cd ..
+cd chaincode && GOWORK=off go mod vendor && cd ..
 
 # Pack chaincode
 export FABRIC_CFG_PATH=fabric/config

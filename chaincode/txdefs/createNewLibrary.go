@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/hyperledger-labs/cc-tools/accesscontrol"
 	"github.com/hyperledger-labs/cc-tools/assets"
 	"github.com/hyperledger-labs/cc-tools/errors"
 	"github.com/hyperledger-labs/cc-tools/events"
@@ -18,7 +19,16 @@ var CreateNewLibrary = tx.Transaction{
 	Label:       "Create New Library",
 	Description: "Create a New Library",
 	Method:      "POST",
-	Callers:     []string{"$org3MSP", "$orgMSP"}, // Only org3 can call this transaction
+	Callers: []accesscontrol.Caller{ // Only org3 admin can call this transaction
+		{
+			MSP: "org3MSP",
+			OU:  "admin",
+		},
+		{
+			MSP: "orgMSP",
+			OU:  "admin",
+		},
+	},
 
 	Args: []tx.Argument{
 		{

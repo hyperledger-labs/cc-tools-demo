@@ -54,7 +54,7 @@ func (event EventHandler) Execute(ccEvent *fab.CCEvent) {
 			cc = event.Chaincode
 		}
 
-		res, _, err := Invoke(ch, cc, event.Transaction, [][]byte{ccEvent.Payload}, nil)
+		res, _, err := Invoke(ch, cc, event.Transaction, os.Getenv("USER"), [][]byte{ccEvent.Payload}, nil)
 		if err != nil {
 			fmt.Println("error invoking transaction: ", err)
 			return
@@ -86,7 +86,7 @@ func (event EventHandler) Execute(ccEvent *fab.CCEvent) {
 			txName = "runEvent"
 		}
 
-		_, _, err := Invoke(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), txName, [][]byte{args}, nil)
+		_, _, err := Invoke(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), txName, os.Getenv("USER"), [][]byte{args}, nil)
 		if err != nil {
 			fmt.Println("error invoking transaction: ", err)
 			return
