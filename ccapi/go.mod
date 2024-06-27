@@ -25,6 +25,6 @@ require (
 	github.com/swaggo/swag v1.8.12
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	golang.org/x/arch v0.3.0 // indirect
-	google.golang.org/grpc v1.53.0
-	google.golang.org/protobuf v1.30.0 // indirect
+	google.golang.org/grpc v1.57.0
+	google.golang.org/protobuf v1.34.2
 )

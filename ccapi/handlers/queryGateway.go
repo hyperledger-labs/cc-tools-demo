@@ -53,7 +53,7 @@ func queryGateway(c *gin.Context, channelName, chaincodeName string) {
 		user = "Admin"
 	}
 
-	result, err := chaincode.QueryGateway(channelName, chaincodeName, txName, string(args), user)
+	result, err := chaincode.QueryGateway(channelName, chaincodeName, txName, user, []string{string(args)})
 	if err != nil {
 		err, status := common.ParseError(err)
 		common.Abort(c, status, err)

@@ -87,7 +87,7 @@ func invokeGateway(c *gin.Context, channelName, chaincodeName string) {
 		user = "Admin"
 	}
 
-	result, err := chaincode.InvokeGateway(channelName, chaincodeName, txName, string(reqBytes), user, transientBytes, endorsers)
+	result, err := chaincode.InvokeGateway(channelName, chaincodeName, txName, user, []string{string(reqBytes)}, transientBytes, endorsers)
 	if err != nil {
 		err, status := common.ParseError(err)
 		common.Abort(c, status, err)
