@@ -7,7 +7,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func QueryGateway(channelName, chaincodeName, txName, args, user string) ([]byte, error) {
+func QueryGateway(channelName, chaincodeName, txName, user string, args []string) ([]byte, error) {
 	// Gateway endpoint
 	endpoint := os.Getenv("FABRIC_GATEWAY_ENDPOINT")
 
@@ -34,5 +34,5 @@ func QueryGateway(channelName, chaincodeName, txName, args, user string) ([]byte
 		return contract.EvaluateTransaction(txName)
 	}
 
-	return contract.EvaluateTransaction(txName, args)
+	return contract.EvaluateTransaction(txName, args...)
 }

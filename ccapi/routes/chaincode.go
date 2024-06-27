@@ -37,4 +37,6 @@ func addCCRoutes(rg *gin.RouterGroup) {
 	rg.POST("/query/:txname", handlers.QueryV1)
 	rg.GET("/query/:txname/", handlers.QueryV1)
 	rg.GET("/query/:txname", handlers.QueryV1)
+
+	rg.GET("/:channelName/qscc/:txname", handlers.QueryQSCC)
 }

@@ -19,7 +19,7 @@ fi
 ## This brings up API in Go
 if [ $ORG_QNTY == 1 ]
 then
-    cd ./ccapi; docker-compose -f docker-compose-1org.yaml down; docker-compose -f docker-compose-1org.yaml up -d; cd ..
+    cd ./ccapi; docker-compose -f docker-compose-1org.yaml down; docker-compose -f docker-compose-1org.yaml up -d --build; cd ..
 else
-    cd ./ccapi; docker-compose down; docker-compose up -d; cd ..
+    cd ./ccapi; docker-compose down; docker-compose up -d --build; cd ..
 fi
