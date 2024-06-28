@@ -1,16 +1,39 @@
+# If you prefer the allow list template instead of the deny list, see community template:
+# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
+#
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+vendor/
+
+# Go workspace file
+# go.work
+# go.work.sum
+
+# cc-tools chaincode package
+cc-tools-demo.tar.gz
+package-lock.json
+
+# cc-tools chaincode collections config
+chaincode/collections.json
+
+# node_modules directory
 node_modules
 
+# Fabric specific files
 fabric/crypto-config
 fabric/channel-artifacts
 fabric/ca
 fabric/bin
 fabric/builders
-chaincode/vendor/*
-chaincode/collections.json
-ccapi/vendor/*
-cc-tools-demo.tar.gz
-package-lock.json
-
-.DS_Store
-
-tmp
