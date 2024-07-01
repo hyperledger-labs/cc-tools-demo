@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os/exec"
 	"reflect"
@@ -55,7 +55,7 @@ func iMakeARequestToOnPortWith(ctx context.Context, method, endpoint string, por
 
 	// Get status code and response body
 	statusCode := res.StatusCode
-	resBody, err := ioutil.ReadAll(res.Body)
+	resBody, err := io.ReadAll(res.Body)
 
 	if err != nil {
 		return ctx, err
@@ -177,7 +177,7 @@ func thereAreBooksWithPrefixByAuthor(ctx context.Context, nBooks int, prefix str
 		if res, err = http.Post("http://localhost/api/query/search", "application/json", dataAsBytes); err != nil {
 			return ctx, err
 		}
-		resBody, err := ioutil.ReadAll(res.Body)
+		resBody, err := io.ReadAll(res.Body)
 		if err != nil {
 			return ctx, err
 		}
@@ -241,7 +241,7 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 	if res, err = http.Post("http://localhost/api/query/search", "application/json", dataAsBytes); err != nil {
 		return ctx, err
 	}
-	resBody, err := ioutil.ReadAll(res.Body)
+	resBody, err := io.ReadAll(res.Body)
 	if err != nil {
 		return ctx, err
 	}

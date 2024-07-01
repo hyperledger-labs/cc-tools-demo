@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 )
 
 type ArrayFlags []string
@@ -48,7 +48,7 @@ func generateCollection(orgs ArrayFlags) {
 		fmt.Println(err)
 		return
 	}
-	err = ioutil.WriteFile("collections.json", b, 0644)
+	err = os.WriteFile("collections.json", b, 0644)
 	if err != nil {
 		fmt.Println(err)
 		return
