@@ -5,7 +5,7 @@ Feature: Get Number Of Books From Library
 
     Scenario: Query Get Number Of Books From Library that Exists
         Given there is a running "" test network
-        And I make a "POST" request to "/api/invoke/createAsset" on port 880 with:
+        And I make a "POST" request to "/api/invoke/createAsset" on port 80 with:
             """
             {
                 "asset": [
@@ -17,7 +17,7 @@ Feature: Get Number Of Books From Library
                 ]
             }
             """
-        And I make a "POST" request to "/api/invoke/createAsset" on port 880 with:
+        And I make a "POST" request to "/api/invoke/createAsset" on port 80 with:
             """
            {
                 "asset": [{
@@ -32,7 +32,7 @@ Feature: Get Number Of Books From Library
                 }]
 	        }
             """
-        When I make a "GET" request to "/api/query/getNumberOfBooksFromLibrary" on port 880 with:
+        When I make a "GET" request to "/api/query/getNumberOfBooksFromLibrary" on port 80 with:
             """
             {
                 "library": {
@@ -51,7 +51,7 @@ Feature: Get Number Of Books From Library
 
     Scenario: Query Get Number Of Books From Library that Does Not Exists
         Given there is a running "" test network
-        When I make a "GET" request to "/api/query/getNumberOfBooksFromLibrary" on port 880 with:
+        When I make a "GET" request to "/api/query/getNumberOfBooksFromLibrary" on port 80 with:
             """
             {
                 "library": {

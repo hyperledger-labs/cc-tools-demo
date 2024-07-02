@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os/exec"
 	"reflect"
@@ -55,7 +55,7 @@ func iMakeARequestToOnPortWith(ctx context.Context, method, endpoint string, por
 
 	// Get status code and response body
 	statusCode := res.StatusCode
-	resBody, err := ioutil.ReadAll(res.Body)
+	resBody, err := io.ReadAll(res.Body)
 
 	if err != nil {
 		return ctx, err
@@ -177,7 +177,7 @@ func thereAreBooksWithPrefixByAuthor(ctx context.Context, nBooks int, prefix str
 		if res, err = http.Post("http://localhost/api/query/search", "application/json", dataAsBytes); err != nil {
 			return ctx, err
 		}
-		resBody, err := ioutil.ReadAll(res.Body)
+		resBody, err := io.ReadAll(res.Body)
 		if err != nil {
 			return ctx, err
 		}
@@ -205,7 +205,7 @@ func thereAreBooksWithPrefixByAuthor(ctx context.Context, nBooks int, prefix str
 			}
 			dataAsBytes := bytes.NewBuffer([]byte(jsonStr))
 
-			if res, err = http.Post("http://localhost:880/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+			if res, err = http.Post("http://localhost:80/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
 				return ctx, err
 			}
 
@@ -241,7 +241,7 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 	if res, err = http.Post("http://localhost/api/query/search", "application/json", dataAsBytes); err != nil {
 		return ctx, err
 	}
-	resBody, err := ioutil.ReadAll(res.Body)
+	resBody, err := io.ReadAll(res.Body)
 	if err != nil {
 		return ctx, err
 	}
@@ -253,7 +253,7 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 	}
 
 	// Create library if it doesnt exists
-	if len(received["result"].([]interface{})) == 0 {
+	if received["result"] == nil || len(received["result"].([]interface{})) == 0 {
 		requestJSON = map[string]interface{}{
 			"asset": []interface{}{
 				map[string]interface{}{
@@ -268,7 +268,7 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 		}
 		dataAsBytes = bytes.NewBuffer([]byte(jsonStr))
 
-		if res, err = http.Post("http://localhost:880/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
+		if res, err = http.Post("http://localhost:80/api/invoke/createAsset", "application/json", dataAsBytes); err != nil {
 			return ctx, err
 		}
 
@@ -282,7 +282,8 @@ func thereIsALibraryWithName(ctx context.Context, name string) (context.Context,
 
 func thereIsARunningTestNetworkFromScratch(arg1 string) error {
 	// Start test network with 1 org only
-	cmd := exec.Command("../../startDev.sh", "-n", "1")
+	cmd := exec.Command("./startDev.sh", "-n", "1")
+	cmd.Dir = "../../"
 
 	_, err := cmd.Output()
 
@@ -292,7 +293,7 @@ func thereIsARunningTestNetworkFromScratch(arg1 string) error {
 	}
 
 	// Wait for ccapi
-	err = waitForNetwork("880")
+	err = waitForNetwork("80")
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
@@ -302,7 +303,7 @@ func thereIsARunningTestNetworkFromScratch(arg1 string) error {
 }
 
 func thereIsARunningTestNetwork(arg1 string) error {
-	if !verifyContainer("api.org.example.com", "3000") {
+	if !verifyContainer("ccapi.org.example.com", "80") {
 		// Start test network with 1 org only
 		cmd := exec.Command("../../startDev.sh", "-n", "1")
 
@@ -314,13 +315,17 @@ func thereIsARunningTestNetwork(arg1 string) error {
 		}
 
 		// Wait for ccapi
-		err = waitForNetwork("880")
+		err = waitForNetwork("80")
 		if err != nil {
 			fmt.Println(err.Error())
 			return err
 		}
 	}
 	return nil
+}
+
+func InitializeTestSuite(ctx *godog.TestSuiteContext) {
+	ctx.BeforeSuite(func() {})
 }
 
 func InitializeScenario(ctx *godog.ScenarioContext) {

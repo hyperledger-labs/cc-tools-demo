@@ -3,7 +3,10 @@ node_modules
 fabric/crypto-config
 fabric/channel-artifacts
 fabric/ca
+fabric/bin
+fabric/builders
 chaincode/vendor/*
+chaincode/collections.json
 ccapi/vendor/*
 cc-tools-demo.tar.gz
 package-lock.json

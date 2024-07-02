@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func InvokeGateway(channelName, chaincodeName, txName, args string, transientArgs []byte, endorsingOrgs []string) ([]byte, error) {
+func InvokeGateway(channelName, chaincodeName, txName, user string, args []string, transientArgs []byte, endorsingOrgs []string) ([]byte, error) {
 	// Gateway endpoint
 	endpoint := os.Getenv("FABRIC_GATEWAY_ENDPOINT")
 
@@ -20,7 +20,7 @@ func InvokeGateway(channelName, chaincodeName, txName, args string, transientArg
 	defer grpcConn.Close()
 
 	// Create gateway connection
-	gw, err := common.CreateGatewayConnection(grpcConn)
+	gw, err := common.CreateGatewayConnection(grpcConn, user)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create gateway connection")
 	}
@@ -37,7 +37,7 @@ func InvokeGateway(channelName, chaincodeName, txName, args string, transientArg
 	// Invoke transaction
 	if transientArgs != nil && len(endorsingOrgs) > 0 {
 		return contract.Submit(txName,
-			client.WithArguments(args),
+			client.WithArguments(args...),
 			client.WithTransient(transientMap),
 			client.WithEndorsingOrganizations(endorsingOrgs...),
 		)
@@ -45,17 +45,17 @@ func InvokeGateway(channelName, chaincodeName, txName, args string, transientArg
 
 	if transientArgs != nil {
 		return contract.Submit(txName,
-			client.WithArguments(args),
+			client.WithArguments(args...),
 			client.WithTransient(transientMap),
 		)
 	}
 
 	if len(endorsingOrgs) > 0 {
 		return contract.Submit(txName,
-			client.WithArguments(args),
+			client.WithArguments(args...),
 			client.WithEndorsingOrganizations(endorsingOrgs...),
 		)
 	}
 
-	return contract.SubmitTransaction(txName, args)
+	return contract.SubmitTransaction(txName, args...)
 }

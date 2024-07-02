@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Make sure go mod is up to date
-cd chaincode && go mod vendor && cd ..
+cd chaincode && GOWORK=off go mod vendor && cd ..
 
 mkdir src
 cp -r chaincode/* src

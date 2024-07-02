@@ -19,10 +19,13 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.18      
+        go-version: 1.21  
 
     - name: Build
       run: go build -v github.com/hyperledger-labs/cc-tools-demo/chaincode
 
-    - name: Test
+    - name: Unit tests
       run: go test github.com/hyperledger-labs/cc-tools-demo/chaincode -coverpkg=./... -v
+    
+    - name: Integration tests
+      run: go test -v ./tests

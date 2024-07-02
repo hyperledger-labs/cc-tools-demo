@@ -3,6 +3,7 @@ package txdefs
 import (
 	"encoding/json"
 
+	"github.com/hyperledger-labs/cc-tools/accesscontrol"
 	"github.com/hyperledger-labs/cc-tools/assets"
 	"github.com/hyperledger-labs/cc-tools/errors"
 	sw "github.com/hyperledger-labs/cc-tools/stubwrapper"
@@ -16,7 +17,11 @@ var GetBooksByAuthor = tx.Transaction{
 	Label:       "Get Books by the Author Name",
 	Description: "Return all the books from an author",
 	Method:      "GET",
-	Callers:     []string{"$org1MSP", "$org2MSP", "$orgMSP"}, // Only org1 and org2 can call this transaction
+	Callers: []accesscontrol.Caller{ // Only org1 and org2 can call this transaction
+		{MSP: "org1MSP"},
+		{MSP: "org2MSP"},
+		{MSP: "orgMSP"},
+	},
 
 	Args: []tx.Argument{
 		{

@@ -9,9 +9,9 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 )
 
-func Query(channelName, ccName, txName string, txArgs [][]byte) (*channel.Response, int, error) {
+func Query(channelName, ccName, txName, user string, txArgs [][]byte) (*channel.Response, int, error) {
 	// create channel manager
-	fabMngr, err := common.NewFabricChClient(channelName, os.Getenv("USER"), os.Getenv("ORG"))
+	fabMngr, err := common.NewFabricChClient(channelName, user, os.Getenv("ORG"))
 	if err != nil {
 		return nil, http.StatusInternalServerError, err
 	}
@@ -23,10 +23,10 @@ func Query(channelName, ccName, txName string, txArgs [][]byte) (*channel.Respon
 	}
 
 	res, err := fabMngr.Client.Query(rq, channel.WithRetry(retry.DefaultChannelOpts))
-
 	if err != nil {
-		return nil, http.StatusInternalServerError, err
+		status := extractStatusCode(err.Error())
+		return nil, status, err
 	}
 
-	return &res, http.StatusInternalServerError, nil
+	return &res, http.StatusOK, nil
 }
