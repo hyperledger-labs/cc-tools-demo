@@ -8,6 +8,7 @@ fi
 ORG_QNTY=3
 SKIP_COLL_GEN=false
 
+OPTIND=3
 while getopts n:c opt; do
     case $opt in
         n)  ORG_QNTY=${OPTARG}
