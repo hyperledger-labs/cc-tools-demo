@@ -947,6 +947,42 @@ paths:
         - application/json
       produces:
         - application/json
+  /{channelName}/qscc/getBlockByHash:
+    get:
+      summary: Get block by hash
+      description: Retrieves a block by its hash from the specified channel.
+      tags:
+        - Blockchain
+      security:
+        - basicAuth: []
+      parameters:
+        - name: channelName
+          in: path
+          required: true
+          schema:
+            type: string
+            example: mainchannel
+          description: Name of the channel.
+        - name: hash
+          in: query
+          required: true
+          schema:
+            type: string
+            example: dbd2b14fb3d61b7aeac3add76f99cd9b47850c7c95ca5e489696a6b543fc6b2d
+          description: The hash of the block to be retrieved.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad request
+        "404":
+          description: Block not found
+        "500":
+          description: Internal server error
   /{channelName}/qscc/getChainInfo:
     get:
       summary: Get chain info
