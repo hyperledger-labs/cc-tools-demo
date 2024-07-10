@@ -5,4 +5,4 @@ echo "Starting development network ..."
 
 echo "Running GoDog tests..."
 echo "Tests may take a few minutes to complete..."
-cd ./chaincode/tests; go test;
+cd ../chaincode/tests; go test;

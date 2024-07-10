@@ -9,4 +9,4 @@ if [ $# -lt 1 ] ; then
   exit
 fi
 
-grep -rl cc-tools-demo . --exclude-dir={.git,node_modules} | xargs sed -i s/cc-tools-demo/$1/g
+grep -rl cc-tools-demo ../ --exclude-dir={.git,node_modules} | xargs sed -i s/cc-tools-demo/$1/g
