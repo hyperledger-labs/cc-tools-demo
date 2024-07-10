@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+cd "$(dirname "$0")"
+CUR_DIR=$(pwd)
+
 ORG_QNTY=3
 
 while getopts n: opt; do
@@ -21,5 +24,6 @@ if [ $ORG_QNTY == 1 ]
 then
     cd ../ccapi; docker-compose -f docker-compose-1org.yaml down; docker-compose -f docker-compose-1org.yaml up -d --build; cd ..
 else
+    echo $PWD
     cd ../ccapi; docker-compose down; docker-compose up -d --build; cd ..
 fi

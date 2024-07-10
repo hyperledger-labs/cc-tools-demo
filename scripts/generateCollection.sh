@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+cd "$(dirname "$0")"
+CUR_DIR=$(pwd)
+
 while getopts "o:h" opt; do
     case $opt in
         o) orgs+=("$OPTARG");;
@@ -19,7 +22,7 @@ shift $((OPTIND -1))
 
 if [ ${#orgs[@]} -gt 0 ]
 then
-    cd ./chaincode; go run . -g --orgs ${orgs[@]}; cd ..
+    cd ../chaincode; go run . -g --orgs ${orgs[@]}; cd ..
 else
-    cd ./chaincode; go run . -g; cd ..
+    cd ../chaincode; go run . -g; cd ..
 fi

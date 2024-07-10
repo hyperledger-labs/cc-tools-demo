@@ -36,7 +36,7 @@ If you want to deploy with 1 organization, run the command `./startDev.sh -n 1`.
 
 To apply chaincode changes, run `$ ./upgradeCC.sh <version> <sequence>` with a version higher than the current one (starts with 0.1). Append `-n 1` to the command if running with 1 organization.
 
-To apply CC API changes, run `$ ./reloadCCAPI.sh`.
+To apply CC API changes, run `$ ./scripts/reloadCCAPI.sh`.
 
 ## Deploying Chaincode as a service
 
@@ -47,13 +47,13 @@ If you want to deploy with 1 organization, run the command `./startDev.sh -ccaas
 
 To apply chaincode changes, run `$ ./upgradeCC.sh -ccaas <version> <sequence>` with a version higher than the current one (starts with 0.1). Append `-n 1` to the command if running with 1 organization.
 
-To apply CC API changes, run `$ ./reloadCCAPI.sh`.
+To apply CC API changes, run `$ ./scripts/reloadCCAPI.sh`.
 
 ## Automated tryout and test
 
-To test transactions after starting all components, run `$ ./tryout.sh`. 
+To test transactions after starting all components, run `$ ./scripts/tryout.sh`. 
 
-To test transactions using the godog tool, run `$ ./godog.sh`.
+To test transactions using the godog tool, run `$ ./scripts/godog.sh`.
 
 
 ## Generate TAR archive for the chaincode
