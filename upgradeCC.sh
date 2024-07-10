@@ -12,7 +12,6 @@ SKIP_COLL_GEN=false
 version=$1
 sequence=$2
 
-OPTIND=3
 while [[ $# -ge 1 ]] ; do
     key="$1"
     case $key in
