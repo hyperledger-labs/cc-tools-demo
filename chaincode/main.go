@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/hyperledger-labs/cc-tools-demo/chaincode/assettypes"
@@ -62,9 +63,77 @@ func main() {
 	if err != nil {
 		return
 	}
-	if err = shim.Start(new(CCDemo)); err != nil {
+
+	if os.Getenv("RUN_CCAAS") == "true" {
+		err = runCCaaS()
+	} else {
+		err = shim.Start(new(CCDemo))
+	}
+
+	if err != nil {
 		fmt.Printf("Error starting chaincode: %s", err)
 	}
+}
+
+func runCCaaS() error {
+	address := os.Getenv("CHAINCODE_SERVER_ADDRESS")
+	ccid := os.Getenv("CHAINCODE_ID")
+
+	tlsProps, err := getTLSProperties()
+	if err != nil {
+		return err
+	}
+
+	server := &shim.ChaincodeServer{
+		CCID:     ccid,
+		Address:  address,
+		CC:       new(CCDemo),
+		TLSProps: *tlsProps,
+	}
+
+	return server.Start()
+}
+
+func getTLSProperties() (*shim.TLSProperties, error) {
+	if enableTLS := os.Getenv("TLS_ENABLED"); enableTLS != "true" {
+		return &shim.TLSProperties{
+			Disabled: true,
+		}, nil
+	}
+
+	log.Printf("TLS enabled")
+
+	// Get key
+	keyPath := os.Getenv("KEY_PATH")
+	key, err := os.ReadFile(keyPath)
+
+	if err != nil {
+		fmt.Println("Failed to read key file")
+		return nil, err
+	}
+
+	// Get cert
+	certPath := os.Getenv("CERT_PATH")
+	cert, err := os.ReadFile(certPath)
+	if err != nil {
+		fmt.Println("Failed to read cert file")
+		return nil, err
+	}
+
+	// Get CA cert
+	clientCertPath := os.Getenv("CA_CERT_PATH")
+	caCert, err := os.ReadFile(clientCertPath)
+	if err != nil {
+		fmt.Println("Failed to read CA cert file")
+		return nil, err
+	}
+
+	return &shim.TLSProperties{
+		Disabled:      false,
+		Key:           key,
+		Cert:          cert,
+		ClientCACerts: caCert,
+	}, nil
 }
 
 // CCDemo implements the shim.Chaincode interface
