@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -euo pipefail
+
+BLD="$1"
+RELEASE="$2"
+
+if [ -d "$BLD/metadata" ]; then
+   cp -a "$BLD/metadata/"* "$RELEASE/"
+fi
+
+#external chaincodes expect artifacts to be placed under "$RELEASE"/chaincode/server
+if [ -f $BLD/connection.json ]; then
+    mkdir -p "$RELEASE"/chaincode/server
+
+    sed -i "s/{{.org}}/$CCAAS_ORG/" $BLD/connection.json
+    sed -i "s/{{.port}}/$CCAAS_PORT/" $BLD/connection.json
+
+    # Check if tls is enabled
+    if [ "$(jq -r .tls_required $BLD/connection.json)" = "true" ]; then
+        client_cert=$(awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' "$CCAAS_CLIENT_CERT_FILE")
+        client_key=$(awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' "$CCAAS_CLIENT_KEY_FILE")
+        root_cert=$(awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' "$CCAAS_ROOT_CERT_FILE")
+
+        # Add certs files to connection.json
+        echo $(jq ".client_cert=\"$client_cert\"" $BLD/connection.json) > $BLD/connection.json
+        echo $(jq ".client_key=\"$client_key\"" $BLD/connection.json) > $BLD/connection.json
+        echo $(jq ".root_cert=\"$root_cert\"" $BLD/connection.json) > $BLD/connection.json
+    fi
+
+    cp $BLD/connection.json "$RELEASE"/chaincode/server
+
+    exit 0
+fi
+
+exit 1
+
+ 

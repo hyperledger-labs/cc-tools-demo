@@ -169,6 +169,12 @@ function fatalln() {
   exit 1
 }
 
+verifyResult() {
+  if [ $1 -ne 0 ]; then
+    fatalln "$2"
+  fi
+}
+
 export -f errorln
 export -f successln
 export -f infoln

@@ -38,6 +38,17 @@ To apply chaincode changes, run `$ ./upgradeCC.sh <version> <sequence>` with a v
 
 To apply CC API changes, run `$ ./reloadCCAPI.sh`.
 
+## Deploying Chaincode as a service
+
+After installing, use the script `./startDev.sh -ccaas` in the root folder to start the development environment. It will
+start all components of the project with 3 organizations.
+
+If you want to deploy with 1 organization, run the command `./startDev.sh -ccaas -n 1`.
+
+To apply chaincode changes, run `$ ./upgradeCC.sh -ccaas <version> <sequence>` with a version higher than the current one (starts with 0.1). Append `-n 1` to the command if running with 1 organization.
+
+To apply CC API changes, run `$ ./reloadCCAPI.sh`.
+
 ## Automated tryout and test
 
 To test transactions after starting all components, run `$ ./tryout.sh`. 
