@@ -24,6 +24,8 @@ services:
       - FABRIC_LOGGING_SPEC=INFO
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
       - ORDERER_CHANNELPARTICIPATION_ENABLED=true
@@ -84,14 +86,21 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
       - CORE_PEER_LOCALMSPID=org1MSP
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
       - CORE_CHAINCODE_EXTERNALBUILDERS=[{"name":"basic-builder","path":"/etc/hyperledger/external-builder","propagateEnvironment":["CCAAS_CLIENT_CERT_FILE","CCAAS_CLIENT_KEY_FILE","CCAAS_ROOT_CERT_FILE","CCAAS_ORG","CCAAS_PORT"]}]
+      - CCAAS_CLIENT_CERT_FILE=/etc/hyperledger/fabric/ccaas/tls/client/cert.pem
+      - CCAAS_CLIENT_KEY_FILE=/etc/hyperledger/fabric/ccaas/tls/client/key.pem
+      - CCAAS_ROOT_CERT_FILE=/etc/hyperledger/fabric/ccaas/tls/ca/cert.pem
+      - CCAAS_ORG=org1
+      - CCAAS_PORT=9999
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
         - /var/run/docker.sock:/host/var/run/docker.sock
         - ../organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
         - ../organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        - ../organizations/ccaas/org1.example.com:/etc/hyperledger/fabric/ccaas/tls
         - peer0.org1.example.com:/var/hyperledger/production
         - ../externalBuilder:/etc/hyperledger/external-builder
+        - ../bin/jq:/usr/local/bin/jq
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -126,14 +135,21 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:7051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
       - CORE_PEER_LOCALMSPID=org2MSP
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
       - CORE_CHAINCODE_EXTERNALBUILDERS=[{"name":"basic-builder","path":"/etc/hyperledger/external-builder","propagateEnvironment":["CCAAS_CLIENT_CERT_FILE","CCAAS_CLIENT_KEY_FILE","CCAAS_ROOT_CERT_FILE","CCAAS_ORG","CCAAS_PORT"]}]
+      - CCAAS_CLIENT_CERT_FILE=/etc/hyperledger/fabric/ccaas/tls/client/cert.pem
+      - CCAAS_CLIENT_KEY_FILE=/etc/hyperledger/fabric/ccaas/tls/client/key.pem
+      - CCAAS_ROOT_CERT_FILE=/etc/hyperledger/fabric/ccaas/tls/ca/cert.pem
+      - CCAAS_ORG=org2
+      - CCAAS_PORT=9998
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
         - /var/run/docker.sock:/host/var/run/docker.sock
         - ../organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
         - ../organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/fabric/tls
+        - ../organizations/ccaas/org2.example.com:/etc/hyperledger/fabric/ccaas/tls
         - peer0.org2.example.com:/var/hyperledger/production
         - ../externalBuilder:/etc/hyperledger/external-builder
+        - ../bin/jq:/usr/local/bin/jq
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -168,14 +184,21 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org3.example.com:7051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org3.example.com:7051
       - CORE_PEER_LOCALMSPID=org3MSP
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
       - CORE_CHAINCODE_EXTERNALBUILDERS=[{"name":"basic-builder","path":"/etc/hyperledger/external-builder","propagateEnvironment":["CCAAS_CLIENT_CERT_FILE","CCAAS_CLIENT_KEY_FILE","CCAAS_ROOT_CERT_FILE","CCAAS_ORG","CCAAS_PORT"]}]
+      - CCAAS_CLIENT_CERT_FILE=/etc/hyperledger/fabric/ccaas/tls/client/cert.pem
+      - CCAAS_CLIENT_KEY_FILE=/etc/hyperledger/fabric/ccaas/tls/client/key.pem
+      - CCAAS_ROOT_CERT_FILE=/etc/hyperledger/fabric/ccaas/tls/ca/cert.pem
+      - CCAAS_ORG=org3
+      - CCAAS_PORT=9997
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
         - /var/run/docker.sock:/host/var/run/docker.sock
         - ../organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp:/etc/hyperledger/fabric/msp
         - ../organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls:/etc/hyperledger/fabric/tls
+        - ../organizations/ccaas/org3.example.com:/etc/hyperledger/fabric/ccaas/tls
         - peer0.org3.example.com:/var/hyperledger/production
         - ../externalBuilder:/etc/hyperledger/external-builder
+        - ../bin/jq:/usr/local/bin/jq
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:

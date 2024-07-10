@@ -191,6 +191,17 @@ function createOrgs() {
       copyRestCerts org1.example.com
       copyRestCerts org2.example.com
       copyRestCerts org3.example.com
+
+      if [ "$CCAAS_TLS_ENABLED" = "true" ]; then
+        infoln "Creating Chaincode As a Service certs for Org1"
+        generateCCAASCerts "org1"
+
+        infoln "Creating Chaincode As a Service certs for Org2"
+        generateCCAASCerts "org2"
+
+        infoln "Creating Chaincode As a Service certs for Org3"
+        generateCCAASCerts "org3"
+      fi
     else
       infoln "Creating Org Identities"
 
@@ -211,8 +222,13 @@ function createOrgs() {
       if [ $res -ne 0 ]; then
         fatalln "Failed to generate certificates..."
       fi
-
+      
       copyRestCerts org.example.com
+
+      if [ "$CCAAS_TLS_ENABLED" = "true" ]; then
+        infoln "Creating Chaincode As a Service keys for Org"
+        generateCCAASCerts "org"
+      fi
     fi
 
   fi
@@ -299,6 +315,39 @@ function copyRestCerts() {
   # Copy orderertls.crt to rest-certs
   TLSCERT_PATH=$PWD/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
   cp $TLSCERT_PATH $REST_CERTS_FOLDER/${ORGNAME}/orderertls.crt
+}
+
+function generateCCAASCerts() {
+  org="$1"
+  cc_certs_base_path=./organizations/ccaas/${org}.example.com
+
+  # CC CA certs
+  infoln "Creating CC CA certs"
+  mkdir -p $cc_certs_base_path/ca
+  openssl genrsa 2048 > $cc_certs_base_path/ca/key.pem
+  openssl req -new -x509 -nodes -key $cc_certs_base_path/ca/key.pem -out $cc_certs_base_path/ca/cert.pem -subj "/C=US/ST=California/L=San Francisco/O=${org}.example.com Inc/OU=Developer/CN=cc-tools-demo.${org}.example.com"
+
+  echo subjectAltName=DNS:cc-tools-demo.${org}.example.com > $cc_certs_base_path/subj.cnf
+
+  # CC Server certs
+  infoln "Creating CC Server certs"
+  mkdir -p $cc_certs_base_path/server
+  openssl req -newkey rsa:2048 -nodes -keyout $cc_certs_base_path/server/key.pem -out $cc_certs_base_path/server/req.pem -subj "/C=US/ST=California/L=San Francisco/O=${org}.example.com Inc/OU=Developer/CN=cc-tools-demo.${org}.example.com"
+
+  openssl x509 -req  -set_serial 01 -in $cc_certs_base_path/server/req.pem -extfile $cc_certs_base_path/subj.cnf -out $cc_certs_base_path/server/cert.pem \
+  -CA $cc_certs_base_path/ca/cert.pem -CAkey $cc_certs_base_path/ca/key.pem
+
+  rm $cc_certs_base_path/server/req.pem
+
+  # CC Client certs
+  infoln "Creating CC Clients certs"
+  mkdir -p $cc_certs_base_path/client
+  openssl req -newkey rsa:2048 -nodes -keyout $cc_certs_base_path/client/key.pem -out $cc_certs_base_path/client/req.pem -subj "/C=US/ST=California/L=San Francisco/O=${org}.example.com Inc/OU=Developer/CN=${org}.example.com"
+
+  openssl x509 -req  -set_serial 01 -in $cc_certs_base_path/client/req.pem -extfile $cc_certs_base_path/subj.cnf -out $cc_certs_base_path/client/cert.pem \
+  -CA $cc_certs_base_path/ca/cert.pem -CAkey $cc_certs_base_path/ca/key.pem 
+
+  rm $cc_certs_base_path/client/req.pem
 }
 
 # Once you create the organization crypto material, you need to create the
@@ -413,6 +462,14 @@ function deployCC() {
   fi
 }
 
+## Call the script to deploy a chaincode to the channel
+function deployCCAAS() {
+  scripts/deployCCAAS.sh $CHANNEL_NAME $CC_NAME $CC_SRC_PATH $CCAAS_DOCKER_RUN $CC_VERSION $CC_SEQUENCE $CC_INIT_FCN $CC_END_POLICY $CC_COLL_CONFIG $CLI_DELAY $MAX_RETRY $VERBOSE $ORG_QNTY $CCAAS_TLS_ENABLED
+
+  if [ $? -ne 0 ]; then
+    fatalln "Deploying chaincode-as-a-service failed"
+  fi
+}
 
 # Tear down running network
 function networkDown() {
@@ -420,6 +477,7 @@ function networkDown() {
   docker-compose -f $COMPOSE_FILE_BASE_ORG -f $COMPOSE_FILE_COUCH_ORG down --volumes --remove-orphans
   docker-compose -f $COMPOSE_FILE_BASE -f $COMPOSE_FILE_COUCH -f $COMPOSE_FILE_CA down --volumes --remove-orphans
   docker-compose -f $COMPOSE_FILE_COUCH_ORG3 -f $COMPOSE_FILE_ORG3 down --volumes --remove-orphans
+
   # Don't remove the generated artifacts -- note, the ledgers are always removed
   if [ "$MODE" != "restart" ]; then
     # Bring down the network, deleting the volumes
@@ -480,6 +538,10 @@ COMPOSE_FILE_ORG3=addOrg3/docker/docker-compose-org3.yaml
 #
 # chaincode language defaults to "NA"
 CC_SRC_LANGUAGE="NA"
+# default to running the docker commands for the CCAAS
+CCAAS_DOCKER_RUN=true
+# enable tls for chaincode as a service
+CCAAS_TLS_ENABLED=false
 # Chaincode version
 CC_VERSION="0.1"
 # Chaincode definition sequence
@@ -490,7 +552,7 @@ IMAGETAG="2.5.3"
 CA_IMAGETAG="latest"
 # default database
 DATABASE="couchdb"
-# default number of organizartions
+# default number of organizations
 ORG_QNTY=3
 # Clear containers (down mode) -- default = true
 CLR_CONTAINERS=true
@@ -595,6 +657,14 @@ while [[ $# -ge 1 ]] ; do
     CLR_CONTAINERS=false
     shift
     ;;
+  -ccaasdocker )
+    CCAAS_DOCKER_RUN="$2"
+    shift
+    ;;
+  -ccaastls )
+    CCAAS_TLS_ENABLED=true
+    shift
+    ;;
   * )
     errorln "Unknown flag: $key"
     printHelp
@@ -623,6 +693,8 @@ elif [ "$MODE" == "restart" ]; then
   infoln "Restarting network"
 elif [ "$MODE" == "deployCC" ]; then
   infoln "deploying chaincode on channel '${CHANNEL_NAME}'"
+elif [ "$MODE" == "deployCCAAS" ]; then
+  infoln "deploying chaincode-as-a-service on channel '${CHANNEL_NAME}'"
 else
   printHelp
   exit 1
@@ -641,6 +713,8 @@ elif [ "${MODE}" == "createChannel" ]; then
   createChannel
 elif [ "${MODE}" == "deployCC" ]; then
   deployCC
+elif [ "$MODE" == "deployCCAAS" ]; then
+  deployCCAAS
 elif [ "${MODE}" == "down" ]; then
   networkDown
 else

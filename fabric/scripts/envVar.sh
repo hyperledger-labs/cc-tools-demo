@@ -33,21 +33,25 @@ setGlobals() {
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
     export CORE_PEER_ADDRESS=localhost:7051
+    export CCAAS_CERTS_PATH=${PWD}/organizations/ccaas/org1.example.com
   elif [ $USING_ORG -eq 2 ]; then
     export CORE_PEER_LOCALMSPID="org2MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
     export CORE_PEER_ADDRESS=localhost:8051
+    export CCAAS_CERTS_PATH=${PWD}/organizations/ccaas/org2.example.com
   elif [ $USING_ORG -eq 3 ]; then
     export CORE_PEER_LOCALMSPID="org3MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
     export CORE_PEER_ADDRESS=localhost:9051
+    export CCAAS_CERTS_PATH=${PWD}/organizations/ccaas/org3.example.com
   elif [ $USING_ORG -eq 0 ]; then
     export CORE_PEER_LOCALMSPID="orgMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org.example.com/users/Admin@org.example.com/msp
     export CORE_PEER_ADDRESS=localhost:7051
+    export CCAAS_CERTS_PATH=${PWD}/organizations/ccaas/org.example.com
   else
     errorln "ORG Unknown"
   fi
@@ -112,10 +116,4 @@ parsePeerConnectionParameters() {
   done
   # remove leading space for output
   PEERS="$(echo -e "$PEERS" | sed -e 's/^[[:space:]]*//')"
-}
-
-verifyResult() {
-  if [ $1 -ne 0 ]; then
-    fatalln "$2"
-  fi
 }

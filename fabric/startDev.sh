@@ -1,12 +1,26 @@
 #!/usr/bin/env bash
 
 ORG_QNTY=3
+DEPLOY_CCAAS=false
+CCAAS_TLS_ENABLED=""
 
-while getopts n: opt; do
-    case $opt in
-        n)  ORG_QNTY=${OPTARG}
+while [[ $# -ge 1 ]] ; do
+    key="$1"
+    case $key in
+        -n )
+            ORG_QNTY=$2
+            shift
             ;;
-    esac
+        -ccaas )
+            DEPLOY_CCAAS=$2
+            shift
+            ;;
+        -ccaastls )
+            CCAAS_TLS_ENABLED="-ccaastls"
+            shift
+            ;;
+  esac
+  shift
 done
 
 if [ $ORG_QNTY != 3 -a $ORG_QNTY != 1 ]
@@ -22,7 +36,6 @@ CCCG_PATH="../chaincode/collections.json"
 rm -rf organizations/peerOrganizations
 rm -rf organizations/ordererOrganizations
 rm -rf organizations/rest-certs
-
 
 download_binaries(){
   echo "Preparing to download fabric binaries..."
@@ -75,5 +88,10 @@ else
 fi 
 
 docker network create cc-tools-demo-net
-./network.sh up createChannel -n $ORG_QNTY
-./network.sh deployCC -ccn cc-tools-demo -ccp ../chaincode -ccl go -n $ORG_QNTY -cccg $CCCG_PATH
+./network.sh up createChannel -n $ORG_QNTY $CCAAS_TLS_ENABLED
+
+if [ "$DEPLOY_CCAAS" = "false" ]; then
+  ./network.sh deployCC -ccn cc-tools-demo -ccp ../chaincode -ccl go -n $ORG_QNTY -cccg $CCCG_PATH
+else
+  ./network.sh deployCCAAS -ccn cc-tools-demo -ccp ../chaincode -n $ORG_QNTY -cccg $CCCG_PATH $CCAAS_TLS_ENABLED
+fi
