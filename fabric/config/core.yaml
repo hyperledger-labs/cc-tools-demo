@@ -599,11 +599,11 @@ chaincode:
     # If you don't need to fallback to the default Docker builder, also unconfigure vm.endpoint above.
     # To override this property via env variable use CORE_CHAINCODE_EXTERNALBUILDERS: [{name: x, path: dir1}, {name: y, path: dir2}]
     # The path must be an absolute path.
-    externalBuilders:
-       - name: ccaas_builder
-         path: /opt/hyperledger/ccaas_builder
-         propagateEnvironment:
-           - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG
+    externalBuilders: []
+    #    - name: ccaas_builder
+    #      path: /opt/hyperledger/ccaas_builder
+    #      propagateEnvironment:
+    #        - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG
 
 
     # The maximum duration to wait for the chaincode build and install process
