@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 cd "$(dirname "$0")"
-CUR_DIR=$(pwd)
 cd ../..
 
 # Make sure go mod is up to date

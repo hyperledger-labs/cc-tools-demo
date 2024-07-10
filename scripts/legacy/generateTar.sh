@@ -1,7 +1,6 @@
 #!/usr/bin/bash
 
 cd "$(dirname "$0")"
-CUR_DIR=$(pwd)
 cd ../..
 
 # Default values for the flags

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 cd "$(dirname "$0")"
-CUR_DIR=$(pwd)
 
 echo "Starting development network ..."
 # ./startDev.sh -n 1
