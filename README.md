@@ -58,15 +58,13 @@ To test transactions using the godog tool, run `$ ./godog.sh`.
 
 ## Generate TAR archive for the chaincode
 
-The `generateTar.sh` script is available to generate a `tar.gz` archive of the chaincode. 
+The `generatePackage.sh` script is available to generate a `tar.gz` archive of the chaincode. 
 
-By running `$ ./generateTar.sh` without any option, the script generates a `collections.json` file for the private data on the chaincode with all the organizations defined on the readers section of private asset types, and then archives the code without the CCAPI.
+By running `$ ./generatePackage.sh` without any option, the script generates a `collections.json` file for the private data on the chaincode with all the organizations defined on the readers section of private asset types, and then archives the code without the CCAPI.
 
-By using the `--org/-o` option along the script, it's possible to specify the organizations to be considered when generating the `collections.json` file. This option may be used multiple times to add all the organizations, ex: `$ ./generateTar.sh -o org1MSP -o org2MSP`.
+By using the `--org/-o` option along the script, it's possible to specify the organizations to be considered when generating the `collections.json` file. This option may be used multiple times to add all the organizations, ex: `$ ./generatePackage.sh -o org1MSP -o org2MSP`.
 
-To also archive the the CCAPI alongside the chaincode, the `--ccapi/-c` flag may be used. Example: `$ ./generateTar.sh -c`.
-
-By standard the archive is created using the project name with *1.0* label, to change it the `--name/-n` and `--label/-l` flags may be used. Example: `$ ./generateTar.sh -n my-project -l 2.0`
+By standard the archive is created using the project name with *1.0* label, to change it the `--name/-n` and `--label/-l` flags may be used. Example: `$ ./generatePackage.sh -n my-project -l 2.0`
 
 ## More
 
