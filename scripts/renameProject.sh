@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+cd "$(dirname "$0")"
+CUR_DIR=$(pwd)
+
 # CAUTION: this script will replace every occurrence of the word
 # `cc-tools-demo` in the project folder with whatever argument
 # you pass. Be very careful.
