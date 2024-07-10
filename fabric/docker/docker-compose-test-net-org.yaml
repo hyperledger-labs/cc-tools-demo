@@ -83,11 +83,13 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org.example.com:7051
       - CORE_PEER_LOCALMSPID=orgMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+      - CORE_CHAINCODE_EXTERNALBUILDERS=[{"name":"basic-builder","path":"/etc/hyperledger/external-builder","propagateEnvironment":["CCAAS_CLIENT_CERT_FILE","CCAAS_CLIENT_KEY_FILE","CCAAS_ROOT_CERT_FILE","CCAAS_ORG","CCAAS_PORT"]}]
     volumes:
         - /var/run/docker.sock:/host/var/run/docker.sock
         - ../organizations/peerOrganizations/org.example.com/peers/peer0.org.example.com/msp:/etc/hyperledger/fabric/msp
         - ../organizations/peerOrganizations/org.example.com/peers/peer0.org.example.com/tls:/etc/hyperledger/fabric/tls
         - peer0.org.example.com:/var/hyperledger/production
+        - ../externalBuilder:/etc/hyperledger/external-builder
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
