@@ -601,7 +601,7 @@ chaincode:
     # The path must be an absolute path.
     externalBuilders:
        - name: ccaas_builder
-         path: /opt/hyperledger/ccaas_builder
+         path: /opt/hyperledger/external-builder
          propagateEnvironment:
            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG
 

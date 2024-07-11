@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+cd "$(dirname "$0")"
+cd ../..
+
 # Default values for the flags
 FLAG_CCAPI="none"
 FLAG_LABEL="1.0"

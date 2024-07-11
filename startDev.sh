@@ -1,15 +1,30 @@
 #!/usr/bin/env bash
 
 ORG_QNTY=3
+DEPLOY_CCAAS=false
+CCAAS_TLS_ENABLEd=""
 SKIP_COLL_GEN=false
 
-while getopts n:c opt; do
-    case $opt in
-        n)  ORG_QNTY=${OPTARG}
+while [[ $# -ge 1 ]] ; do
+    key="$1"
+    case $key in
+        -n )
+            ORG_QNTY=$2
+            shift
             ;;
-        c)  SKIP_COLL_GEN=true
+        -ccaas )
+            DEPLOY_CCAAS=$2
+            shift
             ;;
-    esac
+        -ccaastls )
+            CCAAS_TLS_ENABLED="-ccaastls"
+            shift
+            ;;
+        -c )
+            SKIP_COLL_GEN=true
+            ;;
+  esac
+  shift
 done
 
 if [ $ORG_QNTY != 3 -a $ORG_QNTY != 1 ]
@@ -38,7 +53,7 @@ if [ ! -d "chaincode/vendor" ]; then
     cd ./chaincode; GOWORK=off go mod vendor; cd ..
 fi
 cd ./chaincode; go fmt ./...; cd ..
-cd ./fabric; ./startDev.sh -n $ORG_QNTY; cd ..
+cd ./fabric; ./startDev.sh -n $ORG_QNTY -ccaas $DEPLOY_CCAAS $CCAAS_TLS_ENABLED; cd ..
 
 ## This brings up API in Go
 if [ $ORG_QNTY == 1 ]

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cd "$(dirname "$0")"
+
 ORG_QNTY=3
 
 while getopts n: opt; do
@@ -19,7 +21,7 @@ fi
 ## This brings up API in Go
 if [ $ORG_QNTY == 1 ]
 then
-    cd ./ccapi; docker-compose -f docker-compose-1org.yaml down; docker-compose -f docker-compose-1org.yaml up -d --build; cd ..
+    cd ../ccapi; docker-compose -f docker-compose-1org.yaml down; docker-compose -f docker-compose-1org.yaml up -d --build; cd ..
 else
-    cd ./ccapi; docker-compose down; docker-compose up -d --build; cd ..
+    cd ../ccapi; docker-compose down; docker-compose up -d --build; cd ..
 fi
