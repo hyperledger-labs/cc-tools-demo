@@ -78,7 +78,7 @@ func main() {
 
 func runCCaaS() error {
 	address := os.Getenv("CHAINCODE_SERVER_ADDRESS")
-	ccid := os.Getenv("CHAINCODE_ID")
+	ccid := os.Getenv("CHAINCODE_PKG_ID")
 
 	tlsProps, err := getTLSProperties()
 	if err != nil {
