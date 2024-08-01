@@ -32,7 +32,7 @@ client:
 
   tlsCerts:
     # [Optional]. Use system certificate pool when connecting to peers, orderers (for negotiating TLS) Default: false
-    systemCertPool: true
+    systemCertPool: false
     # [Optional]. Client key and cert for TLS handshake with peers and orderers
     client:
       # 使用byfn中Admin@org1的证书
@@ -49,7 +49,7 @@ client:
 #
 channels:
   # name of the channel
-  mainchannel:
+  mychannel:
     # Required. list of orderers designated by the application to use for transactions on this
     # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
     # operational decisions to share loads from applications among the orderers.  The values must
