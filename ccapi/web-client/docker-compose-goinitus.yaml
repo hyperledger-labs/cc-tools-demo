@@ -1,7 +1,7 @@
 version: '3'
 
 networks:
-  cc-tools-demo-net:
+  fabric_test:
     external: true
 
 services:
@@ -11,4 +11,4 @@ services:
     ports:
       - "8080:80"
     networks:
-      - cc-tools-demo-net
+      - fabric_test
