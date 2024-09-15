@@ -28,7 +28,6 @@ func Serve(r *gin.Engine, ctx context.Context) {
 
 	if os.Getenv("FPC_MODE") == "true" {
 		common.InitFpcConfig()
-		// common.InitFpcEnclave()
 	}
 
 	// Register routes and handlers
