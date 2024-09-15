@@ -15,13 +15,13 @@ import (
 )
 
 var (
-	fpcconfig *pkgFpc.Config
+	defaultFpcConfig *pkgFpc.Config
 )
 
 func InitFpcEnclave() error {
-	admin := pkgFpc.NewAdmin(fpcconfig)
+	admin := pkgFpc.NewAdmin(defaultFpcConfig)
 	defer admin.Close()
-	return admin.InitEnclave(fpcconfig.CorePeerId)
+	return admin.InitEnclave(defaultFpcConfig.CorePeerId)
 }
 
 func InitFpcConfig() {
@@ -45,7 +45,7 @@ func InitFpcConfig() {
 		return ret
 	}
 
-	fpcconfig = &pkgFpc.Config{
+	defaultFpcConfig = &pkgFpc.Config{
 		CorePeerAddress:         getStrEnv("CORE_PEER_ADDRESS"),
 		CorePeerId:              getStrEnv("CORE_PEER_ID"),
 		CorePeerLocalMSPID:      getStrEnv("CORE_PEER_LOCALMSPID"),
@@ -62,8 +62,13 @@ func InitFpcConfig() {
 
 }
 
-func NewFpcClient() *pkgFpc.Client {
-	// fpcconfig.ChaincodeId=
-	// fpcconfig.ChannelId=
-	return pkgFpc.NewClient(fpcconfig)
+func NewDefaultFpcClient() *pkgFpc.Client {
+	return pkgFpc.NewClient(defaultFpcConfig)
+}
+
+func NewFpcClient(channelName string, chaincodeName string) *pkgFpc.Client {
+	fpcConfig := defaultFpcConfig
+	fpcConfig.ChannelId = channelName
+	fpcConfig.ChaincodeId = chaincodeName
+	return pkgFpc.NewClient(fpcConfig)
 }

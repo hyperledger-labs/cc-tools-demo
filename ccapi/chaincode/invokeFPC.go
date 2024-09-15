@@ -12,13 +12,13 @@ import (
 	"github.com/hyperledger-labs/ccapi/common"
 )
 
-func InvokeFpc(txname string, args [][]byte) ([]byte, int, error) {
+func InvokeFpc(channelName string, chaincodeName string, txname string, args [][]byte) ([]byte, int, error) {
 	stringArgs := make([]string, len(args))
 	for i, b := range args {
 		stringArgs[i] = string(b)
 	}
 
-	client := common.NewFpcClient()
+	client := common.NewFpcClient(channelName, chaincodeName)
 	res := client.Invoke(txname, stringArgs[0:]...)
 	return []byte(res), http.StatusOK, nil
 }

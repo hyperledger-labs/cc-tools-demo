@@ -11,16 +11,14 @@ import (
 	"github.com/hyperledger-labs/ccapi/common"
 )
 
-func InvokeFpc(c *gin.Context) {
-	// Get channel information from request
+func InvokeFpcDefault(c *gin.Context) {
+	// Get transaction information from request
 	req := make(map[string]interface{})
 	err := c.BindJSON(&req)
 	if err != nil {
 		common.Abort(c, http.StatusBadRequest, err)
 		return
 	}
-	channelName := c.Param("channelName")
-	chaincodeName := c.Param("chaincodeName")
 	txName := c.Param("txname")
 
 	var collections []string
@@ -75,7 +73,7 @@ func InvokeFpc(c *gin.Context) {
 		user = "Admin"
 	}
 
-	res, status, err := chaincode.InvokeFpc(channelName, chaincodeName, txName, argList)
+	res, status, err := chaincode.InvokeFpcDefault(txName, argList)
 
 	if err != nil {
 		common.Abort(c, status, err)

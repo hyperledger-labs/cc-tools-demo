@@ -27,6 +27,7 @@ func Serve(r *gin.Engine, ctx context.Context) {
 	defer common.CloseSDK()
 
 	if os.Getenv("FPC_MODE") == "true" {
+		// Initialize the default configuration
 		common.InitFpcConfig()
 	}
 

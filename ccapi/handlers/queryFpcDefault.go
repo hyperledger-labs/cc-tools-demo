@@ -10,7 +10,7 @@ import (
 	"github.com/hyperledger-labs/ccapi/common"
 )
 
-func QueryFpc(c *gin.Context) {
+func QueryFpcDefault(c *gin.Context) {
 	var args []byte
 	var err error
 
@@ -29,8 +29,6 @@ func QueryFpc(c *gin.Context) {
 		}
 	}
 
-	channelName := c.Param("channelName")
-	chaincodeName := c.Param("chaincodeName")
 	txName := c.Param("txname")
 
 	argList := [][]byte{}
@@ -43,7 +41,7 @@ func QueryFpc(c *gin.Context) {
 		user = "Admin"
 	}
 
-	res, status, err := chaincode.QueryFpc(chaincodeName, channelName, txName, argList)
+	res, status, err := chaincode.QueryFpcDefault(txName, argList)
 	if err != nil {
 		common.Abort(c, status, err)
 		return
