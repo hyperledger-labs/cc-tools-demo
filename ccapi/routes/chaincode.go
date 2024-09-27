@@ -9,7 +9,7 @@ import (
 )
 
 func addCCRoutes(rg *gin.RouterGroup) {
-	if os.Getenv("FPC_MODE") == "true" {
+	if os.Getenv("FPC_ENABLED") == "true" {
 		//Use FPC Handlers
 		rg.POST("/:channelName/:chaincodeName/invoke/:txname", handlers.InvokeFpc)
 		rg.PUT("/:channelName/:chaincodeName/invoke/:txname", handlers.InvokeFpc)

@@ -26,8 +26,7 @@ func Serve(r *gin.Engine, ctx context.Context) {
 	// Defer close sdk to clear cache and free memory
 	defer common.CloseSDK()
 
-	if os.Getenv("FPC_MODE") == "true" {
-		// Initialize the default configuration
+	if os.Getenv("FPC_ENABLED") == "true" {
 		common.InitFpcConfig()
 	}
 

@@ -29,7 +29,7 @@ func main() {
 	}))
 	go server.Serve(r, ctx)
 	// Events are not integrated with FPC
-	if os.Getenv("FPC_MODE") != "true" {
+	if os.Getenv("FPC_ENABLED") != "true" {
 
 		// Register to chaincode events
 		go chaincode.WaitForEvent(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "eventName", func(ccEvent *fab.CCEvent) {
