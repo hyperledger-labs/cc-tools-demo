@@ -17,6 +17,7 @@ import (
 
 	"github.com/hyperledger/fabric-chaincode-go/shim"
 	pb "github.com/hyperledger/fabric-protos-go/peer"
+	fpc "github.com/hyperledger/fabric-private-chaincode/ecc_go/chaincode"
 )
 
 var startupCheckExecuted = false
@@ -64,11 +65,17 @@ func main() {
 		return
 	}
 
+
 	if os.Getenv("RUN_CCAAS") == "true" {
 		err = runCCaaS()
 	} else {
-		err = shim.Start(new(CCDemo))
+		if os.Getenv("FPC_ENABLED") == "true" {
+			err = shim.Start(fpc.NewPrivateChaincode(new(CCDemo)))
+		} else {
+			err = shim.Start(new(CCDemo))
+		}
 	}
+
 
 	if err != nil {
 		fmt.Printf("Error starting chaincode: %s", err)
@@ -83,11 +90,18 @@ func runCCaaS() error {
 	if err != nil {
 		return err
 	}
+	
+	var cc shim.Chaincode
+	if os.Getenv("FPC_ENABLED") == "true" {
+		cc = fpc.NewPrivateChaincode(new(CCDemo))
+	} else {
+		cc = new(CCDemo)
+	}
 
 	server := &shim.ChaincodeServer{
 		CCID:     ccid,
 		Address:  address,
-		CC:       new(CCDemo),
+		CC:       cc,
 		TLSProps: *tlsProps,
 	}
 
