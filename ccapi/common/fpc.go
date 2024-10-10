@@ -18,12 +18,6 @@ var (
 	defaultFpcConfig *pkgFpc.Config
 )
 
-func InitFpcEnclave() error {
-	admin := pkgFpc.NewAdmin(defaultFpcConfig)
-	defer admin.Close()
-	return admin.InitEnclave(defaultFpcConfig.CorePeerId)
-}
-
 func InitFpcConfig() {
 
 	getStrEnv := func(key string) string {
