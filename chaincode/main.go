@@ -14,7 +14,6 @@ import (
 	"github.com/hyperledger-labs/cc-tools/events"
 	sw "github.com/hyperledger-labs/cc-tools/stubwrapper"
 	tx "github.com/hyperledger-labs/cc-tools/transactions"
-	fpc "github.com/hyperledger/fabric-private-chaincode/ecc_go/chaincode"
 
 	"github.com/hyperledger/fabric-chaincode-go/shim"
 	pb "github.com/hyperledger/fabric-protos-go/peer"
@@ -68,7 +67,7 @@ func main() {
 	if os.Getenv("RUN_CCAAS") == "true" {
 		err = runCCaaS()
 	} else {
-		err = shim.Start(fpc.NewPrivateChaincode(new(CCDemo)))
+		err = shim.Start(new(CCDemo))
 	}
 
 	if err != nil {
@@ -78,7 +77,7 @@ func main() {
 
 func runCCaaS() error {
 	address := os.Getenv("CHAINCODE_SERVER_ADDRESS")
-	ccid := os.Getenv("CHAINCODE_PKG_ID")
+	ccid := os.Getenv("CHAINCODE_ID")
 
 	tlsProps, err := getTLSProperties()
 	if err != nil {
@@ -88,7 +87,7 @@ func runCCaaS() error {
 	server := &shim.ChaincodeServer{
 		CCID:     ccid,
 		Address:  address,
-		CC:       fpc.NewPrivateChaincode(new(CCDemo)),
+		CC:       new(CCDemo),
 		TLSProps: *tlsProps,
 	}
 
