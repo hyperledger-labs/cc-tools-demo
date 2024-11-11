@@ -4,13 +4,13 @@ import (
 	"encoding/hex"
 	"fmt"
 	"net/http"
-	
+
 	"github.com/gin-gonic/gin"
 	"github.com/hyperledger-labs/ccapi/chaincode"
 	"github.com/hyperledger-labs/ccapi/common"
 	protos "github.com/hyperledger/fabric-protos-go-apiv2/common"
-	queryresultprotos "github.com/hyperledger/fabric-protos-go-apiv2/ledger/queryresult"
 	rwsetprotos "github.com/hyperledger/fabric-protos-go-apiv2/ledger/rwset"
+	kvrwsetprotos "github.com/hyperledger/fabric-protos-go-apiv2/ledger/rwset/kvrwset"
 	mspprotos "github.com/hyperledger/fabric-protos-go-apiv2/msp"
 	peerprotos "github.com/hyperledger/fabric-protos-go-apiv2/peer"
 	"github.com/pkg/errors"
@@ -25,7 +25,7 @@ func QueryQSCC(c *gin.Context) {
 	case "getBlockByNumber":
 		getBlockByNumber(c, channelName)
 	case "getBlockByHash":
-	getBlockByHash(c, channelName)
+		getBlockByHash(c, channelName)
 	case "getTransactionByID":
 		getTransactionByID(c, channelName)
 	case "getChainInfo":
@@ -147,7 +147,6 @@ func getBlockByHash(c *gin.Context, channelName string) {
 	}
 
 	result, err := chaincode.QueryGateway(channelName, "qscc", "GetBlockByHash", user, []string{channelName, string(hashBytes)})
-	
 	if err != nil {
 		err, status := common.ParseError(err)
 		common.Abort(c, status, err)
@@ -345,19 +344,32 @@ func decodeTransaction(b []byte) (map[string]interface{}, error) {
 
 		nsRWList := make([]interface{}, 0)
 		for _, nsRWSet := range txRWSet.NsRwset {
-			var kvSet queryresultprotos.KV
+			var kvSet kvrwsetprotos.KVRWSet
 			err = proto.Unmarshal(nsRWSet.Rwset, &kvSet)
 			if err != nil {
 				return nil, errors.Wrap(err, "failed to unmarshal kv read write set")
 			}
 
+			var reads []interface{}
+			for _, read := range kvSet.Reads {
+				reads = append(reads, map[string]interface{}{
+					"key":     read.Key,
+					"version": read.Version,
+				})
+			}
+
+			var writes []interface{}
+			for _, write := range kvSet.Writes {
+				writes = append(writes, map[string]interface{}{
+					"key":       write.Key,
+					"is_delete": write.IsDelete,
+					"value":     string(write.Value),
+				})
+			}
+
 			nsRWList = append(nsRWList, map[string]interface{}{
-				"namespace": nsRWSet.Namespace,
-				"rwset": map[string]interface{}{
-					"key":       kvSet.Key,
-					"value":     string(kvSet.Value),
-					"namespace": kvSet.Namespace,
-				},
+				"namespace":   nsRWSet.Namespace,
+				"rwset":       map[string]interface{}{"reads": reads, "writes": writes},
 				"collections": nsRWSet.CollectionHashedRwset,
 			})
 		}
