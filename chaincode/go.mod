@@ -6,7 +6,7 @@ go 1.21
 
 require (
 	github.com/cucumber/godog v0.12.6
-	github.com/hyperledger-labs/cc-tools v1.0.0
+	github.com/hyperledger-labs/cc-tools v1.0.2
 	github.com/hyperledger/fabric-chaincode-go v0.0.0-20210603161043-af0e3898842a
 	github.com/hyperledger/fabric-protos-go v0.0.0-20210528200356-82833ecdac31
 )

@@ -28,13 +28,16 @@ func main() {
 		AllowCredentials: true,
 	}))
 	go server.Serve(r, ctx)
+	// Events are not integrated with FPC
+	if os.Getenv("FPC_ENABLED") != "true" {
 
-	// Register to chaincode events
-	go chaincode.WaitForEvent(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "eventName", func(ccEvent *fab.CCEvent) {
-		log.Println("Received CC event: ", ccEvent)
-	})
+		// Register to chaincode events
+		go chaincode.WaitForEvent(os.Getenv("CHANNEL"), os.Getenv("CCNAME"), "eventName", func(ccEvent *fab.CCEvent) {
+			log.Println("Received CC event: ", ccEvent)
+		})
 
-	chaincode.RegisterForEvents()
+		chaincode.RegisterForEvents()
+	}
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)

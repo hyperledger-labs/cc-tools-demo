@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 
@@ -24,6 +25,10 @@ func defaultServer(r *gin.Engine) *http.Server {
 func Serve(r *gin.Engine, ctx context.Context) {
 	// Defer close sdk to clear cache and free memory
 	defer common.CloseSDK()
+
+	if os.Getenv("FPC_ENABLED") == "true" {
+		common.InitFpcConfig()
+	}
 
 	// Register routes and handlers
 	routes.AddRoutesToEngine(r)
