@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hyperledger-labs/ccapi/chaincode"
-	"github.com/hyperledger-labs/ccapi/common"
+	"github.com/hyperledger-labs/cc-tools-demo/ccapi/chaincode"
+	"github.com/hyperledger-labs/cc-tools-demo/ccapi/common"
 )
 
 func Invoke(c *gin.Context) {
