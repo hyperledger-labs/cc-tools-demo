@@ -195,7 +195,7 @@ startDockerContainer() {
       ${CONTAINER_CLI} run -d --name ${CC_NAME}.org1.example.com \
                     --network cc-tools-demo-net \
                     -e CHAINCODE_SERVER_ADDRESS=0.0.0.0:9999 \
-                    -e CHAINCODE_PKG_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
+                    -e CHAINCODE_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
                     -e RUN_CCAAS=true -e TLS_ENABLED=$CCAAS_TLS_ENABLED \
                     -e KEY_PATH=certs/server/key.pem -e CERT_PATH=certs/server/cert.pem \
                     -e CA_CERT_PATH=certs/ca/cert.pem \
@@ -210,7 +210,7 @@ startDockerContainer() {
       ${CONTAINER_CLI} run -d --name ${CC_NAME}.org2.example.com \
                     --network cc-tools-demo-net \
                     -e CHAINCODE_SERVER_ADDRESS=0.0.0.0:9998 \
-                    -e CHAINCODE_PKG_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
+                    -e CHAINCODE_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
                     -e RUN_CCAAS=true -e TLS_ENABLED=$CCAAS_TLS_ENABLED \
                     -e KEY_PATH=certs/server/key.pem -e CERT_PATH=certs/server/cert.pem \
                     -e CA_CERT_PATH=certs/ca/cert.pem \
@@ -225,7 +225,7 @@ startDockerContainer() {
       ${CONTAINER_CLI} run -d --name ${CC_NAME}.org3.example.com \
                     --network cc-tools-demo-net \
                     -e CHAINCODE_SERVER_ADDRESS=0.0.0.0:9997 \
-                    -e CHAINCODE_PKG_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
+                    -e CHAINCODE_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
                     -e RUN_CCAAS=true -e TLS_ENABLED=$CCAAS_TLS_ENABLED \
                     -e KEY_PATH=certs/server/key.pem -e CERT_PATH=certs/server/cert.pem \
                     -e CA_CERT_PATH=certs/ca/cert.pem \
@@ -241,7 +241,7 @@ startDockerContainer() {
       ${CONTAINER_CLI} run -d --name ${CC_NAME}.org.example.com \
                     --network cc-tools-demo-net \
                     -e CHAINCODE_SERVER_ADDRESS=0.0.0.0:${CCAAS_SERVER_PORT} \
-                    -e CHAINCODE_PKG_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
+                    -e CHAINCODE_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
                     -e RUN_CCAAS=true -e TLS_ENABLED=$CCAAS_TLS_ENABLED \
                     -e KEY_PATH=certs/server/key.pem -e CERT_PATH=certs/server/cert.pem \
                     -e CA_CERT_PATH=certs/ca/cert.pem \
@@ -260,27 +260,27 @@ startDockerContainer() {
       infoln "    ${CONTAINER_CLI} run --rm -d --name peer0.org1_${CC_NAME}_ccaas  \
                   --network cc-tools-demo-net \
                   -e CHAINCODE_SERVER_ADDRESS=0.0.0.0:${CCAAS_SERVER_PORT} \
-                  -e CHAINCODE_PKG_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
+                  -e CHAINCODE_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
                   -e RUN_CCAAS=true \
                     ${CC_NAME}_ccaas_image:latest"
       infoln "    ${CONTAINER_CLI} run --rm -d --name peer0.org2_${CC_NAME}_ccaas  \
                     --network cc-tools-demo-net \
                     -e CHAINCODE_SERVER_ADDRESS=0.0.0.0:${CCAAS_SERVER_PORT} \
-                    -e CHAINCODE_PKG_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
+                    -e CHAINCODE_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
                     -e RUN_CCAAS=true \
                       ${CC_NAME}_ccaas_image:latest"
       
       infoln "    ${CONTAINER_CLI} run --rm -d --name peer0.org3_${CC_NAME}_ccaas  \
                     --network cc-tools-demo-net \
                     -e CHAINCODE_SERVER_ADDRESS=0.0.0.0:${CCAAS_SERVER_PORT} \
-                    -e CHAINCODE_PKG_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
+                    -e CHAINCODE_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
                     -e RUN_CCAAS=true \
                       ${CC_NAME}_ccaas_image:latest"
     else
       infoln "    ${CONTAINER_CLI} run --rm -d --name peer0.org_${CC_NAME}_ccaas  \
                     --network cc-tools-demo-net \
                     -e CHAINCODE_SERVER_ADDRESS=0.0.0.0:${CCAAS_SERVER_PORT} \
-                    -e CHAINCODE_PKG_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
+                    -e CHAINCODE_ID=$PACKAGE_ID -e CORE_CHAINCODE_ID_NAME=$PACKAGE_ID \
                     -e RUN_CCAAS=true \
                       ${CC_NAME}_ccaas_image:latest"
     fi

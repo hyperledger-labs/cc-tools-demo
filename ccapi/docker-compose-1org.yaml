@@ -13,7 +13,7 @@ services:
       - 80:80
     volumes:
       - ./:/rest-server
-      - ../fabric-private-chaincode/samples/deployment/test-network/fabric-samples/test-network/organizations:/fabric/organizations
+      - ../fabric/organizations:/fabric/organizations
     logging:
       options:
         max-size: 50m  

@@ -32,7 +32,7 @@ client:
 
   tlsCerts:
     # [Optional]. Use system certificate pool when connecting to peers, orderers (for negotiating TLS) Default: false
-    systemCertPool: false
+    systemCertPool: true
     # [Optional]. Client key and cert for TLS handshake with peers and orderers
     client:
       # 使用byfn中Admin@org1的证书
