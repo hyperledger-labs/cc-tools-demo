@@ -285,12 +285,14 @@ func thereIsARunningTestNetworkFromScratch(arg1 string) error {
 	cmd := exec.Command("./startDev.sh", "-n", "1")
 	cmd.Dir = "../../"
 
-	_, err := cmd.Output()
+	output, err := cmd.Output()
 
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
 	}
+
+	fmt.Println(string(output))
 
 	// Wait for ccapi
 	err = waitForNetwork("80")
