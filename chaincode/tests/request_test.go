@@ -341,7 +341,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 func waitForNetwork(port string) error {
 	channel := make(chan error, 1)
-	t := time.NewTimer(3 * time.Minute)
+	t := time.NewTimer(6 * time.Minute)
 
 	defer t.Stop()
 
