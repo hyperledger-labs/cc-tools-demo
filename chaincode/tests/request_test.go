@@ -285,12 +285,14 @@ func thereIsARunningTestNetworkFromScratch(arg1 string) error {
 	cmd := exec.Command("./startDev.sh", "-n", "1")
 	cmd.Dir = "../../"
 
-	_, err := cmd.Output()
+	output, err := cmd.Output()
 
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
 	}
+
+	fmt.Println(string(output))
 
 	// Wait for ccapi
 	err = waitForNetwork("80")
@@ -341,7 +343,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 func waitForNetwork(port string) error {
 	channel := make(chan error, 1)
-	t := time.NewTimer(3 * time.Minute)
+	t := time.NewTimer(6 * time.Minute)
 
 	defer t.Stop()
 

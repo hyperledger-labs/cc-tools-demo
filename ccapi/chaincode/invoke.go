@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/hyperledger-labs/ccapi/common"
+	"github.com/hyperledger-labs/cc-tools-demo/ccapi/common"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 )
