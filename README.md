@@ -1,4 +1,4 @@
-# Goledger CC Tools Demo Chaincode 
+# Hyperledger Labs CC Tools Demo Chaincode 
 
 ## Directory Structure
 
