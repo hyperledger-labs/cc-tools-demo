@@ -76,5 +76,3 @@ If you want to execute your chaincode in a Trusted Execution Environment (TEE) u
 You can reach GoLedger developers and `cc-tools` maintainers at our Discord - [Join us!](https://discord.gg/GndkYHxNyQ)
 
 More documentation and details on `cc-tools` can be found at [https://goledger-cc-tools.readthedocs.io/en/latest/](https://goledger-cc-tools.readthedocs.io/en/latest/)
-
-For production deployment please consider using GoFabric - [https://gofabric.io](https://gofabric.io)
