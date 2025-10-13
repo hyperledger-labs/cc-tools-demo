@@ -87,7 +87,7 @@ function generateOrg3() {
 
     infoln "Generating certificates using Fabric CA"
 
-    IMAGE_TAG=${CA_IMAGETAG} docker-compose -f $COMPOSE_FILE_CA_ORG3 up -d 2>&1
+    IMAGE_TAG=${CA_IMAGETAG} $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE_CA_ORG3 up -d 2>&1
 
     . fabric-ca/registerEnroll.sh
 
@@ -122,9 +122,9 @@ function generateOrg3Definition() {
 function Org3Up () {
   # start org3 nodes
   if [ "${DATABASE}" == "couchdb" ]; then
-    IMAGE_TAG=${IMAGETAG} docker-compose -f $COMPOSE_FILE_ORG3 -f $COMPOSE_FILE_COUCH_ORG3 up -d 2>&1
+    IMAGE_TAG=${IMAGETAG} $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE_ORG3 -f $COMPOSE_FILE_COUCH_ORG3 up -d 2>&1
   else
-    IMAGE_TAG=$IMAGETAG docker-compose -f $COMPOSE_FILE_ORG3 up -d 2>&1
+    IMAGE_TAG=$IMAGETAG $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE_ORG3 up -d 2>&1
   fi
   if [ $? -ne 0 ]; then
     fatalln "ERROR !!!! Unable to start Org3 network"
@@ -174,11 +174,11 @@ function networkDown () {
 OS_ARCH=$(echo "$(uname -s|tr '[:upper:]' '[:lower:]'|sed 's/mingw64_nt.*/windows/')-$(uname -m | sed 's/x86_64/amd64/g')" | awk '{print tolower($0)}')
 # timeout duration - the duration the CLI should wait for a response from
 # another container before giving up
-
+CLI_TIMEOUT=10
 # Using crpto vs CA. default is cryptogen
 CRYPTO="cryptogen"
-
-CLI_TIMEOUT=10
+# Docker compose command to be use on the script
+DOCKER_COMPOSE_CMD="docker compose"
 #default for delay
 CLI_DELAY=3
 # channel name defaults to "mychannel"
@@ -195,6 +195,18 @@ IMAGETAG="latest"
 CA_IMAGETAG="latest"
 # database
 DATABASE="leveldb"
+
+# Check docker compose version
+if docker compose &>/dev/null; then
+    DOCKER_COMPOSE_CMD="docker compose"
+else
+    if command -v docker-compose &>/dev/null; then
+        DOCKER_COMPOSE_CMD="docker-compose"
+    else
+        errorln "docker compose or docker-compose command not found. Please install the latest version of docker compose"
+        exit 1
+    fi
+fi
 
 # Parse commandline args
 
