@@ -9,8 +9,8 @@ import (
 	"github.com/hyperledger-labs/cc-tools-demo/ccapi/chaincode"
 	"github.com/hyperledger-labs/cc-tools-demo/ccapi/common"
 	protos "github.com/hyperledger/fabric-protos-go-apiv2/common"
-	queryresultprotos "github.com/hyperledger/fabric-protos-go-apiv2/ledger/queryresult"
 	rwsetprotos "github.com/hyperledger/fabric-protos-go-apiv2/ledger/rwset"
+	kvrwsetprotos "github.com/hyperledger/fabric-protos-go-apiv2/ledger/rwset/kvrwset"
 	mspprotos "github.com/hyperledger/fabric-protos-go-apiv2/msp"
 	peerprotos "github.com/hyperledger/fabric-protos-go-apiv2/peer"
 	"github.com/pkg/errors"
@@ -345,19 +345,32 @@ func decodeTransaction(b []byte) (map[string]interface{}, error) {
 
 		nsRWList := make([]interface{}, 0)
 		for _, nsRWSet := range txRWSet.NsRwset {
-			var kvSet queryresultprotos.KV
+			var kvSet kvrwsetprotos.KVRWSet
 			err = proto.Unmarshal(nsRWSet.Rwset, &kvSet)
 			if err != nil {
 				return nil, errors.Wrap(err, "failed to unmarshal kv read write set")
 			}
 
+			var reads []interface{}
+			for _, read := range kvSet.Reads {
+				reads = append(reads, map[string]interface{}{
+					"key":     read.Key,
+					"version": read.Version,
+				})
+			}
+
+			var writes []interface{}
+			for _, write := range kvSet.Writes {
+				writes = append(writes, map[string]interface{}{
+					"key":       write.Key,
+					"is_delete": write.IsDelete,
+					"value":     string(write.Value),
+				})
+			}
+
 			nsRWList = append(nsRWList, map[string]interface{}{
-				"namespace": nsRWSet.Namespace,
-				"rwset": map[string]interface{}{
-					"key":       kvSet.Key,
-					"value":     string(kvSet.Value),
-					"namespace": kvSet.Namespace,
-				},
+				"namespace":   nsRWSet.Namespace,
+				"rwset":       map[string]interface{}{"reads": reads, "writes": writes},
 				"collections": nsRWSet.CollectionHashedRwset,
 			})
 		}
