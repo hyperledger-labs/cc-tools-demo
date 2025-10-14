@@ -1,10 +1,11 @@
-# Goledger CC Tools Demo Chaincode 
+# Hyperledger Labs CC Tools Demo Chaincode 
 
 ## Directory Structure
 
 - `/fabric`: Fabric network v2.5 used as a test environment
 - `/chaincode`: chaincode-related files
 - `/ccapi`: chaincode REST API in Golang project
+- `/fabric-private-chaincode`: Explaining the integration project between CC-tools and FPC
 
 ## Development
 
@@ -66,10 +67,12 @@ By using the `--org/-o` option along the script, it's possible to specify the or
 
 By standard the archive is created using the project name with *1.0* label, to change it the `--name/-n` and `--label/-l` flags may be used. Example: `$ ./generatePackage.sh -n my-project -l 2.0`
 
+## Integration with Fabric Private Chaincode
+
+If you want to execute your chaincode in a Trusted Execution Environment (TEE) using Fabric Private Chaincode (FPC), we've set up an integration guide to help you. Check out the instructions in the `./fabric-private-chaincode` directory to seamlessly integrate FPC with CC Tools for enhanced privacy and security.
+
 ## More
 
 You can reach GoLedger developers and `cc-tools` maintainers at our Discord - [Join us!](https://discord.gg/GndkYHxNyQ)
 
 More documentation and details on `cc-tools` can be found at [https://goledger-cc-tools.readthedocs.io/en/latest/](https://goledger-cc-tools.readthedocs.io/en/latest/)
-
-For production deployment please consider using GoFabric - [https://gofabric.io](https://gofabric.io)

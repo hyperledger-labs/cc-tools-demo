@@ -3,7 +3,7 @@ package chaincode
 import (
 	"os"
 
-	"github.com/hyperledger-labs/ccapi/common"
+	"github.com/hyperledger-labs/cc-tools-demo/ccapi/common"
 	"github.com/hyperledger/fabric-gateway/pkg/client"
 	"github.com/pkg/errors"
 )
