@@ -97,6 +97,10 @@ cat << METADATA-EOF > "$tempdir/pkg/metadata.json"
 }
 METADATA-EOF
 
+    if [ -d "$CC_SRC_PATH/META-INF" ]; then
+      cp -R "$CC_SRC_PATH/META-INF" "$tempdir/src/"
+    fi
+
     tar -C "$tempdir/src" -czf "$tempdir/pkg/code.tar.gz" .
     tar -C "$tempdir/pkg" -czf "${CC_NAME}.tar.gz" metadata.json code.tar.gz
     rm -Rf "$tempdir"
