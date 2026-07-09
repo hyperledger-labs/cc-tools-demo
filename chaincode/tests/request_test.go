@@ -103,7 +103,7 @@ func theResponseShouldHave(ctx context.Context, body *godog.DocString) error {
 		return err
 	}
 	if err := json.Unmarshal(respBody, &received); err != nil {
-		return err
+		return fmt.Errorf("failed to parse response body as JSON: %w\nActual response body: %s", err, string(respBody))
 	}
 
 	for key, value := range expected {
@@ -341,19 +341,33 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 func waitForNetwork(port string) error {
 	channel := make(chan error, 1)
-	t := time.NewTimer(3 * time.Minute)
+	t := time.NewTimer(5 * time.Minute)
 
 	defer t.Stop()
 
 	go func() {
+		// Phase 1: wait for the HTTP server to be up
 		for {
 			_, err := http.Post("http://localhost:"+port+"/api", "application/json", nil)
-
 			if err == nil {
 				break
 			}
-
 			time.Sleep(1 * time.Second)
+		}
+
+		// Phase 2: wait for the chaincode to be ready by polling a query endpoint
+		reqJSON, _ := json.Marshal(map[string]interface{}{"authorName": "_healthcheck_"})
+		b64str := b64.StdEncoding.EncodeToString(reqJSON)
+		for {
+			res, err := http.Get("http://localhost:" + port + "/api/query/getBooksByAuthor?@request=" + b64str)
+			if err == nil {
+				io.ReadAll(res.Body)
+				res.Body.Close()
+				if res.StatusCode == 200 {
+					break
+				}
+			}
+			time.Sleep(2 * time.Second)
 		}
 
 		channel <- nil

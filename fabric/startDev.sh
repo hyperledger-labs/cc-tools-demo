@@ -42,7 +42,7 @@ download_binaries(){
   curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
 
   echo "Downloading fabric binaries..."
-  ./install-fabric.sh --fabric-version 2.5.3 binary
+  ./install-fabric.sh --fabric-version 2.5.16 binary
 
   rm install-fabric.sh
 }

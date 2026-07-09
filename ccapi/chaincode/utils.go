@@ -22,5 +22,9 @@ func extractStatusCode(msg string) int {
 		return http.StatusInternalServerError
 	}
 
+	if statusCode < 100 || statusCode > 599 {
+		return http.StatusInternalServerError
+	}
+
 	return statusCode
 }
