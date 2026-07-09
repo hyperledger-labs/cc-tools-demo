@@ -9,6 +9,11 @@ if [ -d "$BLD/metadata" ]; then
    cp -a "$BLD/metadata/"* "$RELEASE/"
 fi
 
+#propagate statedb index definitions so the peer can create CouchDB indexes
+if [ -d "$BLD/META-INF/statedb" ]; then
+   cp -a "$BLD/META-INF/statedb" "$RELEASE/statedb"
+fi
+
 #external chaincodes expect artifacts to be placed under "$RELEASE"/chaincode/server
 if [ -f $BLD/connection.json ]; then
     mkdir -p "$RELEASE"/chaincode/server

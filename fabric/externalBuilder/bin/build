@@ -18,4 +18,9 @@ if [ -d "$SOURCE/metadata" ]; then
     cp -a $SOURCE/metadata $OUTPUT/metadata
 fi
 
+#propagate META-INF (e.g. statedb index definitions) so the peer can create CouchDB indexes
+if [ -d "$SOURCE/META-INF" ]; then
+    cp -a $SOURCE/META-INF $OUTPUT/META-INF
+fi
+
 exit 0
