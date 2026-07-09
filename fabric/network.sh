@@ -18,7 +18,7 @@ fi
 export FABRIC_CFG_PATH=${PWD}/configtx
 export VERBOSE=false
 # export COMPOSE_PROJECT_NAME=net
-export IMAGE_TAG=2.5.3
+export IMAGE_TAG=2.5.16
 export SYS_CHANNEL=sys-channel
 
 . scripts/utils.sh
@@ -427,7 +427,7 @@ function networkUp() {
     COMPOSE_FILES="${COMPOSE_FILES} -f ${COUCHDB_COMPOSE}"
   fi
 
-  IMAGE_TAG=$IMAGETAG docker-compose ${COMPOSE_FILES} up -d 2>&1
+  IMAGE_TAG=$IMAGETAG $DOCKER_COMPOSE_CMD ${COMPOSE_FILES} up -d 2>&1
 
   docker ps -a
   if [ $? -ne 0 ]; then
@@ -474,9 +474,9 @@ function deployCCAAS() {
 # Tear down running network
 function networkDown() {
   # stop org3 containers also in addition to org1 and org2, in case we were running sample to add org3
-  docker-compose -f $COMPOSE_FILE_BASE_ORG -f $COMPOSE_FILE_COUCH_ORG down --volumes --remove-orphans
-  docker-compose -f $COMPOSE_FILE_BASE -f $COMPOSE_FILE_COUCH -f $COMPOSE_FILE_CA down --volumes --remove-orphans
-  docker-compose -f $COMPOSE_FILE_COUCH_ORG3 -f $COMPOSE_FILE_ORG3 down --volumes --remove-orphans
+  $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE_BASE_ORG -f $COMPOSE_FILE_COUCH_ORG down --volumes --remove-orphans
+  $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE_BASE -f $COMPOSE_FILE_COUCH -f $COMPOSE_FILE_CA down --volumes --remove-orphans
+  $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE_COUCH_ORG3 -f $COMPOSE_FILE_ORG3 down --volumes --remove-orphans
 
   # Don't remove the generated artifacts -- note, the ledgers are always removed
   if [ "$MODE" != "restart" ]; then
@@ -502,6 +502,8 @@ function networkDown() {
 # Obtain the OS and Architecture string that will be used to select the correct
 # native binaries for your platform, e.g., darwin-amd64 or linux-amd64
 OS_ARCH=$(echo "$(uname -s | tr '[:upper:]' '[:lower:]' | sed 's/mingw64_nt.*/windows/')-$(uname -m | sed 's/x86_64/amd64/g')" | awk '{print tolower($0)}')
+# Docker compose command to be use on the script
+DOCKER_COMPOSE_CMD="docker compose"
 # Using crpto vs CA. default is cryptogen
 CRYPTO="cryptogen"
 # timeout duration - the duration the CLI should wait for a response from
@@ -547,7 +549,7 @@ CC_VERSION="0.1"
 # Chaincode definition sequence
 CC_SEQUENCE=1
 # default image tag
-IMAGETAG="2.5.3"
+IMAGETAG="2.5.16"
 # default ca image tag
 CA_IMAGETAG="latest"
 # default database
@@ -556,6 +558,18 @@ DATABASE="couchdb"
 ORG_QNTY=3
 # Clear containers (down mode) -- default = true
 CLR_CONTAINERS=true
+
+# Check docker compose version
+if docker compose &>/dev/null; then
+    DOCKER_COMPOSE_CMD="docker compose"
+else
+    if command -v docker-compose &>/dev/null; then
+        DOCKER_COMPOSE_CMD="docker-compose"
+    else
+        errorln "docker compose or docker-compose command not found. Please install the latest version of docker compose"
+        exit 1
+    fi
+fi
 
 # Parse commandline args
 

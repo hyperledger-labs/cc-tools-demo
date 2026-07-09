@@ -4,6 +4,19 @@ ORG_QNTY=3
 DEPLOY_CCAAS=false
 CCAAS_TLS_ENABLEd=""
 SKIP_COLL_GEN=false
+DOCKER_COMPOSE_CMD="docker compose"
+
+# Check docker compose version
+if docker compose &>/dev/null; then
+    DOCKER_COMPOSE_CMD="docker compose"
+else
+    if command -v docker-compose &>/dev/null; then
+        DOCKER_COMPOSE_CMD="docker-compose"
+    else
+        errorln "docker compose or docker-compose command not found. Please install the latest version of docker compose"
+        exit 1
+    fi
+fi
 
 while [[ $# -ge 1 ]] ; do
     key="$1"
@@ -58,7 +71,7 @@ cd ./fabric; ./startDev.sh -n $ORG_QNTY -ccaas $DEPLOY_CCAAS $CCAAS_TLS_ENABLED;
 ## This brings up API in Go
 if [ $ORG_QNTY == 1 ]
 then
-    cd ./ccapi; docker-compose -f docker-compose-1org.yaml up -d; cd ..
+    cd ./ccapi; $DOCKER_COMPOSE_CMD -f docker-compose-1org.yaml up -d; cd ..
 else
-    cd ./ccapi; docker-compose up -d; cd ..
+    cd ./ccapi; $DOCKER_COMPOSE_CMD up -d; cd ..
 fi
