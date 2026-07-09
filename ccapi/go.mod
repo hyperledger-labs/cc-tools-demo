@@ -1,4 +1,4 @@
-module github.com/hyperledger-labs/ccapi
+module github.com/hyperledger-labs/cc-tools-demo/ccapi
 
 go 1.21
 

@@ -7,7 +7,7 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/hyperledger-labs/ccapi/common"
+	"github.com/hyperledger-labs/cc-tools-demo/ccapi/common"
 	ev "github.com/hyperledger/fabric-sdk-go/pkg/client/event"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 )
