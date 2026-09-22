@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/hyperledger-labs/cc-tools-demo/ccapi/chaincode"
@@ -40,7 +41,12 @@ func Query(c *gin.Context) {
 
 	user := c.GetHeader("User")
 	if user == "" {
-		user = "Admin"
+		// The identity this API was started with, not a hardcoded name. The
+		// platform enrolls the org admin as "<orgName>admin" and passes it in
+		// USER; defaulting to the literal "Admin" asked the Fabric SDK for an
+		// identity that was never enrolled, so every unheadered call failed with
+		// "user not found" while the correctly configured one sat unused.
+		user = os.Getenv("USER")
 	}
 
 	res, status, err := chaincode.Query(channelName, chaincodeName, txName, user, argList)

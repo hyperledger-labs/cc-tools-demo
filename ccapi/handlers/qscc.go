@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/hyperledger-labs/cc-tools-demo/ccapi/chaincode"
@@ -41,7 +42,12 @@ func getChainInfo(c *gin.Context, channelName string) {
 	// Query
 	user := c.GetHeader("User")
 	if user == "" {
-		user = "Admin"
+		// The identity this API was started with, not a hardcoded name. The
+		// platform enrolls the org admin as "<orgName>admin" and passes it in
+		// USER; defaulting to the literal "Admin" asked the Fabric SDK for an
+		// identity that was never enrolled, so every unheadered call failed with
+		// "user not found" while the correctly configured one sat unused.
+		user = os.Getenv("USER")
 	}
 
 	result, err := chaincode.QueryGateway(channelName, "qscc", "GetChainInfo", user, []string{channelName})
@@ -72,7 +78,12 @@ func getBlockByNumber(c *gin.Context, channelName string) {
 	// Query
 	user := c.GetHeader("User")
 	if user == "" {
-		user = "Admin"
+		// The identity this API was started with, not a hardcoded name. The
+		// platform enrolls the org admin as "<orgName>admin" and passes it in
+		// USER; defaulting to the literal "Admin" asked the Fabric SDK for an
+		// identity that was never enrolled, so every unheadered call failed with
+		// "user not found" while the correctly configured one sat unused.
+		user = os.Getenv("USER")
 	}
 
 	number, ok := c.GetQuery("number")
@@ -101,7 +112,12 @@ func getBlockByTxID(c *gin.Context, channelName string) {
 	// Query
 	user := c.GetHeader("User")
 	if user == "" {
-		user = "Admin"
+		// The identity this API was started with, not a hardcoded name. The
+		// platform enrolls the org admin as "<orgName>admin" and passes it in
+		// USER; defaulting to the literal "Admin" asked the Fabric SDK for an
+		// identity that was never enrolled, so every unheadered call failed with
+		// "user not found" while the correctly configured one sat unused.
+		user = os.Getenv("USER")
 	}
 
 	txid, ok := c.GetQuery("txid")
@@ -130,7 +146,12 @@ func getBlockByHash(c *gin.Context, channelName string) {
 	// Query
 	user := c.GetHeader("User")
 	if user == "" {
-		user = "Admin"
+		// The identity this API was started with, not a hardcoded name. The
+		// platform enrolls the org admin as "<orgName>admin" and passes it in
+		// USER; defaulting to the literal "Admin" asked the Fabric SDK for an
+		// identity that was never enrolled, so every unheadered call failed with
+		// "user not found" while the correctly configured one sat unused.
+		user = os.Getenv("USER")
 	}
 
 	hash, ok := c.GetQuery("hash")
@@ -167,7 +188,12 @@ func getTransactionByID(c *gin.Context, channelName string) {
 	// Query
 	user := c.GetHeader("User")
 	if user == "" {
-		user = "Admin"
+		// The identity this API was started with, not a hardcoded name. The
+		// platform enrolls the org admin as "<orgName>admin" and passes it in
+		// USER; defaulting to the literal "Admin" asked the Fabric SDK for an
+		// identity that was never enrolled, so every unheadered call failed with
+		// "user not found" while the correctly configured one sat unused.
+		user = os.Getenv("USER")
 	}
 
 	fmt.Println("getting txid")

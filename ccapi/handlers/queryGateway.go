@@ -50,7 +50,12 @@ func queryGateway(c *gin.Context, channelName, chaincodeName string) {
 	// Query
 	user := c.GetHeader("User")
 	if user == "" {
-		user = "Admin"
+		// The identity this API was started with, not a hardcoded name. The
+		// platform enrolls the org admin as "<orgName>admin" and passes it in
+		// USER; defaulting to the literal "Admin" asked the Fabric SDK for an
+		// identity that was never enrolled, so every unheadered call failed with
+		// "user not found" while the correctly configured one sat unused.
+		user = os.Getenv("USER")
 	}
 
 	result, err := chaincode.QueryGateway(channelName, chaincodeName, txName, user, []string{string(args)})
