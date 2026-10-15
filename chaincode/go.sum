@@ -152,8 +152,8 @@ github.com/hashicorp/golang-lru v0.5.4 h1:YDjusn29QI/Das2iO9M0BHnIbxPeyuCHsjMW+l
 github.com/hashicorp/golang-lru v0.5.4/go.mod h1:iADmTwqILo4mZ8BN3D2Q6+9jd8WM5uGBxy+E8yxSoD4=
 github.com/hashicorp/hcl v1.0.0 h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4=
 github.com/hashicorp/hcl v1.0.0/go.mod h1:E5yfLk+7swimpb2L/Alb/PJmXilQ/rhwaUYs4T20WEQ=
-github.com/hyperledger-labs/cc-tools v1.0.0 h1:o9cX7CWLKzgGhS42iUFRY37OEElIyfU5E9Z1C55Fzzg=
-github.com/hyperledger-labs/cc-tools v1.0.0/go.mod h1:NQyK1wndA/L5EeKqzhLlLGrsfSQJbsvjxbaFiaE6XCI=
+github.com/hyperledger-labs/cc-tools v0.0.0-20261015112519-0b15c70e532e h1:l6b6X44DlJncQtM/xnP4zZmXuKH89r2wQd2YcSNn4cA=
+github.com/hyperledger-labs/cc-tools v0.0.0-20261015112519-0b15c70e532e/go.mod h1:NQyK1wndA/L5EeKqzhLlLGrsfSQJbsvjxbaFiaE6XCI=
 github.com/hyperledger/fabric v2.1.1+incompatible h1:cYYRv3vVg4kA6DmrixLxwn1nwBEUuYda8DsMwlaMKbY=
 github.com/hyperledger/fabric v2.1.1+incompatible/go.mod h1:tGFAOCT696D3rG0Vofd2dyWYLySHlh0aQjf7Q1HAju0=
 github.com/hyperledger/fabric-chaincode-go v0.0.0-20210603161043-af0e3898842a h1:W3NE4+0cxLe/EK/VyhtLpR8kOBkkXCKDv8Ixy93YRjo=

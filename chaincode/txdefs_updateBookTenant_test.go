@@ -91,6 +91,7 @@ func TestUpdateBookTenant(t *testing.T) {
 		"@key":         "book:a36a2920-c405-51c3-b584-dcd758338cb5",
 		"@lastTouchBy": "org1MSP",
 		"@lastTx":      "updateBookTenant",
+		"@lastTxID":    "updateBookTenant",
 		"@assetType":   "book",
 		"title":        "Meu Nome é Maria",
 		"author":       "Maria Viana",

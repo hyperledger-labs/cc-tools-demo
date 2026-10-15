@@ -199,15 +199,8 @@ func (t *CCDemo) Invoke(stub shim.ChaincodeStubInterface) (response pb.Response)
 		startupCheckExecuted = true
 	}
 
-	var result []byte
-
-	result, err := tx.Run(stub)
-
-	if err != nil {
-		response = err.GetErrorResponse()
-		return
-	}
-	response = shim.Success([]byte(result))
+	// RunResponse keeps the success status set by transactions with a ResponseRoutine
+	response = tx.RunResponse(stub)
 	return
 }
 
