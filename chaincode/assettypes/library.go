@@ -1,6 +1,6 @@
 package assettypes
 
-import "github.com/hyperledger-labs/cc-tools/assets"
+import "github.com/hyperledger-labs/cc-tools/v2/assets"
 
 // Description of a Library as a collection of books
 var Library = assets.AssetType{

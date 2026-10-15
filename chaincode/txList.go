@@ -3,7 +3,7 @@ package main
 import (
 	txdefs "github.com/hyperledger-labs/cc-tools-demo/chaincode/txdefs"
 
-	tx "github.com/hyperledger-labs/cc-tools/transactions"
+	tx "github.com/hyperledger-labs/cc-tools/v2/transactions"
 )
 
 var txList = []tx.Transaction{

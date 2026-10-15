@@ -8,7 +8,7 @@ import (
 	"time"
 
 	cc "github.com/hyperledger-labs/cc-tools-demo/chaincode"
-	"github.com/hyperledger-labs/cc-tools/mock"
+	"github.com/hyperledger-labs/cc-tools/v2/mock"
 )
 
 const clientAdminOrg3Cert string = `-----BEGIN CERTIFICATE-----

@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/hyperledger-labs/cc-tools/mock"
+	"github.com/hyperledger-labs/cc-tools/v2/mock"
 )
 
 func TestMain(m *testing.M) {
