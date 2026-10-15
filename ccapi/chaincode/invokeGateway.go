@@ -112,24 +112,26 @@ func chaincodeStatusFromPreparedTransaction(preparedTransactionBytes []byte) (in
 		return 0, errors.Wrap(err, "failed to unmarshal transaction")
 	}
 
-	for _, action := range transaction.GetActions() {
-		actionPayload := &peer.ChaincodeActionPayload{}
-		if err := proto.Unmarshal(action.GetPayload(), actionPayload); err != nil {
-			return 0, errors.Wrap(err, "failed to unmarshal chaincode action payload")
-		}
-
-		responsePayload := &peer.ProposalResponsePayload{}
-		if err := proto.Unmarshal(actionPayload.GetAction().GetProposalResponsePayload(), responsePayload); err != nil {
-			return 0, errors.Wrap(err, "failed to unmarshal proposal response payload")
-		}
-
-		chaincodeAction := &peer.ChaincodeAction{}
-		if err := proto.Unmarshal(responsePayload.GetExtension(), chaincodeAction); err != nil {
-			return 0, errors.Wrap(err, "failed to unmarshal chaincode action")
-		}
-
-		return chaincodeAction.GetResponse().GetStatus(), nil
+	// Endorser transactions have a single action
+	actions := transaction.GetActions()
+	if len(actions) == 0 {
+		return 0, errors.New("no chaincode action found in transaction")
 	}
 
-	return 0, errors.New("no chaincode action found in transaction")
+	actionPayload := &peer.ChaincodeActionPayload{}
+	if err := proto.Unmarshal(actions[0].GetPayload(), actionPayload); err != nil {
+		return 0, errors.Wrap(err, "failed to unmarshal chaincode action payload")
+	}
+
+	responsePayload := &peer.ProposalResponsePayload{}
+	if err := proto.Unmarshal(actionPayload.GetAction().GetProposalResponsePayload(), responsePayload); err != nil {
+		return 0, errors.Wrap(err, "failed to unmarshal proposal response payload")
+	}
+
+	chaincodeAction := &peer.ChaincodeAction{}
+	if err := proto.Unmarshal(responsePayload.GetExtension(), chaincodeAction); err != nil {
+		return 0, errors.Wrap(err, "failed to unmarshal chaincode action")
+	}
+
+	return chaincodeAction.GetResponse().GetStatus(), nil
 }
