@@ -24,9 +24,9 @@ func Query(channelName, ccName, txName, user string, txArgs [][]byte) (*channel.
 
 	res, err := fabMngr.Client.Query(rq, channel.WithRetry(retry.DefaultChannelOpts))
 	if err != nil {
-		status := extractStatusCode(err.Error())
+		status, err := parseSDKError(err)
 		return nil, status, err
 	}
 
-	return &res, http.StatusOK, nil
+	return &res, successStatus(res.ChaincodeStatus), nil
 }

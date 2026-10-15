@@ -44,7 +44,7 @@ func getChainInfo(c *gin.Context, channelName string) {
 		user = "Admin"
 	}
 
-	result, err := chaincode.QueryGateway(channelName, "qscc", "GetChainInfo", user, []string{channelName})
+	result, _, err := chaincode.QueryGateway(channelName, "qscc", "GetChainInfo", user, []string{channelName})
 	if err != nil {
 		err, status := common.ParseError(err)
 		common.Abort(c, status, err)
@@ -81,7 +81,7 @@ func getBlockByNumber(c *gin.Context, channelName string) {
 		return
 	}
 
-	result, err := chaincode.QueryGateway(channelName, "qscc", "GetBlockByNumber", user, []string{channelName, number})
+	result, _, err := chaincode.QueryGateway(channelName, "qscc", "GetBlockByNumber", user, []string{channelName, number})
 	if err != nil {
 		err, status := common.ParseError(err)
 		common.Abort(c, status, err)
@@ -110,7 +110,7 @@ func getBlockByTxID(c *gin.Context, channelName string) {
 		return
 	}
 
-	result, err := chaincode.QueryGateway(channelName, "qscc", "GetBlockByTxID", user, []string{channelName, txid})
+	result, _, err := chaincode.QueryGateway(channelName, "qscc", "GetBlockByTxID", user, []string{channelName, txid})
 	if err != nil {
 		err, status := common.ParseError(err)
 		common.Abort(c, status, err)
@@ -146,7 +146,7 @@ func getBlockByHash(c *gin.Context, channelName string) {
 		return
 	}
 
-	result, err := chaincode.QueryGateway(channelName, "qscc", "GetBlockByHash", user, []string{channelName, string(hashBytes)})
+	result, _, err := chaincode.QueryGateway(channelName, "qscc", "GetBlockByHash", user, []string{channelName, string(hashBytes)})
 
 	if err != nil {
 		err, status := common.ParseError(err)
@@ -178,7 +178,7 @@ func getTransactionByID(c *gin.Context, channelName string) {
 	}
 
 	fmt.Println("calling GetTransactionByID")
-	result, err := chaincode.QueryGateway(channelName, "qscc", "GetTransactionByID", user, []string{channelName, txid})
+	result, _, err := chaincode.QueryGateway(channelName, "qscc", "GetTransactionByID", user, []string{channelName, txid})
 	if err != nil {
 		fmt.Println("error calling GetTransactionByID: ", err)
 		err, status := common.ParseError(err)
