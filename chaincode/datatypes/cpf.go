@@ -3,8 +3,8 @@ package datatypes
 import (
 	"strings"
 
-	"github.com/hyperledger-labs/cc-tools/assets"
-	"github.com/hyperledger-labs/cc-tools/errors"
+	"github.com/hyperledger-labs/cc-tools/v2/assets"
+	"github.com/hyperledger-labs/cc-tools/v2/errors"
 )
 
 var cpf = assets.DataType{

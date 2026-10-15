@@ -4,16 +4,17 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/hyperledger-labs/cc-tools/accesscontrol"
-	"github.com/hyperledger-labs/cc-tools/assets"
-	"github.com/hyperledger-labs/cc-tools/errors"
-	"github.com/hyperledger-labs/cc-tools/events"
-	sw "github.com/hyperledger-labs/cc-tools/stubwrapper"
-	tx "github.com/hyperledger-labs/cc-tools/transactions"
+	"github.com/hyperledger-labs/cc-tools/v2/accesscontrol"
+	"github.com/hyperledger-labs/cc-tools/v2/assets"
+	"github.com/hyperledger-labs/cc-tools/v2/errors"
+	"github.com/hyperledger-labs/cc-tools/v2/events"
+	sw "github.com/hyperledger-labs/cc-tools/v2/stubwrapper"
+	tx "github.com/hyperledger-labs/cc-tools/v2/transactions"
 )
 
 // Create a new Library on channel
 // POST Method
+// Uses ResponseRoutine to respond with status 201 (Created) instead of the default 200
 var CreateNewLibrary = tx.Transaction{
 	Tag:         "createNewLibrary",
 	Label:       "Create New Library",
@@ -39,7 +40,7 @@ var CreateNewLibrary = tx.Transaction{
 			Required:    true,
 		},
 	},
-	Routine: func(stub *sw.StubWrapper, req map[string]interface{}) ([]byte, errors.ICCError) {
+	ResponseRoutine: func(stub *sw.StubWrapper, req map[string]interface{}) (*tx.Response, errors.ICCError) {
 		name, _ := req["name"].(string)
 
 		libraryMap := make(map[string]interface{})
@@ -72,6 +73,6 @@ var CreateNewLibrary = tx.Transaction{
 		// Call event to log the message
 		events.CallEvent(stub, "createLibraryLog", logMsg)
 
-		return libraryJSON, nil
+		return &tx.Response{Status: 201, Payload: libraryJSON}, nil
 	},
 }

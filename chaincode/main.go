@@ -10,13 +10,13 @@ import (
 	"github.com/hyperledger-labs/cc-tools-demo/chaincode/assettypes"
 	"github.com/hyperledger-labs/cc-tools-demo/chaincode/datatypes"
 	"github.com/hyperledger-labs/cc-tools-demo/chaincode/header"
-	"github.com/hyperledger-labs/cc-tools/assets"
-	"github.com/hyperledger-labs/cc-tools/events"
-	sw "github.com/hyperledger-labs/cc-tools/stubwrapper"
-	tx "github.com/hyperledger-labs/cc-tools/transactions"
+	"github.com/hyperledger-labs/cc-tools/v2/assets"
+	"github.com/hyperledger-labs/cc-tools/v2/events"
+	sw "github.com/hyperledger-labs/cc-tools/v2/stubwrapper"
+	tx "github.com/hyperledger-labs/cc-tools/v2/transactions"
 
-	"github.com/hyperledger/fabric-chaincode-go/shim"
-	pb "github.com/hyperledger/fabric-protos-go/peer"
+	"github.com/hyperledger/fabric-chaincode-go/v2/shim"
+	pb "github.com/hyperledger/fabric-protos-go-apiv2/peer"
 )
 
 var startupCheckExecuted = false
@@ -142,7 +142,7 @@ type CCDemo struct{}
 // Init is called during chaincode instantiation to initialize any
 // data. Note that chaincode upgrade also calls this function to reset
 // or to migrate data.
-func (t *CCDemo) Init(stub shim.ChaincodeStubInterface) (response pb.Response) {
+func (t *CCDemo) Init(stub shim.ChaincodeStubInterface) (response *pb.Response) {
 
 	res := InitFunc(stub)
 	startupCheckExecuted = true
@@ -154,7 +154,7 @@ func (t *CCDemo) Init(stub shim.ChaincodeStubInterface) (response pb.Response) {
 	return
 }
 
-func InitFunc(stub shim.ChaincodeStubInterface) (response pb.Response) {
+func InitFunc(stub shim.ChaincodeStubInterface) (response *pb.Response) {
 	// Defer logging function
 	defer logTx(stub, time.Now(), &response)
 
@@ -186,7 +186,7 @@ func InitFunc(stub shim.ChaincodeStubInterface) (response pb.Response) {
 }
 
 // Invoke is called per transaction on the chaincode.
-func (t *CCDemo) Invoke(stub shim.ChaincodeStubInterface) (response pb.Response) {
+func (t *CCDemo) Invoke(stub shim.ChaincodeStubInterface) (response *pb.Response) {
 	// Defer logging function
 	defer logTx(stub, time.Now(), &response)
 
@@ -199,19 +199,12 @@ func (t *CCDemo) Invoke(stub shim.ChaincodeStubInterface) (response pb.Response)
 		startupCheckExecuted = true
 	}
 
-	var result []byte
-
-	result, err := tx.Run(stub)
-
-	if err != nil {
-		response = err.GetErrorResponse()
-		return
-	}
-	response = shim.Success([]byte(result))
+	// RunResponse keeps the success status set by transactions with a ResponseRoutine
+	response = tx.RunResponse(stub)
 	return
 }
 
-func logTx(stub shim.ChaincodeStubInterface, beginTime time.Time, response *pb.Response) {
+func logTx(stub shim.ChaincodeStubInterface, beginTime time.Time, response **pb.Response) {
 	fn, _ := stub.GetFunctionAndParameters()
-	log.Printf("%d %s %s %s\n", response.Status, fn, time.Since(beginTime), response.Message)
+	log.Printf("%d %s %s %s\n", (*response).GetStatus(), fn, time.Since(beginTime), (*response).GetMessage())
 }
