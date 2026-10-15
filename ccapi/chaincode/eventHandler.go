@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/hyperledger-labs/cc-tools-demo/ccapi/common"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 )
 
@@ -60,8 +61,7 @@ func (event EventHandler) Execute(ccEvent *fab.CCEvent) {
 			return
 		}
 
-		var response map[string]interface{}
-		nerr := json.Unmarshal(res.Payload, &response)
+		response, nerr := common.ParsePayload(res.Payload)
 		if nerr != nil {
 			fmt.Println("error unmarshalling response: ", nerr)
 			return
