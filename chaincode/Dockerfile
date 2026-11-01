@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-ARG GO_VER=1.21
+ARG GO_VER=1.22
 ARG ALPINE_VER=3.20
 ARG CC_SERVER_PORT=9999
 

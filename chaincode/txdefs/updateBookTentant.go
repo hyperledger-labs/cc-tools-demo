@@ -3,11 +3,11 @@ package txdefs
 import (
 	"encoding/json"
 
-	"github.com/hyperledger-labs/cc-tools/accesscontrol"
-	"github.com/hyperledger-labs/cc-tools/assets"
-	"github.com/hyperledger-labs/cc-tools/errors"
-	sw "github.com/hyperledger-labs/cc-tools/stubwrapper"
-	tx "github.com/hyperledger-labs/cc-tools/transactions"
+	"github.com/hyperledger-labs/cc-tools/v2/accesscontrol"
+	"github.com/hyperledger-labs/cc-tools/v2/assets"
+	"github.com/hyperledger-labs/cc-tools/v2/errors"
+	sw "github.com/hyperledger-labs/cc-tools/v2/stubwrapper"
+	tx "github.com/hyperledger-labs/cc-tools/v2/transactions"
 )
 
 // Updates the tenant of a Book

@@ -50,8 +50,7 @@ func QueryV1(c *gin.Context) {
 		return
 	}
 
-	var payload interface{}
-	err = json.Unmarshal(res.Payload, &payload)
+	payload, err := common.ParsePayload(res.Payload)
 	if err != nil {
 		common.Abort(c, http.StatusInternalServerError, err)
 		return

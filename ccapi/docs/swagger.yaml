@@ -14,6 +14,18 @@ components:
     basicAuth:
       type: "http"
       scheme: "basic"
+  schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status, replicated from the status returned by the chaincode when available.
+          example: 404
+        error:
+          type: string
+          description: Error message returned by the chaincode.
+          example: asset not found
 paths:
   /invoke/{txName}:
     post:
@@ -37,11 +49,21 @@ paths:
               type: object
       responses:
         "200":
-          description: OK
+          description: OK. Default success status.
+        "2XX":
+          description: Other success status set by the transaction, such as 201 (Created) or 204 (No Content, without response body).
         "4XX":
-          description: Bad Request
+          description: Error status returned by the chaincode, such as 400 (invalid arguments), 403 (caller not allowed), 404 (not found) or 409 (conflict).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         5XX:
-          description: Internal error
+          description: Internal error in the chaincode or in the network.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /query/{txName}:
     post:
       tags:
@@ -64,11 +86,21 @@ paths:
               type: object
       responses:
         "200":
-          description: OK
+          description: OK. Default success status.
+        "2XX":
+          description: Other success status set by the transaction, such as 201 (Created) or 204 (No Content, without response body).
         "4XX":
-          description: Bad Request
+          description: Error status returned by the chaincode, such as 400 (invalid arguments), 403 (caller not allowed), 404 (not found) or 409 (conflict).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         5XX:
-          description: Internal error
+          description: Internal error in the chaincode or in the network.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /query/getHeader:
     get:
@@ -413,11 +445,21 @@ paths:
               type: object
       responses:
         "200":
-          description: OK
+          description: OK. Default success status.
+        "2XX":
+          description: Other success status set by the transaction, such as 201 (Created) or 204 (No Content, without response body).
         "4XX":
-          description: Bad Request
+          description: Error status returned by the chaincode, such as 400 (invalid arguments), 403 (caller not allowed), 404 (not found) or 409 (conflict).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         5XX:
-          description: Internal error
+          description: Internal error in the chaincode or in the network.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /{channelName}/{chaincodeName}/query/{txName}:
     post:
@@ -453,11 +495,21 @@ paths:
               type: object
       responses:
         "200":
-          description: OK
+          description: OK. Default success status.
+        "2XX":
+          description: Other success status set by the transaction, such as 201 (Created) or 204 (No Content, without response body).
         "4XX":
-          description: Bad Request
+          description: Error status returned by the chaincode, such as 400 (invalid arguments), 403 (caller not allowed), 404 (not found) or 409 (conflict).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         5XX:
-          description: Internal error
+          description: Internal error in the chaincode or in the network.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /{channelName}/{chaincodeName}/query/getHeader:
     get:

@@ -24,6 +24,14 @@ var (
 	gatewayTLSCredentials *credentials.TransportCredentials
 )
 
+// Default timeouts for different gRPC calls
+const (
+	GatewayEvaluateTimeout     = 5 * time.Second
+	GatewayEndorseTimeout      = 15 * time.Second
+	GatewaySubmitTimeout       = 5 * time.Second
+	GatewayCommitStatusTimeout = 1 * time.Minute
+)
+
 func CreateGrpcConnection(endpoint string) (*grpc.ClientConn, error) {
 	// Check TLS credential was created
 	if gatewayTLSCredentials == nil {
@@ -50,9 +58,9 @@ func CreateGatewayConnection(grpcConn *grpc.ClientConn, user string) (*client.Ga
 	gatewayId := id
 
 	// Create sign function
-	sign, err := newSign(getSignKey(user))
+	sign, err := NewGatewaySign(user)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to create new sign function")
+		return nil, err
 	}
 
 	gatewaySign := sign
@@ -64,11 +72,21 @@ func CreateGatewayConnection(grpcConn *grpc.ClientConn, user string) (*client.Ga
 		client.WithClientConnection(grpcConn),
 
 		// Default timeouts for different gRPC calls
-		client.WithEvaluateTimeout(5*time.Second),
-		client.WithEndorseTimeout(15*time.Second),
-		client.WithSubmitTimeout(5*time.Second),
-		client.WithCommitStatusTimeout(1*time.Minute),
+		client.WithEvaluateTimeout(GatewayEvaluateTimeout),
+		client.WithEndorseTimeout(GatewayEndorseTimeout),
+		client.WithSubmitTimeout(GatewaySubmitTimeout),
+		client.WithCommitStatusTimeout(GatewayCommitStatusTimeout),
 	)
+}
+
+// NewGatewaySign creates the function used to sign gateway requests on behalf of the user.
+func NewGatewaySign(user string) (identity.Sign, error) {
+	sign, err := newSign(getSignKey(user))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create new sign function")
+	}
+
+	return sign, nil
 }
 
 // Create transport credential
@@ -134,7 +152,7 @@ func ParseError(err error) (error, int) {
 			errMsg = "error obtaining commit status for transaction"
 		}
 	case *client.CommitError:
-		errMsg = "transaction failed to commit"
+		errMsg = fmt.Sprintf("transaction failed to commit with status code %d (%s)", int32(err.Code), err.Code.String())
 	default:
 		errMsg = "unexpected error type:" + err.Error()
 	}
@@ -146,33 +164,47 @@ func ParseError(err error) (error, int) {
 		return errors.New(errMsg), http.StatusInternalServerError
 	}
 
+	// Each endorser that failed adds a detail. Prefer the status returned by the
+	// chaincode over errors from peers that could not be reached.
+	var firstMsg string
 	for _, detail := range details {
 		switch detail := detail.(type) {
 		case *gateway.ErrorDetail:
-			status, msg := extractStatusAndMessage(detail.Message)
-			return errors.New(msg), status
+			status, msg, ok := extractStatusAndMessage(detail.Message)
+			if ok {
+				return errors.New(msg), status
+			}
+			if firstMsg == "" {
+				firstMsg = msg
+			}
 		}
+	}
+
+	if firstMsg != "" {
+		return errors.New(firstMsg), http.StatusInternalServerError
 	}
 
 	return errors.New(errMsg), http.StatusInternalServerError
 }
 
-func extractStatusAndMessage(msg string) (int, string) {
+// extractStatusAndMessage parses messages in the "chaincode response <status>, <message>" format
+// produced by the Fabric Gateway. ok is false when the message is not in that format.
+func extractStatusAndMessage(msg string) (status int, errMsg string, ok bool) {
 	pattern := `chaincode response (\b(\d{3})\b), `
 	reg := regexp.MustCompile(pattern)
 	matches := reg.FindStringSubmatch(msg)
 
 	if len(matches) == 0 {
-		return http.StatusInternalServerError, msg
+		return http.StatusInternalServerError, msg, false
 	}
 
-	errMsg := strings.Replace(msg, matches[0], "", 1)
+	errMsg = strings.Replace(msg, matches[0], "", 1)
 	status, err := strconv.Atoi(matches[1])
 	if err != nil {
-		status = http.StatusInternalServerError
+		return http.StatusInternalServerError, errMsg, false
 	}
 
-	return status, errMsg
+	return status, errMsg, true
 }
 
 func loadCertificate(filename string) (*x509.Certificate, error) {

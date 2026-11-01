@@ -1,7 +1,7 @@
 package assettypes
 
 import (
-	"github.com/hyperledger-labs/cc-tools/assets"
+	"github.com/hyperledger-labs/cc-tools/v2/assets"
 )
 
 // CustomAssets contains all assets inserted via GoFabric's Template mode.

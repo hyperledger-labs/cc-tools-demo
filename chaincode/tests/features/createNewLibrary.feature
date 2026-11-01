@@ -11,7 +11,7 @@ Feature: Create New Library
                 "name": "Elizabeth's Library"
             }
             """
-        Then the response code should be 200
+        Then the response code should be 201
         And the response should have:
             """
             {

@@ -8,7 +8,7 @@ import (
 	"time"
 
 	cc "github.com/hyperledger-labs/cc-tools-demo/chaincode"
-	"github.com/hyperledger-labs/cc-tools/mock"
+	"github.com/hyperledger-labs/cc-tools/v2/mock"
 )
 
 const clientAdminOrg3Cert string = `-----BEGIN CERTIFICATE-----
@@ -36,6 +36,7 @@ func TestCreateNewLibrary(t *testing.T) {
 		"@key":         "library:3cab201f-9e2b-579d-b7b2-72297ed17f49",
 		"@lastTouchBy": "org3MSP",
 		"@lastTx":      "createNewLibrary",
+		"@lastTxID":    "createNewLibrary",
 		"@assetType":   "library",
 		"name":         "Maria's Library",
 	}
@@ -54,7 +55,7 @@ func TestCreateNewLibrary(t *testing.T) {
 
 	expectedResponse["@lastUpdated"] = stub.TxTimestamp.AsTime().Format(time.RFC3339)
 
-	if res.GetStatus() != 200 {
+	if res.GetStatus() != 201 {
 		log.Println(res)
 		t.FailNow()
 	}
