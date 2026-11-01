@@ -43,19 +43,17 @@ func parseSDKError(err error) (int, error) {
 
 	for _, e := range errs {
 		s, ok := errors.Cause(e).(*status.Status)
-		if ok && s.Group == status.ChaincodeStatus && s.Code >= 100 && s.Code <= 599 {
+		if !ok || s.Code < 100 || s.Code > 599 {
+			continue
+		}
+		// Chaincode responses are reported as ChaincodeStatus by the endorser and as
+		// EndorserServerStatus by the endorsement validation
+		if s.Group == status.ChaincodeStatus || s.Group == status.EndorserServerStatus {
+			// Only the chaincode message is returned to the client, so keep the full error in the logs
+			fmt.Println("chaincode error: ", err)
 			return int(s.Code), errors.New(s.Message)
 		}
 	}
 
 	return extractStatusCode(err.Error()), err
-}
-
-// successStatus converts the status returned by the chaincode to the HTTP status of a successful response.
-func successStatus(chaincodeStatus int32) int {
-	if chaincodeStatus < 200 || chaincodeStatus > 299 {
-		return http.StatusOK
-	}
-
-	return int(chaincodeStatus)
 }

@@ -156,7 +156,8 @@ func (t *CCDemo) Init(stub shim.ChaincodeStubInterface) (response *pb.Response) 
 
 func InitFunc(stub shim.ChaincodeStubInterface) (response *pb.Response) {
 	// Defer logging function
-	defer logTx(stub, time.Now(), &response)
+	beginTime := time.Now()
+	defer func() { logTx(stub, beginTime, response) }()
 
 	if assettypes.DynamicAssetTypes.Enabled {
 		sw := &sw.StubWrapper{
@@ -188,7 +189,8 @@ func InitFunc(stub shim.ChaincodeStubInterface) (response *pb.Response) {
 // Invoke is called per transaction on the chaincode.
 func (t *CCDemo) Invoke(stub shim.ChaincodeStubInterface) (response *pb.Response) {
 	// Defer logging function
-	defer logTx(stub, time.Now(), &response)
+	beginTime := time.Now()
+	defer func() { logTx(stub, beginTime, response) }()
 
 	if !startupCheckExecuted {
 		fmt.Println("Running startup check...")
@@ -204,7 +206,7 @@ func (t *CCDemo) Invoke(stub shim.ChaincodeStubInterface) (response *pb.Response
 	return
 }
 
-func logTx(stub shim.ChaincodeStubInterface, beginTime time.Time, response **pb.Response) {
+func logTx(stub shim.ChaincodeStubInterface, beginTime time.Time, response *pb.Response) {
 	fn, _ := stub.GetFunctionAndParameters()
-	log.Printf("%d %s %s %s\n", (*response).GetStatus(), fn, time.Since(beginTime), (*response).GetMessage())
+	log.Printf("%d %s %s %s\n", response.GetStatus(), fn, time.Since(beginTime), response.GetMessage())
 }

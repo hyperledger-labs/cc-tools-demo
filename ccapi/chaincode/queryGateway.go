@@ -67,6 +67,9 @@ func evaluate(conn grpc.ClientConnInterface, channelName string, sign identity.S
 	if err := proto.Unmarshal(proposalBytes, proposedTransaction); err != nil {
 		return nil, 0, errors.Wrap(err, "failed to unmarshal proposal")
 	}
+	if proposedTransaction.GetProposal() == nil {
+		return nil, 0, errors.New("proposal not found in proposed transaction")
+	}
 	proposedTransaction.GetProposal().Signature = signature
 
 	ctx, cancel := context.WithTimeout(context.Background(), common.GatewayEvaluateTimeout)
@@ -82,5 +85,5 @@ func evaluate(conn grpc.ClientConnInterface, channelName string, sign identity.S
 		return nil, 0, err
 	}
 
-	return response.GetResult().GetPayload(), successStatus(response.GetResult().GetStatus()), nil
+	return response.GetResult().GetPayload(), int(response.GetResult().GetStatus()), nil
 }

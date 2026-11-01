@@ -35,6 +35,11 @@ func TestParseSDKError(t *testing.T) {
 			404, "asset not found",
 		},
 		{
+			"endorsement validation status",
+			status.New(status.EndorserServerStatus, 409, "asset already exists", nil),
+			409, "asset already exists",
+		},
+		{
 			"non chaincode status",
 			status.New(status.EndorserClientStatus, int32(status.ConnectionFailed), "connection failed", nil),
 			500, "Endorser Client Status Code: (2) CONNECTION_FAILED. Description: connection failed",
@@ -50,15 +55,6 @@ func TestParseSDKError(t *testing.T) {
 		st, err := parseSDKError(c.err)
 		if st != c.status || err.Error() != c.message {
 			t.Errorf("%s: expected %d %q, got %d %q", c.name, c.status, c.message, st, err.Error())
-		}
-	}
-}
-
-func TestSuccessStatus(t *testing.T) {
-	cases := map[int32]int{0: 200, 200: 200, 201: 201, 204: 204, 299: 299, 300: 200, 404: 200}
-	for in, out := range cases {
-		if got := successStatus(in); got != out {
-			t.Errorf("successStatus(%d): expected %d, got %d", in, out, got)
 		}
 	}
 }

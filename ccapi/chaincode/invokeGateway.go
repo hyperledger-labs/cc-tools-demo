@@ -1,6 +1,8 @@
 package chaincode
 
 import (
+	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/hyperledger-labs/cc-tools-demo/ccapi/common"
@@ -69,9 +71,11 @@ func submit(contract *client.Contract, txName string, options ...client.Proposal
 		return nil, 0, err
 	}
 
+	// The transaction is already endorsed, so a status that cannot be read must not prevent its submission
 	chaincodeStatus, err := chaincodeStatusFromPreparedTransaction(transactionBytes)
 	if err != nil {
-		return nil, 0, err
+		fmt.Println("failed to read chaincode status, responding with 200: ", err)
+		chaincodeStatus = http.StatusOK
 	}
 
 	commit, err := transaction.Submit()
@@ -91,7 +95,7 @@ func submit(contract *client.Contract, txName string, options ...client.Proposal
 		}
 	}
 
-	return transaction.Result(), successStatus(chaincodeStatus), nil
+	return transaction.Result(), int(chaincodeStatus), nil
 }
 
 // chaincodeStatusFromPreparedTransaction reads the chaincode response status from a serialized

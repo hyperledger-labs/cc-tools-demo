@@ -28,5 +28,5 @@ func Query(channelName, ccName, txName, user string, txArgs [][]byte) (*channel.
 		return nil, status, err
 	}
 
-	return &res, successStatus(res.ChaincodeStatus), nil
+	return &res, int(res.ChaincodeStatus), nil
 }
